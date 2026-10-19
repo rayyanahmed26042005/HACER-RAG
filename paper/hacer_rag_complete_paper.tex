@@ -21,23 +21,54 @@
 \usepackage{multirow}
 \usepackage[hidelinks]{hyperref}
 
-% Layout and emergency stretch
+% ==============================================================================
+% Layout, float and typography controls
+% ==============================================================================
 \setlength{\emergencystretch}{1.5em}
 
-% Custom macros
-\newcommand{\systemname}{\textsc{HACER-RAG}}
+% Float placement (keeps figures/tables near their first reference)
+\renewcommand{\topfraction}{0.90}
+\renewcommand{\bottomfraction}{0.80}
+\renewcommand{\textfraction}{0.10}
+\renewcommand{\floatpagefraction}{0.80}
+\renewcommand{\dbltopfraction}{0.90}
+\renewcommand{\dblfloatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
+\setcounter{dbltopnumber}{3}
 
 % ==============================================================================
-% Title and Author Information
+% Custom definitions
+% ==============================================================================
+\newcommand{\systemname}{HACER-RAG}
+\newcommand{\us}{\_\allowbreak}   % breakable underscore for file names
+
+% Table column types
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% Figure helper: includes the figure if present, otherwise reserves an
+% equally sized framed placeholder so the layout is final before the PDFs exist.
+% Usage: \placefig{<width>}{<placeholder height>}{<file name inside figures/>}
+\newcommand{\placefig}[3]{%
+  \IfFileExists{figures/#3}%
+    {\includegraphics[width=#1]{figures/#3}}%
+    {\fbox{\parbox[c][#2][c]{\dimexpr#1-2\fboxsep-2\fboxrule\relax}{\centering\footnotesize\textit{[Figure placeholder: \texttt{\detokenize{#3}}]}}}}%
+}
+
+\hyphenation{Retrieval-Augmented llama-cpp}
+
+% ==============================================================================
+% Title and authors
 % ==============================================================================
 \title{\systemname: Evidence-Version-Aware KV-Cache Reuse and Selective Repair for On-Device Retrieval-Augmented Generation}
 
 \author{
-  \IEEEauthorblockN{Rayyan Ahmed}
-  \IEEEauthorblockA{\textit{Mobile Systems and Language Model Research Group} \\
-  \textit{PortingLLM Research Project}\\
-  Hyderabad, India \\
-  ahmedrayyan728@gmail.com}
+  \IEEEauthorblockN{Mobile Systems and Language Model Research Group}
+  \IEEEauthorblockA{PortingLLM Research Project\\
+  \texttt{\{systems-research, mobile-llm\}@portingllm.org}}
 }
 
 \begin{document}
