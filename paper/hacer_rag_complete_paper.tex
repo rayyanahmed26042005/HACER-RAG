@@ -1,44 +1,44 @@
-\documentclass[10pt,twocolumn]{article}
+\documentclass[10pt,conference]{IEEEtran}
 
-% ------------------------------------------------------------------------------
-% Packages for Professional Typography and Layout
-% ------------------------------------------------------------------------------
+% ==============================================================================
+% Packages
+% ==============================================================================
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage[margin=0.75in,columnsep=0.25in]{geometry}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{cite}
 \usepackage{xcolor}
+\usepackage{textcomp}
 \usepackage{microtype}
 \usepackage{url}
 \usepackage{multirow}
-\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[hidelinks]{hyperref}
 
-% ------------------------------------------------------------------------------
-% Custom Definitions and Formatting
-% ------------------------------------------------------------------------------
+% Layout and emergency stretch
+\setlength{\emergencystretch}{1.5em}
+
+% Custom macros
 \newcommand{\systemname}{\textsc{HACER-RAG}}
 
-\newenvironment{IEEEkeywords}
-  {\vspace{0.5em}\noindent\textbf{\textit{Keywords---}}\ignorespaces}
-  {\vspace{1.0em}}
-
-% Title and Authors
-\title{\Large\textbf{\systemname: Evidence-Version-Aware KV-Cache Reuse and Selective Repair for On-Device Retrieval-Augmented Generation}}
+% ==============================================================================
+% Title and Author Information
+% ==============================================================================
+\title{\systemname: Evidence-Version-Aware KV-Cache Reuse and Selective Repair for On-Device Retrieval-Augmented Generation}
 
 \author{
-  \textbf{Mobile Systems and Language Model Research Group}\\
-  PortingLLM Research Project\\
-  \texttt{\{systems-research, mobile-llm\}@portingllm.org}
+  \IEEEauthorblockN{Rayyan Ahmed}
+  \IEEEauthorblockA{\textit{Mobile Systems and Language Model Research Group} \\
+  \textit{PortingLLM Research Project}\\
+  Hyderabad, India \\
+  ahmedrayyan728@gmail.com}
 }
-
-\date{\today}
 
 \begin{document}
 
@@ -104,7 +104,7 @@ On desktop and server-class deployments, high-performance accelerators (such as 
 
 On the Qualcomm Snapdragon 4 Gen 2 SoC, evaluating a 395-token prompt using 4 CPU threads requires an average of $54.2$~seconds (effective prefill throughput of $7.29$~tokens/second). In contrast, reading a 37.5~MB serialized KV cache from the device's internal UFS 2.2 flash storage requires less than $250$~milliseconds. On the flagship Qualcomm Snapdragon 8 Elite, the raw prefill compute latency is $12.8\text{--}14.2$~seconds, while reading the same KV cache from high-speed UFS 4.0 flash storage takes only $48.0\text{--}56.2$~milliseconds.
 
-This establishes an operational asymmetry where mobile CPU floating-point computation is **$120\times\text{ to }400\times$ slower** than mobile flash storage restoration. Persistent flash storage on smartphones functions as an ultra-fast, energy-efficient cache for expensive transformer attention states.
+This establishes an operational asymmetry where mobile CPU floating-point computation is \textbf{$120\times\text{ to }400\times$ slower} than mobile flash storage restoration. Persistent flash storage on smartphones functions as an ultra-fast, energy-efficient cache for expensive transformer attention states.
 
 \subsection{The Stale-KV Hallucination Vulnerability}
 Existing mobile LLM wrappers (such as \texttt{llama.rn}) expose opaque session persistence functions (\texttt{saveSession} and \texttt{loadSession}). These APIs operate blindly: they bind a cache file to an arbitrary path or conversational turn number, without any semantic verification of document freshness. 
@@ -166,19 +166,19 @@ where $n_{\text{ctx}}$ is the allocated context buffer, $n_{\text{boundary}} = 4
 \section{Experimental Hardware and Methodology}
 \label{sec:methodology}
 
-\subsection{Physical Mobile Hardware Platforms}
-To evaluate hardware generalization, we deployed HACER-RAG across two physical Android smartphones representing mid-range and flagship tiers (Table~\ref{tab:hardware_platforms}).
+\subsection{Physical Mobile Hardware Platforms (Device A vs. Device B)}
+To evaluate hardware generalization across market segments, we deployed HACER-RAG across two physical Android smartphones representing mid-range and flagship tiers (Table~\ref{tab:hardware_platforms}).
 
 \begin{table*}[t]
 \centering
-\caption{\textbf{Audited Physical Hardware Platforms and Experimental Invariants.}}
+\caption{\textbf{Audited Physical Hardware Platforms and Experimental Invariants: Mid-Range Baseline (Device A) vs. Flagship Platform (Device B).}}
 \label{tab:hardware_platforms}
 \small
 \begin{tabular}{lp{5.2cm}p{5.5cm}l}
 \toprule
 \textbf{System Attribute} & \textbf{Device A (Mid-Range Baseline)} & \textbf{Device B (Flagship Tier)} & \textbf{Cross-Device Comparison} \\
 \midrule
-\textbf{Commercial Model} & Xiaomi Redmi 12 5G & Samsung Galaxy S25+ (\texttt{SM-S936U1}) & Mid-Range vs. Flagship \\
+\textbf{Commercial Model} & Xiaomi Redmi 12 5G & Samsung Galaxy S25+ (\texttt{SM-S936U1}) & Mid-Range vs. Flagship Tier \\
 \textbf{SoC} & Qualcomm Snapdragon 4 Gen 2 (SM4450) & Qualcomm Snapdragon 8 Elite (SM8750) & Generational Leap (4nm vs. 3nm) \\
 \textbf{CPU Cluster} & 2$\times$ Cortex-A78 @ 2.20~GHz\newline 6$\times$ Cortex-A55 @ 2.00~GHz & 6$\times$ Oryon Performance @ 3.53~GHz\newline 2$\times$ Oryon Prime @ 4.47~GHz & ARM Cortex vs. Custom Oryon Cores \\
 \textbf{RAM \& Bandwidth} & 4~GB LPDDR4X ($\sim 17\text{ GB/s}$) & 12~GB LPDDR5X ($\sim 44\text{ GB/s}$) & $3.0\times$ Capacity, $\sim 2.5\times$ Bandwidth \\
@@ -215,11 +215,11 @@ The complete prompt tokenizes to exactly $N_{\text{prompt}} = 395$ native tokens
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig2_scaling_latency_and_reduction.pdf}
-\caption{\textbf{Physical Scaling Benchmark Results across Matched Pairs.} (a) Absolute prompt prefill compute latency for Baseline (cold) vs. HACER (reuse) across 9 configurations ($K \in \{1, 2, 4\}$, $n_{\text{ctx}} \in \{512, 1024, 2048\}$) on Xiaomi Redmi 12 5G and Samsung Galaxy S25+. (b) Prompt prefill compute reduction percentage with 95\% bootstrap confidence intervals, showing consistent cross-device scaling.}
+\caption{\textbf{Physical Scaling Benchmark Results across Matched Pairs.} (a) Absolute prompt prefill compute latency for Baseline (cold) vs. HACER (reuse) across 9 configurations ($K \in \{1, 2, 4\}$, $n_{\text{ctx}} \in \{512, 1024, 2048\}$) on Xiaomi Redmi 12 5G (Device A) and Samsung Galaxy S25+ (Device B). (b) Prompt prefill compute reduction percentage with 95\% bootstrap confidence intervals, showing consistent cross-device scaling.}
 \label{fig:scaling_results}
 \end{figure*}
 
-\subsection{Dual-Device Physical Scaling Matrix}
+\subsection{Dual-Device Physical Scaling Matrix (Table~\ref{tab:scaling_matrix_dual})}
 Table~\ref{tab:scaling_matrix_dual} presents the complete empirical results across all nine configurations evaluated with matched pairs on both devices.
 
 \begin{table*}[t]
@@ -246,7 +246,7 @@ Table~\ref{tab:scaling_matrix_dual} presents the complete empirical results acro
 \end{tabular}
 \end{table*}
 
-\subsection{Key Empirical Observations}
+\subsection{Key Empirical Observations: Device A vs. Device B}
 \begin{enumerate}
     \item \textbf{Raw Compute Acceleration:} The Qualcomm Snapdragon 8 Elite delivers an average \textbf{$4.04\times$ raw compute speedup} over the Snapdragon 4 Gen 2, executing baseline prompt prefill in $11.92\text{--}14.18$~seconds compared to $49.48\text{--}56.03$~seconds on Device A.
     \item \textbf{Hardware-Invariant Scaling Law:} Despite the massive microarchitectural differences between ARM Cortex-A78 and custom Oryon cores, the relative compute savings of HACER-RAG scale almost identically across both platforms:
@@ -278,7 +278,7 @@ Table~\ref{tab:scaling_matrix_dual} presents the complete empirical results acro
 
 A core premise of HACER-RAG is that loading precomputed KV states from flash storage is drastically faster than recomputing attention states on mobile CPUs. Our dual-device evaluation reveals how this dynamic scales from UFS 2.2 to UFS 4.0:
 
-\subsection{UFS 2.2 vs. UFS 4.0 Throughput}
+\subsection{UFS 2.2 vs. UFS 4.0 Throughput (Device A vs. Device B)}
 On Device A's UFS 2.2 flash interface, sequential read bandwidth reaches $\sim 280\text{ MB/s}$, requiring $82\text{--}115\text{ ms}$ to load session binaries and delivering a compute-to-I/O speedup multiplier of $127\times\text{ to }411\times$.
 
 On Device B's UFS 4.0 flash interface, measured sequential read throughput reaches \textbf{$1,700\text{ MB/s}$ ($1.7\text{ GB/s}$)}---a \textbf{$6.07\times$ bandwidth increase}. Consequently, loading the 37.5~MB session binary ($K=4$) takes only \textbf{$48.0\text{ to }56.2\text{ ms}$}, saving over $11,000\text{ ms}$ of intense CPU prefill. This yields a physical \textbf{Storage-to-Compute Speedup Multiplier of $204\times\text{ to }229\times$}.
