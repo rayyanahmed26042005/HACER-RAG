@@ -1,0 +1,36 @@
+\section{Background and Related Work}
+\label{sec:background_related}
+
+\subsection{Transformer KV-Cache Fundamentals}
+Autoregressive Transformer language models process input tokens by projecting hidden states $X \in \mathbb{R}^{T \times d}$ at each layer $l \in [1, L]$ into Query ($Q_l$), Key ($K_l$), and Value ($V_l$) matrices via weight projections $W_Q, W_K, W_V \in \mathbb{R}^{d \times d}$:
+\begin{equation}
+    Q_l = X W_Q, \quad K_l = X W_K, \quad V_l = X W_V
+\end{equation}
+In decoder-only architectures, a strictly lower-triangular causal attention mask $M \in \{0, -\infty\}^{T \times T}$ ensures that token $t$ attends only to tokens at positions $\tau \le t$:
+\begin{equation}
+    \text{Attention}(Q_l, K_l, V_l) = \text{softmax}\left(\frac{Q_l K_l^T}{\sqrt{d_k}} + M\right) V_l
+\end{equation}
+Because the attention mask is strictly causal, the Key and Value representations computed for any prefix of length $P < T$ are mathematically independent of subsequent tokens $t > P$. When extending a prompt prefix $X_{1:P}$ with continuation tokens $X_{P+1:T}$, the prefix Key-Value tensors $K_{l, 1:P}$ and $V_{l, 1:P}$ can be preserved and reused directly without re-evaluation, provided the positional encodings and model weights remain identical.
+
+In mobile inference runtimes such as \texttt{llama.cpp}~\cite{gerganov2023llamacpp}, serialized session files record the internal state of the KV arena along with the evaluated token sequence. Restoring a session reloads these tensors into the engine's memory arena, allowing the prefill phase for the continuation to begin at position $P+1$.
+
+\subsection{Prior Work on KV-Cache Reuse in RAG}
+Recent literature has explored KV-cache reuse in retrieval-augmented workflows:
+\begin{itemize}
+    \item \textbf{TurboRAG~\cite{lu2024turborag}:} Precomputes document KV caches offline and retrieves them at query time. However, TurboRAG requires specialized positional embedding transformations and optional model fine-tuning to preserve cross-attention coherence when concatenating independently precomputed document caches.
+    \item \textbf{KVLink~\cite{yang2025kvlink}:} Introduces trainable linking tokens and position-adjustment layers to reconcile independently encoded document caches. While effective, it modifies the model architecture and requires additional training, making it incompatible with off-the-shelf, quantized models distributed on mobile app stores.
+    \item \textbf{PerCache~\cite{liu2026percache}:} Explores predictive hierarchical caching for personalized mobile RAG, pre-loading user profiles and historical interactions based on access pattern prediction. PerCache focuses on user personalization and predictive pre-warming; it does not address cryptographic evidence versioning, document revocation, or selective multi-chunk cache repair.
+    \item \textbf{Server-Scale Cache Management (vLLM~\cite{kwon2023vllm}, SGLang):} Server-scale engines employ PagedAttention and RadixAttention trees to share common system prompts across concurrent web requests in GPU high-bandwidth memory (HBM). These systems assume vast in-memory pools and continuous server availability; they do not address cold flash I/O, device thermal envelopes, or volatile memory eviction on Android.
+\end{itemize}
+
+\subsection{KV-Cache Quantization and Compression}
+To alleviate the memory footprint of KV caches, quantization schemes such as KIVI~\cite{liu2024kivi} compress Key and Value tensors to 2-bit or 4-bit representations. Other approaches like $\text{H}_2\text{O}$~\cite{zhang2024h2o} evict non-essential tokens based on cumulative attention scores (heavy hitters). While these techniques reduce resident memory size, they do not eliminate prompt prefill latency for new documents and do not provide mechanisms for detecting evidence staleness.
+
+\subsection{Differentiation of HACER-RAG}
+HACER-RAG does not claim that the primitive of saving or loading a KV cache to disk is novel. Rather, the central contribution of HACER-RAG lies in:
+\begin{enumerate}
+    \item \textbf{Evidence-Version-Aware Binding:} Binding every persistent KV segment to a cryptographic SHA-256 hash of its constituent document chunks.
+    \item \textbf{Selective Repair Policy:} Detecting document staleness, invalidating affected cache segments, and executing minimal online re-prefill while preserving valid prefix KV state.
+    \item \textbf{JNI Context-Budget Safety:} Dynamically validating headroom constraints and boundary-token behavior on low-memory mobile architectures.
+    \item \textbf{Empirical Quantification of Flash vs. Compute Trade-offs:} Rigorously measuring the latency and I/O overheads of physical flash restoration versus mobile CPU prefill.
+\end{enumerate}

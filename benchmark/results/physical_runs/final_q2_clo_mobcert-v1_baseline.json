@@ -1,0 +1,746 @@
+{
+  "rag": {
+    "context": "Evidence status:\n- chief legal officer: certified supported by [1]\n- office: certified supported by [1]\n\nExcerpts:\n[1] offlineRag.pdf \u2014 1. Company Overview > 1.1 Leadership Team\nJorge Fonseca Chief Legal Officer Lisbon 2019",
+    "sources": [
+      {
+        "id": "doc_1791799440107:2",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 2,
+        "sectionHeader": "1. Company Overview > 1.1 Leadership Team",
+        "excerpts": [
+          "Jorge Fonseca Chief Legal Officer Lisbon 2019"
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      }
+    ],
+    "strategy": "mobcert-v1",
+    "embeddingMs": 285.9028119966388,
+    "indexLoadMs": 0.1015629991889,
+    "vectorSearchMs": 31.92671900242567,
+    "contextConstructionMs": 119.6691149994731,
+    "candidateK": 3,
+    "candidateChunkCount": 3,
+    "selectedChunkCount": 1,
+    "duplicateChunksRemoved": 0,
+    "contextChars": 223,
+    "contextTokenEstimate": 56,
+    "contextTokens": 61,
+    "tokenCountMethod": "native",
+    "requestedContextTokenBudget": 264,
+    "appliedContextTokenBudget": 264,
+    "compressionRatio": 0.04310344827586207,
+    "topScore": 0.03278688524590164,
+    "scoreMargin": 0.016657852987837125,
+    "queryTermCount": 5,
+    "matchedQueryTermCount": 4,
+    "queryTermCoverage": 0.8,
+    "uncoveredQueryTerms": [
+      "based"
+    ],
+    "lexicalHit": true,
+    "exactTermMatches": 4,
+    "selectedChunkIds": [
+      "doc_1791799440107:2"
+    ],
+    "candidateChunkIds": [
+      "doc_1791799440107:2",
+      "doc_1791799440107:9",
+      "doc_1791799440107:13"
+    ],
+    "failureReason": null,
+    "queryEmbeddingCacheHit": false,
+    "indexChunks": 14,
+    "vectorBytes": 21504,
+    "legacyChunks": 0,
+    "embeddingIdentityVerified": true,
+    "budgetLimited": false,
+    "rejectedByBudget": 0,
+    "tokenChecks": 1,
+    "answerContract": {
+      "query": "Who is the Chief Legal Officer and which office are they based in?",
+      "demands": [
+        {
+          "demandId": "demand-1",
+          "label": "chief legal officer",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:2:6"
+          ],
+          "matchedTerms": [
+            "chief",
+            "legal",
+            "officer"
+          ],
+          "values": [],
+          "valueLabels": [],
+          "units": [],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        },
+        {
+          "demandId": "demand-2",
+          "label": "office",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:2:6"
+          ],
+          "matchedTerms": [
+            "chief",
+            "legal",
+            "officer",
+            "office"
+          ],
+          "values": [
+            "2019"
+          ],
+          "valueLabels": [
+            "lisbon"
+          ],
+          "units": [],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        }
+      ],
+      "selectedAtomIds": [
+        "doc_1791799440107:2:6"
+      ],
+      "selectedTokens": 12,
+      "tokenBudget": 264,
+      "certifiedDemandCount": 2,
+      "ambiguousDemandCount": 0,
+      "missingDemandCount": 0,
+      "requiredCoverage": 1
+    },
+    "answerContractAtoms": [
+      {
+        "id": "doc_1791799440107:2:6",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 2,
+        "sourceOrder": 6,
+        "sectionHeader": "1. Company Overview > 1.1 Leadership Team",
+        "text": "Jorge Fonseca Chief Legal Officer Lisbon 2019",
+        "terms": [
+          "1",
+          "company",
+          "overview",
+          "leadership",
+          "team",
+          "jorge",
+          "fonseca",
+          "chief",
+          "legal",
+          "officer",
+          "lisbon",
+          "2019"
+        ],
+        "entities": [
+          "company overview",
+          "jorge fonseca chief legal officer",
+          "leadership team"
+        ],
+        "attributes": [
+          "office",
+          "joined",
+          "role"
+        ],
+        "numbers": [
+          "2019"
+        ],
+        "units": [],
+        "temporalMarkers": [
+          "2019"
+        ],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "joined",
+            "numbers": [
+              "2019"
+            ],
+            "units": [],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "office",
+            "numbers": [],
+            "units": [],
+            "value": "lisbon",
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "company overview+jorge fonseca chief legal officer+leadership team|office",
+          "company overview+jorge fonseca chief legal officer+leadership team|joined",
+          "company overview+jorge fonseca chief legal officer+leadership team|role"
+        ],
+        "estimatedTokens": 12
+      }
+    ],
+    "evidenceSelectionDiagnostics": [
+      {
+        "atomId": "doc_1791799440107:2:0",
+        "status": "rejected",
+        "reason": "structural_header",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:2:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 13
+      },
+      {
+        "atomId": "doc_1791799440107:2:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 12
+      },
+      {
+        "atomId": "doc_1791799440107:2:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      },
+      {
+        "atomId": "doc_1791799440107:2:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:2:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 10
+      },
+      {
+        "atomId": "doc_1791799440107:9:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:9:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:9:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:9:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:9:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:9:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 19
+      },
+      {
+        "atomId": "doc_1791799440107:9:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:9:8",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:13:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 23
+      },
+      {
+        "atomId": "doc_1791799440107:13:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 7
+      },
+      {
+        "atomId": "doc_1791799440107:13:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 18
+      },
+      {
+        "atomId": "doc_1791799440107:13:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      },
+      {
+        "atomId": "doc_1791799440107:13:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:13:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 13
+      },
+      {
+        "atomId": "doc_1791799440107:2:6",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-1",
+          "demand-2"
+        ],
+        "estimatedTokens": 12
+      },
+      {
+        "atomId": "doc_1791799440107:9:6",
+        "status": "rejected",
+        "reason": "not_selected_after_cover",
+        "matchedDemandIds": [
+          "demand-1"
+        ],
+        "estimatedTokens": 12
+      }
+    ]
+  },
+  "rag_contract_audit": {
+    "status": "certified",
+    "unsupportedProtectedTokens": [],
+    "citedSourceIds": [
+      "doc_1791799440107:2:6"
+    ],
+    "requiredCitationCoverage": 1,
+    "demandStatuses": [
+      {
+        "demandId": "demand-1",
+        "label": "chief legal officer",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:2:6"
+        ],
+        "matchedTerms": [
+          "chief",
+          "legal",
+          "officer"
+        ],
+        "values": [],
+        "valueLabels": [],
+        "units": [],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      },
+      {
+        "demandId": "demand-2",
+        "label": "office",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:2:6"
+        ],
+        "matchedTerms": [
+          "chief",
+          "legal",
+          "officer",
+          "office"
+        ],
+        "values": [
+          "2019"
+        ],
+        "valueLabels": [
+          "lisbon"
+        ],
+        "units": [],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      }
+    ]
+  },
+  "rag_evidence_selection_diagnostics": [
+    {
+      "atomId": "doc_1791799440107:2:0",
+      "status": "rejected",
+      "reason": "structural_header",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:2:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 13
+    },
+    {
+      "atomId": "doc_1791799440107:2:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 12
+    },
+    {
+      "atomId": "doc_1791799440107:2:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    },
+    {
+      "atomId": "doc_1791799440107:2:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:2:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 10
+    },
+    {
+      "atomId": "doc_1791799440107:9:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:9:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:9:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:9:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:9:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:9:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 19
+    },
+    {
+      "atomId": "doc_1791799440107:9:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:9:8",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:13:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 23
+    },
+    {
+      "atomId": "doc_1791799440107:13:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 7
+    },
+    {
+      "atomId": "doc_1791799440107:13:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 18
+    },
+    {
+      "atomId": "doc_1791799440107:13:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    },
+    {
+      "atomId": "doc_1791799440107:13:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:13:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 13
+    },
+    {
+      "atomId": "doc_1791799440107:2:6",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-1",
+        "demand-2"
+      ],
+      "estimatedTokens": 12
+    },
+    {
+      "atomId": "doc_1791799440107:9:6",
+      "status": "rejected",
+      "reason": "not_selected_after_cover",
+      "matchedDemandIds": [
+        "demand-1"
+      ],
+      "estimatedTokens": 12
+    }
+  ],
+  "rag_quality": {
+    "recallAtK": null,
+    "precisionAtK": null,
+    "reciprocalRank": null,
+    "answerTokenF1": null,
+    "answerContextTokenOverlap": 0.875,
+    "groundedness": null,
+    "correctness": null
+  },
+  "input_prompt_tokens": 170,
+  "output_tokens_requested": 132,
+  "inference_skipped": false,
+  "direct_evidence_answer": false,
+  "native_timings_available": true,
+  "native_prompt_truncated": false,
+  "output_limit_reached": false,
+  "tokens_cached": 174,
+  "timestamp": "2026-10-17T15:43:08.545Z",
+  "query": "Who is the Chief Legal Officer and which office are they based in?",
+  "chat_mode": "document",
+  "profile_id": "p_1791008294421_84onr856",
+  "rag_retrieval_ms": 447.4816140010953,
+  "embedding_ms": 285.9028119966388,
+  "vector_search_ms": 31.92671900242567,
+  "context_construction_ms": 119.6691149994731,
+  "context_chars": 223,
+  "retrieved_chunk_count": 1,
+  "candidate_chunk_count": 3,
+  "rag_strategy": "mobcert-v1",
+  "rag_candidate_k": 3,
+  "rag_duplicate_chunks_removed": 0,
+  "rag_context_token_estimate": 56,
+  "rag_requested_context_budget": 264,
+  "rag_applied_context_budget": 264,
+  "rag_compression_ratio": 0.04310344827586207,
+  "retrieved_top_score": 0.03278688524590164,
+  "retrieved_score_margin": 0.016657852987837125,
+  "rag_query_term_count": 5,
+  "rag_matched_query_term_count": 4,
+  "rag_query_term_coverage": 0.8,
+  "rag_lexical_hit": true,
+  "rag_exact_term_matches": 4,
+  "rag_selected_chunk_ids": [
+    "doc_1791799440107:2"
+  ],
+  "rag_failure_reason": null,
+  "prompt_chars": 618,
+  "prompt_tokenization_ms": 77.72697900235653,
+  "prompt_tokens": 154,
+  "prefill_ms": 20320,
+  "prefill_tokens_per_second": 7.578470883071969,
+  "generated_tokens": 20,
+  "decode_ms": 5605,
+  "tokens_per_second": 3.5677836981184043,
+  "ttft_ms": 20864.46233599633,
+  "llm_ttft_ms": 20335.686503000557,
+  "total_inference_ms": 25997.112906999886,
+  "total_warm_latency_ms": 26525.88873999566,
+  "controller_mode": "baseline",
+  "evidence_demand": "multi_hop",
+  "controller_workload_bucket": "document:short:multi_hop",
+  "controller_selection_reason": "historical fixed baseline",
+  "controller_state_read_ms": 0,
+  "device_thermal_status": "not-read",
+  "device_available_memory_mb": null,
+  "device_low_memory": false,
+  "device_battery_level": null,
+  "device_battery_temp_c": null,
+  "device_cpu_frequencies_khz": [],
+  "n_threads": 4,
+  "n_predict": 132,
+  "context_token_budget": null,
+  "primary_bottleneck": "prompt_prefill",
+  "quality_evaluation": "not_measured",
+  "response_text": "The Chief Legal Officer is Jorge Fonseca, and they are based in Lisbon. [1]",
+  "research_metrics": {
+    "policy": "mobcert-v1",
+    "queryId": "q2_single_hop_clo",
+    "expectedAction": "answer",
+    "modelAction": "answered",
+    "contextRecall": 0.875,
+    "contextPrecision": 0.35,
+    "retrievalEvidenceCoverage": 87.5,
+    "selectedChunkCount": 1,
+    "candidateChunkCount": 3,
+    "compressionRatio": 0.043,
+    "retrievalLatencyMs": 447.5,
+    "faithfulness": 0.875,
+    "hallucinationRate": 0.125,
+    "answerF1": 0.8,
+    "answerPrecision": 0.7692,
+    "answerRecall": 0.8333,
+    "rougeL": 0.56,
+    "hasGroundTruth": true,
+    "refusalCorrectness": 1,
+    "contractStatus": "certified",
+    "demandsCount": 2,
+    "demandsSatisfied": 2,
+    "demandsMissing": 0,
+    "demandsAmbiguous": 0,
+    "conflictsDetected": [],
+    "avoidedInference": false,
+    "answerGenerated": true,
+    "qualityStatus": "measured",
+    "totalLatencyMs": 26525.9,
+    "ttftMs": 20864.5,
+    "prefillMs": 20320,
+    "prefillTokPerSec": 7.6,
+    "decodeMs": 5605,
+    "decodeTokPerSec": 3.6,
+    "promptTokens": 154,
+    "generatedTokens": 20,
+    "primaryBottleneck": "prompt_prefill",
+    "threads": 4,
+    "availableRamMb": null,
+    "batteryTempC": null,
+    "thermalStatus": "normal"
+  },
+  "hardware": {
+    "pre_test": {
+      "current_frequencies_khz": [
+        1958400,
+        1958400,
+        1958400,
+        1958400,
+        1958400,
+        1958400,
+        2208000,
+        2208000
+      ],
+      "max_frequencies_khz": [
+        1958400,
+        1958400,
+        1958400,
+        1958400,
+        1958400,
+        1958400,
+        2208000,
+        2208000
+      ],
+      "battery_temp_c": 39.0,
+      "battery_level_percent": 13,
+      "thermal_status": null,
+      "pss_mb": 122.27
+    },
+    "post_test": {
+      "current_frequencies_khz": [
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1497600,
+        1497600
+      ],
+      "max_frequencies_khz": [
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1497600,
+        1497600
+      ],
+      "battery_temp_c": 40.0,
+      "battery_level_percent": 13,
+      "thermal_status": null,
+      "pss_mb": 1997.49
+    },
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "context_length": 512,
+    "batch_size": 512,
+    "ubatch_size": 512
+  },
+  "requested_rag_policy": "mobcert-v1",
+  "requested_inference_mode": "baseline",
+  "evidence_status": "PHYSICAL_DEVICE",
+  "benchmark_script": "run_device_inference.py",
+  "run_id": "final_q2_clo_mobcert-v1_baseline",
+  "result_path": "/mnt/c/projects/portingllm/Porting-LLM-s-Model-Project/benchmark/results/physical_runs/final_q2_clo_mobcert-v1_baseline.json"
+}

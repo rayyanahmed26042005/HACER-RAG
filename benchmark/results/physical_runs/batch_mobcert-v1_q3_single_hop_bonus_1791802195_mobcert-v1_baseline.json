@@ -1,0 +1,578 @@
+{
+  "rag": {
+    "context": "Evidence status:\n- chief legal officer: ambiguous supported by [1], [2], [3]\n- office: ambiguous supported by [1], [2], [3]\n\nExcerpts:\n[1] offlineRag.pdf \u00e2\u20ac\u201d 1. Company Overview > 1.1 Leadership Team\nName Title Office Joined\n\n[2] offlineRag.pdf \u00e2\u20ac\u201d 1. Company Overview > 1.1 Leadership Team\nJorge Fonseca Chief Legal Officer Lisbon 2019\n\n[3] offlineRag.pdf \u00e2\u20ac\u201d 3. HR Policies > 3.2 Remote Work Policy\nEmployees are required to be in-office a minimum of 2",
+    "sources": [
+      {
+        "id": "doc_1791799440107:2",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 2,
+        "sectionHeader": "1. Company Overview > 1.1 Leadership Team",
+        "excerpts": [
+          "Name Title Office Joined",
+          "Jorge Fonseca Chief Legal Officer Lisbon 2019"
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      },
+      {
+        "id": "doc_1791799440107:9",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 9,
+        "sectionHeader": "3. HR Policies > 3.2 Remote Work Policy",
+        "excerpts": [
+          "Employees are required to be in-office a minimum of 2"
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      }
+    ],
+    "strategy": "mobcert-v1",
+    "embeddingMs": 26.58526100218296,
+    "indexLoadMs": 0.2698439992964268,
+    "vectorSearchMs": 6.801874998956919,
+    "contextConstructionMs": 538.5145829990506,
+    "candidateK": 3,
+    "candidateChunkCount": 3,
+    "selectedChunkCount": 2,
+    "duplicateChunksRemoved": 0,
+    "contextChars": 448,
+    "contextTokenEstimate": 112,
+    "contextTokens": 135,
+    "tokenCountMethod": "native",
+    "requestedContextTokenBudget": 270,
+    "appliedContextTokenBudget": 270,
+    "compressionRatio": 0.09991809991809991,
+    "topScore": 0.03278688524590164,
+    "scoreMargin": 0.016657852987837125,
+    "queryTermCount": 5,
+    "matchedQueryTermCount": 4,
+    "queryTermCoverage": 0.8,
+    "uncoveredQueryTerms": [
+      "based"
+    ],
+    "lexicalHit": true,
+    "exactTermMatches": 4,
+    "selectedChunkIds": [
+      "doc_1791799440107:2",
+      "doc_1791799440107:9"
+    ],
+    "candidateChunkIds": [
+      "doc_1791799440107:2",
+      "doc_1791799440107:9",
+      "doc_1791799440107:1"
+    ],
+    "failureReason": "contract_ambiguous_demands",
+    "queryEmbeddingCacheHit": true,
+    "indexChunks": 14,
+    "vectorBytes": 21504,
+    "legacyChunks": 0,
+    "embeddingIdentityVerified": true,
+    "budgetLimited": false,
+    "rejectedByBudget": 0,
+    "tokenChecks": 3,
+    "answerContract": {
+      "query": "Who is the Chief Legal Officer and which office are they based in?",
+      "demands": [
+        {
+          "demandId": "demand-1",
+          "label": "chief legal officer",
+          "status": "ambiguous",
+          "sourceIds": [
+            "doc_1791799440107:2:0",
+            "doc_1791799440107:2:6",
+            "doc_1791799440107:9:1"
+          ],
+          "matchedTerms": [
+            "officer",
+            "chief",
+            "legal"
+          ],
+          "values": [
+            "2019",
+            "2"
+          ],
+          "valueLabels": [
+            "office joined"
+          ],
+          "units": [],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": [
+            "2019",
+            "2"
+          ]
+        },
+        {
+          "demandId": "demand-2",
+          "label": "office",
+          "status": "ambiguous",
+          "sourceIds": [
+            "doc_1791799440107:2:0",
+            "doc_1791799440107:2:6",
+            "doc_1791799440107:9:1"
+          ],
+          "matchedTerms": [
+            "officer",
+            "office",
+            "chief",
+            "legal"
+          ],
+          "values": [
+            "2019",
+            "2"
+          ],
+          "valueLabels": [
+            "office joined"
+          ],
+          "units": [],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": [
+            "2019",
+            "2"
+          ]
+        }
+      ],
+      "selectedAtomIds": [
+        "doc_1791799440107:2:0",
+        "doc_1791799440107:2:6",
+        "doc_1791799440107:9:1"
+      ],
+      "selectedTokens": 32,
+      "tokenBudget": 270,
+      "certifiedDemandCount": 0,
+      "ambiguousDemandCount": 2,
+      "missingDemandCount": 0,
+      "requiredCoverage": 1
+    },
+    "answerContractAtoms": [
+      {
+        "id": "doc_1791799440107:2:0",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 2,
+        "sourceOrder": 0,
+        "sectionHeader": "1. Company Overview > 1.1 Leadership Team",
+        "text": "Name Title Office Joined",
+        "terms": [
+          "1",
+          "company",
+          "overview",
+          "leadership",
+          "team",
+          "name",
+          "title",
+          "office",
+          "joined"
+        ],
+        "entities": [
+          "company overview",
+          "leadership team",
+          "name title office joined"
+        ],
+        "attributes": [
+          "office",
+          "joined",
+          "year"
+        ],
+        "numbers": [],
+        "units": [],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "office",
+            "numbers": [],
+            "units": [],
+            "value": "office joined",
+            "polarity": "positive"
+          },
+          {
+            "attribute": "joined",
+            "numbers": [],
+            "units": [],
+            "value": "joined",
+            "polarity": "positive"
+          },
+          {
+            "attribute": "year",
+            "numbers": [],
+            "units": [],
+            "value": "joined",
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "company overview+leadership team+name title office joined|office",
+          "company overview+leadership team+name title office joined|joined",
+          "company overview+leadership team+name title office joined|year"
+        ],
+        "estimatedTokens": 6
+      },
+      {
+        "id": "doc_1791799440107:2:6",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 2,
+        "sourceOrder": 6,
+        "sectionHeader": "1. Company Overview > 1.1 Leadership Team",
+        "text": "Jorge Fonseca Chief Legal Officer Lisbon 2019",
+        "terms": [
+          "1",
+          "company",
+          "overview",
+          "leadership",
+          "team",
+          "jorge",
+          "fonseca",
+          "chief",
+          "legal",
+          "officer",
+          "lisbon",
+          "2019"
+        ],
+        "entities": [
+          "company overview",
+          "jorge fonseca chief legal officer",
+          "leadership team"
+        ],
+        "attributes": [],
+        "numbers": [
+          "2019"
+        ],
+        "units": [],
+        "temporalMarkers": [
+          "2019"
+        ],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [],
+        "factKeys": [
+          "company overview+jorge fonseca chief legal officer+leadership team|*"
+        ],
+        "estimatedTokens": 12
+      },
+      {
+        "id": "doc_1791799440107:9:1",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 9,
+        "sourceOrder": 1,
+        "sectionHeader": "3. HR Policies > 3.2 Remote Work Policy",
+        "text": "Employees are required to be in-office a minimum of 2",
+        "terms": [
+          "3",
+          "hr",
+          "policies",
+          "2",
+          "remote",
+          "work",
+          "policy",
+          "employees",
+          "required",
+          "office",
+          "minimum"
+        ],
+        "entities": [
+          "hr policies",
+          "remote work policy"
+        ],
+        "attributes": [
+          "employees",
+          "office"
+        ],
+        "numbers": [
+          "2"
+        ],
+        "units": [],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "employees",
+            "numbers": [
+              "2"
+            ],
+            "units": [],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "office",
+            "numbers": [
+              "2"
+            ],
+            "units": [],
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "hr policies+remote work policy|employees",
+          "hr policies+remote work policy|office"
+        ],
+        "estimatedTokens": 14
+      }
+    ]
+  },
+  "rag_contract_audit": {
+    "status": "unverifiable",
+    "unsupportedProtectedTokens": [
+      "citation:missing"
+    ],
+    "citedSourceIds": [
+      "doc_1791799440107:2:6"
+    ],
+    "requiredCitationCoverage": 1,
+    "demandStatuses": [
+      {
+        "demandId": "demand-1",
+        "label": "chief legal officer",
+        "status": "ambiguous",
+        "sourceIds": [
+          "doc_1791799440107:2:0",
+          "doc_1791799440107:2:6",
+          "doc_1791799440107:9:1"
+        ],
+        "matchedTerms": [
+          "officer",
+          "chief",
+          "legal"
+        ],
+        "values": [
+          "2019",
+          "2"
+        ],
+        "valueLabels": [
+          "office joined"
+        ],
+        "units": [],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": [
+          "2019",
+          "2"
+        ]
+      },
+      {
+        "demandId": "demand-2",
+        "label": "office",
+        "status": "ambiguous",
+        "sourceIds": [
+          "doc_1791799440107:2:0",
+          "doc_1791799440107:2:6",
+          "doc_1791799440107:9:1"
+        ],
+        "matchedTerms": [
+          "officer",
+          "office",
+          "chief",
+          "legal"
+        ],
+        "values": [
+          "2019",
+          "2"
+        ],
+        "valueLabels": [
+          "office joined"
+        ],
+        "units": [],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": [
+          "2019",
+          "2"
+        ]
+      }
+    ]
+  },
+  "rag_quality": {
+    "recallAtK": null,
+    "precisionAtK": null,
+    "reciprocalRank": null,
+    "answerTokenF1": null,
+    "answerContextTokenOverlap": 0.875,
+    "groundedness": null,
+    "correctness": null
+  },
+  "input_prompt_tokens": 235,
+  "output_tokens_requested": 512,
+  "inference_skipped": false,
+  "native_timings_available": true,
+  "native_prompt_truncated": false,
+  "output_limit_reached": false,
+  "tokens_cached": 237,
+  "timestamp": "2026-10-12T10:50:43.306Z",
+  "query": "Who is the Chief Legal Officer and which office are they based in?",
+  "chat_mode": "document",
+  "profile_id": "p_1791008294421_84onr856",
+  "rag_retrieval_ms": 573.3326040022075,
+  "embedding_ms": 26.58526100218296,
+  "vector_search_ms": 6.801874998956919,
+  "context_construction_ms": 538.5145829990506,
+  "context_chars": 448,
+  "retrieved_chunk_count": 2,
+  "candidate_chunk_count": 3,
+  "rag_strategy": "mobcert-v1",
+  "rag_candidate_k": 3,
+  "rag_duplicate_chunks_removed": 0,
+  "rag_context_token_estimate": 112,
+  "rag_requested_context_budget": 270,
+  "rag_applied_context_budget": 270,
+  "rag_compression_ratio": 0.09991809991809991,
+  "retrieved_top_score": 0.03278688524590164,
+  "retrieved_score_margin": 0.016657852987837125,
+  "rag_query_term_count": 5,
+  "rag_matched_query_term_count": 4,
+  "rag_query_term_coverage": 0.8,
+  "rag_lexical_hit": true,
+  "rag_exact_term_matches": 4,
+  "rag_selected_chunk_ids": [
+    "doc_1791799440107:2",
+    "doc_1791799440107:9"
+  ],
+  "rag_failure_reason": "contract_ambiguous_demands",
+  "prompt_chars": 805,
+  "prompt_tokenization_ms": 50.95161499455571,
+  "prompt_tokens": 152,
+  "prefill_ms": 42907,
+  "prefill_tokens_per_second": 3.5424880422383898,
+  "generated_tokens": 18,
+  "decode_ms": 10529,
+  "tokens_per_second": 1.7095223338170964,
+  "ttft_ms": 43548.733472999185,
+  "llm_ttft_ms": 42923.85529600084,
+  "total_inference_ms": 53511.46602199972,
+  "total_warm_latency_ms": 54136.344198998064,
+  "controller_mode": "baseline",
+  "evidence_demand": "multi_hop",
+  "controller_workload_bucket": "document:medium:multi_hop",
+  "controller_selection_reason": "historical fixed baseline",
+  "controller_state_read_ms": 0,
+  "device_thermal_status": "not-read",
+  "device_available_memory_mb": null,
+  "device_low_memory": false,
+  "device_battery_level": null,
+  "device_battery_temp_c": null,
+  "device_cpu_frequencies_khz": [],
+  "n_threads": 4,
+  "n_predict": 135,
+  "context_token_budget": null,
+  "primary_bottleneck": "prompt_prefill",
+  "quality_evaluation": "not_measured",
+  "response_text": "Jorge Fonseca is the Chief Legal Officer and is based in Lisbon. [2]",
+  "research_metrics": {
+    "policy": "mobcert-v1",
+    "queryId": "q2_single_hop_clo",
+    "expectedAction": "answer",
+    "modelAction": "answered",
+    "contextRecall": 0.875,
+    "contextPrecision": 0.2188,
+    "retrievalEvidenceCoverage": 80,
+    "selectedChunkCount": 2,
+    "candidateChunkCount": 3,
+    "compressionRatio": 0.1,
+    "retrievalLatencyMs": 573.3,
+    "faithfulness": 0.9286,
+    "hallucinationRate": 0.0714,
+    "answerF1": 0.8333,
+    "answerPrecision": 0.8333,
+    "answerRecall": 0.8333,
+    "rougeL": 0.8333,
+    "hasGroundTruth": true,
+    "refusalCorrectness": 1,
+    "contractStatus": "unverifiable",
+    "demandsCount": 2,
+    "demandsSatisfied": 0,
+    "demandsMissing": 0,
+    "demandsAmbiguous": 2,
+    "conflictsDetected": [
+      "citation:missing"
+    ],
+    "avoidedInference": false,
+    "totalLatencyMs": 54136.3,
+    "ttftMs": 43548.7,
+    "prefillMs": 42907,
+    "prefillTokPerSec": 3.5,
+    "decodeMs": 10529,
+    "decodeTokPerSec": 1.7,
+    "promptTokens": 152,
+    "generatedTokens": 18,
+    "primaryBottleneck": "prompt_prefill",
+    "threads": 4,
+    "availableRamMb": null,
+    "batteryTempC": null,
+    "thermalStatus": "normal"
+  },
+  "hardware": {
+    "pre_test": {
+      "current_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "max_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "battery_temp_c": 48.0,
+      "battery_level_percent": 24,
+      "thermal_status": null,
+      "pss_mb": 1979.13
+    },
+    "post_test": {
+      "current_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "max_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "battery_temp_c": 48.0,
+      "battery_level_percent": 23,
+      "thermal_status": null,
+      "pss_mb": 1985.21
+    },
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "context_length": 512,
+    "batch_size": 512,
+    "ubatch_size": 512
+  },
+  "requested_rag_policy": "mobcert-v1",
+  "requested_inference_mode": "baseline",
+  "evidence_status": "PHYSICAL_DEVICE",
+  "benchmark_script": "run_device_inference.py",
+  "run_id": "batch_mobcert-v1_q3_single_hop_bonus_1791802195",
+  "result_path": "C:\\projects\\portingllm\\Porting-LLM-s-Model-Project\\benchmark\\results\\physical_runs\\batch_mobcert-v1_q3_single_hop_bonus_1791802195_mobcert-v1_baseline.json"
+}

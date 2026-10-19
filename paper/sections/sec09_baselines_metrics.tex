@@ -1,0 +1,31 @@
+\section{Baselines and Evaluation Metrics}
+\label{sec:baselines_metrics}
+
+\subsection{Evaluated System Configurations}
+We evaluate three system paradigms:
+\begin{enumerate}
+    \item \textbf{Full Prefill (Baseline):} The standard operational mode of mobile LLM deployments. When a query is received, the entire prompt (evidence chunks and query) is tokenized and evaluated from scratch in a freshly initialized context arena ($N_{\text{loaded}} = 0$).
+    \item \textbf{Ordinary Blind Session Reuse:} The native session restoration mechanism provided by \texttt{llama.rn}. The system restores a previously serialized session file directly from disk based on a static filename or ID, without verifying whether underlying evidence chunks have been edited, revoked, or permuted.
+    \item \textbf{HACER Adaptive Policy (Proposed):} The complete HACER-RAG system, incorporating canonical layout sorting, SHA-256 evidence chunk verification, JNI context-budget enforcement, continuation boundary alignment, and selective downstream cache repair.
+\end{enumerate}
+
+\subsection{Evaluation Metrics}
+To provide a complete systems and NLP characterization, we define the following metrics:
+
+\begin{itemize}
+    \item \textbf{Native Prefill Compute Latency ($T_{\text{prefill}}$, seconds):} The CPU execution time expended during the prompt evaluation phase, recorded directly by \texttt{llama.cpp}'s internal timer (\texttt{timings.prompt\_ms}).
+    \item \textbf{Prefill Compute Reduction ($\Delta_{\text{prefill}}$, \%):} The relative reduction in prefill compute latency achieved by KV reuse relative to the matched baseline run:
+    \begin{equation}
+        \Delta_{\text{prefill}} = \frac{T_{\text{prefill, base}} - T_{\text{prefill, reuse}}}{T_{\text{prefill, base}}} \times 100\%
+    \end{equation}
+    To assess estimation uncertainty, we compute 95\% confidence intervals using non-parametric bootstrap resampling with 2,000 iterations.
+    \item \textbf{End-to-End Wall-Clock Latency ($T_{\text{wall}}$, seconds):} Total elapsed time from request dispatch at the host bridge to full generation completion, incorporating session I/O, prompt prefill, token decode, and bridge serialization overheads.
+    \item \textbf{Wall-Clock Speedup Factor ($S_{\text{wall}}$):} The end-to-end acceleration ratio:
+    \begin{equation}
+        S_{\text{wall}} = \frac{T_{\text{wall, base}}}{T_{\text{wall, reuse}}}
+    \end{equation}
+    \item \textbf{Flash Cache-Load Overhead ($T_{\text{load}}$, milliseconds):} The latency incurred specifically by deserializing and loading the KV-cache binary from physical flash into the LLM context arena.
+    \item \textbf{Storage Read Volume and Access Mode:} Physical flash bytes read captured via \texttt{/proc/\{PID\}/io}. Following mobile storage benchmarking standards, runs where $\ge 85\%$ of the session binary size is read directly from flash are classified as \emph{Cold Flash Reads}, while runs where $\ge 85\%$ is satisfied via the Linux kernel buffer cache are classified as \emph{Warm Page-Cache Hits}.
+    \item \textbf{Multi-Hop Factual Recall (\%):} Binary accuracy assessing whether the generated response accurately reports all required facts across multiple retrieved evidence passages.
+    \item \textbf{Stale Fact Hallucination Rate (\%):} The percentage of queries where the model outputs superseded or revoked facts following document updates.
+\end{itemize}

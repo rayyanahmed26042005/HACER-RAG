@@ -1,0 +1,37 @@
+\section{Introduction}
+\label{sec:intro}
+
+Executing Retrieval-Augmented Generation (RAG) locally on mobile devices offers compelling advantages for personal privacy, offline capability, and predictable service availability~\cite{lewis2020retrieval,wu2024mobilellm}. In on-device RAG pipelines, an on-device retriever (e.g., SQLite BM25 or mobile vector indices) extracts relevant evidence chunks from a local knowledge store, constructs an augmented prompt, and feeds it into an on-device Small Language Model (SLM) for autoregressive generation~\cite{guu2020realm,liu2026percache}.
+
+However, modern mobile devices—particularly entry-level and mid-range Android smartphones—face severe hardware and architectural constraints. Commercial handsets in this tier commonly feature heterogeneous octa-core SoCs (such as the Qualcomm Snapdragon 4 Gen 2, equipped with 2$\times$ Cortex-A78 performance cores and 6$\times$ Cortex-A55 efficiency cores) paired with 4--6~GB of shared LPDDR4X memory~\cite{reddi2021mlperfmobile}. When running 2-billion to 4-billion parameter language models quantized to 4-bit integers (e.g., Gemma 2 2B Instruct Q4\_K\_M~\cite{gemma2024gemma2}), the inference latency is sharply bimodal:
+\begin{enumerate}
+    \item \textbf{Autoregressive Decode Phase:} Generating output tokens proceeds sequentially at approximately 20--30~tokens per second, bound primarily by memory bandwidth and per-token vector-matrix products.
+    \item \textbf{Prompt Prefill Phase:} Ingesting the concatenated prompt (system instructions, multiple retrieved document chunks, conversation history, and user query) requires dense matrix-matrix evaluations across all transformer layers. On CPU-bound mobile SoCs, prefilling a 400-token prompt requires 50--65~seconds of sustained computation, dominating end-to-end response time.
+\end{enumerate}
+
+When users issue multiple queries against the same local document corpus or personal workspace, the retriever repeatedly selects identical or partially overlapping document chunks~\cite{lu2024turborag,liu2026percache}. In traditional inference runtimes, the mobile CPU is forced to re-encode these static chunks on every interaction, dissipating scarce battery capacity and inducing thermal throttling.
+
+While caching precomputed Key-Value (KV) tensors appears as a natural optimization, saving and restoring KV caches on mobile platforms introduces major system challenges that existing LLM engines do not solve. In particular, existing mobile runtimes such as \texttt{llama.rn} and \texttt{llama.cpp}~\cite{gerganov2023llamacpp} treat KV-cache files as opaque session snapshots designed for conversational turn resumption. Applying these session primitives blindly to on-device RAG exposes three critical vulnerabilities:
+\begin{itemize}
+    \item \textbf{Silent Stale-KV Hallucination:} If a local document is edited, updated, or revoked (e.g., a corporate travel policy, personal medical record, or pricing schedule), naive session restoration reloads outdated KV tensors into the model's resident attention memory. Because the native engine cannot distinguish fresh evidence from stale cache bytes, the model generates hallucinated, obsolete facts with high confidence, even though the on-disk document index has been updated.
+    \item \textbf{Context Headroom Violations:} Allocating static context buffers on low-RAM handsets risks triggering silent engine truncations or Out-Of-Memory (OOM) process termination by the Android Low Memory Killer (LMK). Mobile RAG runtimes lack dynamic context budgeting that reconciles native engine limits with variable prompt and generation budgets.
+    \item \textbf{Continuation Boundary Misalignment:} Concatenating variable query text to a precomputed KV cache prefix without accounting for tokenizer boundary-merging behaviors causes native runtime index misalignments, producing garbled generation or redundant token re-evaluation.
+\end{itemize}
+
+To address these challenges, we present \textbf{HACER-RAG} (\textbf{H}ierarchical \textbf{A}daptive \textbf{C}ache, \textbf{E}vidence-version-aware \textbf{R}epair for on-device RAG). HACER-RAG is an on-device RAG runtime architecture that transforms raw KV-cache serialization into an evidence-version-aware, context-safe, and selectively repairable caching system for commodity mobile devices.
+
+\section{Motivation and Problem Statement}
+\label{sec:motivation}
+
+\subsection{Mobile Execution Bottlenecks}
+On commodity mobile devices, CPU inference execution time is heavily dominated by prompt prefill. On a physical Xiaomi Redmi 12 5G (Snapdragon 4 Gen 2), prefilling a 395-token prompt using 4 threads takes an average of $54.2$~seconds, corresponding to an effective prefill throughput of only $7.3$~tokens/second. In contrast, reading a 40~MB serialized KV cache from the device's UFS 2.2 physical flash storage requires less than $350$~milliseconds. This fundamental asymmetry—where CPU computation is more than $150\times$ slower than flash I/O—creates an enormous theoretical opportunity for KV-cache reuse on mobile platforms.
+
+\subsection{The Stale-KV Hallucination Problem}
+In server-class deployments, KV-cache management systems such as vLLM~\cite{kwon2023vllm} manage in-memory paged caches across persistent worker pools. On mobile devices, however, volatile RAM is severely constrained (4~GB total system RAM shared between the OS, UI, display compositor, and background services). Consequently, KV caches must be persisted to non-volatile flash storage between interactions.
+
+Existing mobile LLM wrappers (such as \texttt{llama.rn}) expose file-level session persistence (\texttt{saveSession} and \texttt{loadSession}). However, these APIs operate blindly: they associate a cache file with an arbitrary file path or session identifier, without any verification of semantic validity or document freshness. If a user modifies a note or an enterprise document is synchronized in the background, a subsequent query that blindly reloads the cached session will read stale KV representations into the attention layers. The LLM will attend to the old Key-Value vectors and output obsolete facts—a failure mode we term \emph{Silent Stale-KV Hallucination}.
+
+\subsection{Context Budgeting and Engine Headroom}
+Mobile LLM inference runtimes allocate fixed-size contiguous KV-cache arenas upon initialization to prevent memory fragmentation. For example, an allocated context window of $n_{\text{ctx}}$ tokens requires reserving memory for $2 \times L \times H \times D \times n_{\text{ctx}}$ elements, where $L$ is layer count, $H$ is head count, and $D$ is head dimension. On memory-constrained devices, developers frequently set $n_{\text{ctx}}$ to small values (e.g., 512 or 1024 tokens) to fit within Android process limits. 
+
+However, native engines such as \texttt{llama.cpp} enforce strict internal reserved margins (e.g., 4 tokens reserved for internal control and EOS markers). If the combined length of the precomputed prefix, continuation query, and requested autoregressive generation tokens exceeds this boundary, the engine silently drops leading context tokens without raising an error. This silent truncation alters the attention mask and corrupts prompt semantics. A mobile RAG system must therefore enforce verifiable, JNI-level context-budget safety before initiating inference.

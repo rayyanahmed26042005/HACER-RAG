@@ -1,0 +1,751 @@
+{
+  "rag": {
+    "context": "Evidence status:\n- budget: certified supported by [1]\n- allowance: certified supported by [2]\n\nExcerpts:\n[1] offlineRag.pdf \u2014 3. HR Policies > 3.3 Compensation & Benefits\nLearning Budget $1,500 USD/year per employee\n\n[2] offlineRag.pdf \u2014 3. HR Policies > 3.3 Compensation & Benefits\nGym Allowance $60/month reimbursed via expense report",
+    "sources": [
+      {
+        "id": "doc_1791799440107:10",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 10,
+        "sectionHeader": "3. HR Policies > 3.3 Compensation & Benefits",
+        "excerpts": [
+          "Learning Budget $1,500 USD/year per employee",
+          "Gym Allowance $60/month reimbursed via expense report"
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      }
+    ],
+    "strategy": "mobcert-v1",
+    "embeddingMs": 210.59447899833322,
+    "indexLoadMs": 0.058855000883340836,
+    "vectorSearchMs": 28.527134999632835,
+    "contextConstructionMs": 141.26500000059605,
+    "candidateK": 3,
+    "candidateChunkCount": 3,
+    "selectedChunkCount": 1,
+    "duplicateChunksRemoved": 0,
+    "contextChars": 336,
+    "contextTokenEstimate": 84,
+    "contextTokens": 96,
+    "tokenCountMethod": "native",
+    "requestedContextTokenBudget": 266,
+    "appliedContextTokenBudget": 266,
+    "compressionRatio": 0.1118800461361015,
+    "topScore": 0.03278688524590164,
+    "scoreMargin": 0.0007848371148212532,
+    "queryTermCount": 6,
+    "matchedQueryTermCount": 4,
+    "queryTermCoverage": 0.6666666666666666,
+    "uncoveredQueryTerms": [
+      "annual",
+      "employees"
+    ],
+    "lexicalHit": true,
+    "exactTermMatches": 6,
+    "selectedChunkIds": [
+      "doc_1791799440107:10"
+    ],
+    "candidateChunkIds": [
+      "doc_1791799440107:10",
+      "doc_1791799440107:8",
+      "doc_1791799440107:7"
+    ],
+    "failureReason": null,
+    "queryEmbeddingCacheHit": false,
+    "indexChunks": 14,
+    "vectorBytes": 21504,
+    "legacyChunks": 0,
+    "embeddingIdentityVerified": true,
+    "budgetLimited": false,
+    "rejectedByBudget": 0,
+    "tokenChecks": 2,
+    "answerContract": {
+      "query": "What is the annual learning budget and gym allowance for employees?",
+      "demands": [
+        {
+          "demandId": "demand-1",
+          "label": "budget",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:10:4"
+          ],
+          "matchedTerms": [
+            "budget",
+            "learning"
+          ],
+          "values": [
+            "$1 500"
+          ],
+          "valueLabels": [],
+          "units": [
+            "usd"
+          ],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        },
+        {
+          "demandId": "demand-2",
+          "label": "allowance",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:10:5"
+          ],
+          "matchedTerms": [
+            "allowance",
+            "gym"
+          ],
+          "values": [
+            "$60"
+          ],
+          "valueLabels": [],
+          "units": [
+            "month"
+          ],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        }
+      ],
+      "selectedAtomIds": [
+        "doc_1791799440107:10:4",
+        "doc_1791799440107:10:5"
+      ],
+      "selectedTokens": 25,
+      "tokenBudget": 266,
+      "certifiedDemandCount": 2,
+      "ambiguousDemandCount": 0,
+      "missingDemandCount": 0,
+      "requiredCoverage": 1
+    },
+    "answerContractAtoms": [
+      {
+        "id": "doc_1791799440107:10:4",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 10,
+        "sourceOrder": 4,
+        "sectionHeader": "3. HR Policies > 3.3 Compensation & Benefits",
+        "text": "Learning Budget $1,500 USD/year per employee",
+        "terms": [
+          "3",
+          "hr",
+          "policies",
+          "compensation",
+          "benefits",
+          "learning",
+          "budget",
+          "1",
+          "500",
+          "usd",
+          "year",
+          "per",
+          "employee"
+        ],
+        "entities": [
+          "hr policies",
+          "learning budget"
+        ],
+        "attributes": [
+          "budget",
+          "year"
+        ],
+        "numbers": [
+          "$1 500"
+        ],
+        "units": [
+          "usd",
+          "year"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "budget",
+            "numbers": [
+              "$1 500"
+            ],
+            "units": [
+              "usd"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "year",
+            "numbers": [],
+            "units": [
+              "year"
+            ],
+            "value": "year per employee",
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "hr policies+learning budget|budget",
+          "hr policies+learning budget|year"
+        ],
+        "estimatedTokens": 11
+      },
+      {
+        "id": "doc_1791799440107:10:5",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 10,
+        "sourceOrder": 5,
+        "sectionHeader": "3. HR Policies > 3.3 Compensation & Benefits",
+        "text": "Gym Allowance $60/month reimbursed via expense report",
+        "terms": [
+          "3",
+          "hr",
+          "policies",
+          "compensation",
+          "benefits",
+          "gym",
+          "allowance",
+          "60",
+          "month",
+          "reimbursed",
+          "via",
+          "expense",
+          "report"
+        ],
+        "entities": [
+          "gym allowance",
+          "hr policies"
+        ],
+        "attributes": [
+          "allowance"
+        ],
+        "numbers": [
+          "$60"
+        ],
+        "units": [
+          "month"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "allowance",
+            "numbers": [
+              "$60"
+            ],
+            "units": [
+              "month"
+            ],
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "gym allowance+hr policies|allowance"
+        ],
+        "estimatedTokens": 14
+      }
+    ],
+    "evidenceSelectionDiagnostics": [
+      {
+        "atomId": "doc_1791799440107:10:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:10:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 19
+      },
+      {
+        "atomId": "doc_1791799440107:10:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 16
+      },
+      {
+        "atomId": "doc_1791799440107:10:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 13
+      },
+      {
+        "atomId": "doc_1791799440107:10:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:8:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 22
+      },
+      {
+        "atomId": "doc_1791799440107:8:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:8:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:8:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:8:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 18
+      },
+      {
+        "atomId": "doc_1791799440107:8:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:8:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 22
+      },
+      {
+        "atomId": "doc_1791799440107:8:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:8:8",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 23
+      },
+      {
+        "atomId": "doc_1791799440107:7:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 1
+      },
+      {
+        "atomId": "doc_1791799440107:7:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:10:4",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-1"
+        ],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:10:5",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 14
+      }
+    ]
+  },
+  "rag_contract_audit": {
+    "status": "certified",
+    "unsupportedProtectedTokens": [],
+    "citedSourceIds": [
+      "doc_1791799440107:10:4",
+      "doc_1791799440107:10:5"
+    ],
+    "requiredCitationCoverage": 1,
+    "demandStatuses": [
+      {
+        "demandId": "demand-1",
+        "label": "budget",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:10:4"
+        ],
+        "matchedTerms": [
+          "budget",
+          "learning"
+        ],
+        "values": [
+          "$1 500"
+        ],
+        "valueLabels": [],
+        "units": [
+          "usd"
+        ],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      },
+      {
+        "demandId": "demand-2",
+        "label": "allowance",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:10:5"
+        ],
+        "matchedTerms": [
+          "allowance",
+          "gym"
+        ],
+        "values": [
+          "$60"
+        ],
+        "valueLabels": [],
+        "units": [
+          "month"
+        ],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      }
+    ]
+  },
+  "rag_evidence_selection_diagnostics": [
+    {
+      "atomId": "doc_1791799440107:10:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:10:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 19
+    },
+    {
+      "atomId": "doc_1791799440107:10:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 16
+    },
+    {
+      "atomId": "doc_1791799440107:10:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 13
+    },
+    {
+      "atomId": "doc_1791799440107:10:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:8:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 22
+    },
+    {
+      "atomId": "doc_1791799440107:8:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:8:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:8:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:8:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 18
+    },
+    {
+      "atomId": "doc_1791799440107:8:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:8:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 22
+    },
+    {
+      "atomId": "doc_1791799440107:8:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:8:8",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 23
+    },
+    {
+      "atomId": "doc_1791799440107:7:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 1
+    },
+    {
+      "atomId": "doc_1791799440107:7:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:10:4",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-1"
+      ],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:10:5",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 14
+    }
+  ],
+  "rag_quality": {
+    "recallAtK": null,
+    "precisionAtK": null,
+    "reciprocalRank": null,
+    "answerTokenF1": null,
+    "answerContextTokenOverlap": 1,
+    "groundedness": null,
+    "correctness": null
+  },
+  "input_prompt_tokens": 203,
+  "output_tokens_requested": 132,
+  "inference_skipped": true,
+  "direct_evidence_answer": true,
+  "native_timings_available": false,
+  "native_prompt_truncated": false,
+  "output_limit_reached": false,
+  "tokens_cached": null,
+  "timestamp": "2026-10-17T14:49:05.614Z",
+  "query": "What is the annual learning budget and gym allowance for employees?",
+  "chat_mode": "document",
+  "profile_id": "p_1791008294421_84onr856",
+  "rag_retrieval_ms": 388.5579690001905,
+  "embedding_ms": 210.59447899833322,
+  "vector_search_ms": 28.527134999632835,
+  "context_construction_ms": 141.26500000059605,
+  "context_chars": 336,
+  "retrieved_chunk_count": 1,
+  "candidate_chunk_count": 3,
+  "rag_strategy": "mobcert-v1",
+  "rag_candidate_k": 3,
+  "rag_duplicate_chunks_removed": 0,
+  "rag_context_token_estimate": 84,
+  "rag_requested_context_budget": 266,
+  "rag_applied_context_budget": 266,
+  "rag_compression_ratio": 0.1118800461361015,
+  "retrieved_top_score": 0.03278688524590164,
+  "retrieved_score_margin": 0.0007848371148212532,
+  "rag_query_term_count": 6,
+  "rag_matched_query_term_count": 4,
+  "rag_query_term_coverage": 0.6666666666666666,
+  "rag_lexical_hit": true,
+  "rag_exact_term_matches": 6,
+  "rag_selected_chunk_ids": [
+    "doc_1791799440107:10"
+  ],
+  "rag_failure_reason": null,
+  "prompt_chars": 732,
+  "prompt_tokenization_ms": 15.466093998402357,
+  "prompt_tokens": 203,
+  "prefill_ms": 0,
+  "prefill_tokens_per_second": 0,
+  "generated_tokens": 0,
+  "decode_ms": 0.09635400027036667,
+  "tokens_per_second": 0,
+  "ttft_ms": null,
+  "llm_ttft_ms": null,
+  "total_inference_ms": 0.09635400027036667,
+  "total_warm_latency_ms": 407.4367710016668,
+  "controller_mode": "baseline",
+  "evidence_demand": "multi_hop",
+  "controller_workload_bucket": "document:medium:multi_hop",
+  "controller_selection_reason": "historical fixed baseline",
+  "controller_state_read_ms": 0,
+  "device_thermal_status": "not-read",
+  "device_available_memory_mb": null,
+  "device_low_memory": false,
+  "device_battery_level": null,
+  "device_battery_temp_c": null,
+  "device_cpu_frequencies_khz": [],
+  "n_threads": 4,
+  "n_predict": 132,
+  "context_token_budget": null,
+  "primary_bottleneck": "not_applicable",
+  "quality_evaluation": "not_measured",
+  "response_text": "Budget: $1 500 usd [1]. Allowance: $60 month [2].",
+  "research_metrics": {
+    "policy": "mobcert-v1",
+    "queryId": "q3_single_hop_bonus",
+    "expectedAction": "answer",
+    "modelAction": "answered",
+    "contextRecall": 1,
+    "contextPrecision": 0.5926,
+    "retrievalEvidenceCoverage": 100,
+    "selectedChunkCount": 1,
+    "candidateChunkCount": 3,
+    "compressionRatio": 0.112,
+    "retrievalLatencyMs": 388.6,
+    "faithfulness": 1,
+    "hallucinationRate": 0,
+    "answerF1": 0.5,
+    "answerPrecision": 1,
+    "answerRecall": 0.3333,
+    "rougeL": 0.5,
+    "hasGroundTruth": true,
+    "refusalCorrectness": 1,
+    "contractStatus": "certified",
+    "demandsCount": 2,
+    "demandsSatisfied": 2,
+    "demandsMissing": 0,
+    "demandsAmbiguous": 0,
+    "conflictsDetected": [],
+    "avoidedInference": true,
+    "answerGenerated": true,
+    "qualityStatus": "measured",
+    "totalLatencyMs": 407.4,
+    "ttftMs": null,
+    "prefillMs": 0,
+    "prefillTokPerSec": 0,
+    "decodeMs": 0.1,
+    "decodeTokPerSec": 0,
+    "promptTokens": 203,
+    "generatedTokens": 0,
+    "primaryBottleneck": "not_applicable",
+    "threads": 4,
+    "availableRamMb": null,
+    "batteryTempC": null,
+    "thermalStatus": "normal"
+  },
+  "hardware": {
+    "pre_test": {
+      "current_frequencies_khz": [
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1497600,
+        1497600
+      ],
+      "max_frequencies_khz": [
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1497600,
+        1497600
+      ],
+      "battery_temp_c": 40.0,
+      "battery_level_percent": 14,
+      "thermal_status": null,
+      "pss_mb": 1930.59
+    },
+    "post_test": {
+      "current_frequencies_khz": [
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1497600,
+        1497600
+      ],
+      "max_frequencies_khz": [
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1094400,
+        1497600,
+        1497600
+      ],
+      "battery_temp_c": 40.0,
+      "battery_level_percent": 14,
+      "thermal_status": null,
+      "pss_mb": 2005.34
+    },
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "context_length": 512,
+    "batch_size": 512,
+    "ubatch_size": 512
+  },
+  "requested_rag_policy": "mobcert-v1",
+  "requested_inference_mode": "baseline",
+  "evidence_status": "PHYSICAL_DEVICE",
+  "benchmark_script": "run_device_inference.py",
+  "run_id": "fixed_q3_budget",
+  "result_path": "/mnt/c/projects/portingllm/Porting-LLM-s-Model-Project/benchmark/results/physical_runs/fixed_q3_budget_mobcert-v1_baseline.json"
+}

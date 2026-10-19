@@ -1,0 +1,52 @@
+ZEPHYR DYNAMICS INC. Employee & Product Handbook — 2024 Edition
+Confidential. Internal Use Only.
+
+1. Company Overview
+Zephyr Dynamics Inc. was founded in 2011 by Dr. Priya Nandakumar and Marcus Löbell in Reykjavik, Iceland. The company specializes in atmospheric data harvesting systems and micro-drone swarm technology. Zephyr Dynamics has 847 full-time employees across 6 offices: Reykjavik (HQ), Singapore, Nairobi, Toronto, Lisbon, and Auckland. The company went public on the Oslo Stock Exchange in March 2019 under the ticker symbol ZDI. Annual revenue for 2023 was $412 million USD, with a net profit margin of 18.3%.
+
+1.1 Leadership Team
+- Dr. Priya Nandakumar: CEO & Co-Founder | Office: Reykjavik | Joined: 2011
+- Marcus Löbell: CTO & Co-Founder | Office: Reykjavik | Joined: 2011
+- Saoirse Hennessey: CFO | Office: Toronto | Joined: 2016
+- Riku Tanaka: VP of Engineering | Office: Singapore | Joined: 2018
+- Amara Diallo: Head of Sales | Office: Nairobi | Joined: 2020
+- Jorge Fonseca: Chief Legal Officer | Office: Lisbon | Joined: 2019
+
+2. Product Catalog
+
+2.1 AeroSense X7
+The AeroSense X7 is Zephyr Dynamics' flagship atmospheric sensor array, launched in Q2 2022. It measures temperature, humidity, particulate matter (PM2.5 and PM10), ozone levels, and wind shear at altitudes up to 12,000 meters. The X7 uses a proprietary QuantumCell battery that lasts 72 hours on a single charge. It weighs 2.3 kg and has an operating temperature range of -60°C to +85°C. Unit price: $8,400 USD. Volume discount of 15% applies for orders above 50 units. Current lead time is 6-8 weeks from confirmed order.
+
+2.2 SwarmKit Pro
+SwarmKit Pro is a micro-drone coordination platform released in January 2023. It supports simultaneous control of up to 2,048 drones using the ZephyrMesh v3 protocol. The system includes a ground control station, a web dashboard, and REST API access. SwarmKit Pro requires a minimum of 16GB RAM and a CUDA-compatible GPU for real-time swarm orchestration. Licensing is subscription-based: $1,200/month for up to 256 drones, $3,800/month for full 2,048-drone capacity. It is currently used by the Norwegian Meteorological Institute and the Kenya Civil Aviation Authority.
+
+2.3 CloudMapper Lite
+CloudMapper Lite is a free-tier data visualization tool for AeroSense customers. It supports real-time 3D atmospheric mapping, historical data export in CSV and NetCDF formats, and alert thresholds. CloudMapper Lite is limited to 3 sensor nodes and 30-day data retention. The paid tier, CloudMapper Enterprise, costs $290/month and supports unlimited nodes and 5-year data retention.
+
+3. HR Policies
+
+3.1 Leave Policy
+All full-time employees receive 28 days of paid annual leave per year, accrued monthly. Unused leave up to a maximum of 10 days may be carried over to the following calendar year. Sick leave is separate and uncapped — employees are not required to use annual leave when ill. Parental leave: primary caregivers receive 26 weeks fully paid; secondary caregivers receive 8 weeks fully paid. Employees must submit leave requests at least 5 business days in advance through the ZephyrHR portal.
+
+3.2 Remote Work Policy
+Zephyr Dynamics operates on a hybrid model. Employees are required to be in-office a minimum of 2 days per week. Fully remote work may be approved for up to 4 consecutive weeks per year with manager and HR approval. Employees working remotely from a different country for more than 14 days require legal approval due to tax implications. The company provides a one-time remote work equipment stipend of $800 USD for new hires.
+
+3.3 Compensation & Benefits
+- Health Insurance: Full coverage for employee + 2 dependents (AXA Global Plan)
+- Stock Options: Cliff vesting: 1 year, then monthly over 3 years
+- Annual Bonus: Up to 20% of base salary, paid in March
+- Learning Budget: $1,500 USD/year per employee
+- Gym Allowance: $60/month reimbursed via expense report
+- Internet Stipend: $50/month for remote-eligible employees
+
+4. Support and Contacts
+
+4.1 Technical Support
+Technical support is available 24/7 for AeroSense X7 and SwarmKit Pro customers. Support tiers: Standard (email only, 48hr response), Priority ($299/month, 4hr response), and Platinum ($799/month, 1hr response + dedicated engineer). To raise a support ticket, email support@zephyrdynamics.io or call +354 510 8800. The support portal is accessible at help.zephyrdynamics.io using your product license key.
+
+4.2 Key Internal Contacts
+- HR queries: hr@zephyrdynamics.io
+- IT helpdesk: it@zephyrdynamics.io
+- Finance/invoicing: finance@zephyrdynamics.io
+- The ZephyrHR portal (hr.zephyrdynamics.io) is used for leave requests, payslips, and performance reviews.
+- Emergency contact for all offices: +354 510 9000 (24/7).

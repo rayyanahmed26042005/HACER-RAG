@@ -1,0 +1,7 @@
+Sundae Offline AI Assistant Research Project Document A (Small).
+This document describes the core architecture of on-device retrieval-augmented generation (RAG).
+RAG allows mobile devices to query local documents without cloud connectivity.
+The small dataset contains foundational information about low-latency mobile AI, local vector embeddings, and cosine similarity search.
+Mobile RAG ensures total data privacy and operates completely offline using ARM NEON SIMD optimizations in llama.cpp and llama.rn.
+Query target: What is mobile RAG and how does it ensure privacy?
+Answer: Mobile RAG enables query retrieval and LLM generation completely offline on device, ensuring total data privacy without cloud servers.

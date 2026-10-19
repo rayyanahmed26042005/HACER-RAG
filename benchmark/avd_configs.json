@@ -1,0 +1,72 @@
+{
+  "model_metadata": {
+    "model_name": "Gemma 2B IT",
+    "model_version": "v1.0",
+    "gguf_filename": "gemma-2b-it-q4_k_m.gguf",
+    "quantization": "Q4_K_M",
+    "parameter_count": "2.5 Billion",
+    "file_size_mb": 1720.0,
+    "context_length": 512,
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "backend": "llama.cpp (via llama.rn)"
+  },
+  "embedding_model_metadata": {
+    "model_name": "All-MiniLM-L6-v2",
+    "gguf_filename": "all-minilm-l6-v2-q4_k_m.gguf",
+    "quantization": "Q4_K_M",
+    "parameter_count": "22.7 Million",
+    "file_size_mb": 45.0,
+    "embedding_dimension": 384
+  },
+  "profiles": {
+    "low": {
+      "name": "Low-Memory Mobile Device Profile",
+      "avd_name": "Pixel_2_API_30",
+      "android_version": "11.0 (API 30)",
+      "architecture": "x86_64",
+      "cpu_configuration": {
+        "cores": 2,
+        "frequency_mhz": 1600
+      },
+      "memory_configuration": {
+        "ram_mb": 2048,
+        "vm_heap_mb": 256
+      },
+      "default_threads": 2,
+      "gpu_layers": 0
+    },
+    "medium": {
+      "name": "Medium-Performance Mobile Device Profile",
+      "avd_name": "Pixel_4_API_33",
+      "android_version": "13.0 (API 33)",
+      "architecture": "x86_64",
+      "cpu_configuration": {
+        "cores": 4,
+        "frequency_mhz": 2400
+      },
+      "memory_configuration": {
+        "ram_mb": 4096,
+        "vm_heap_mb": 512
+      },
+      "default_threads": 4,
+      "gpu_layers": 0
+    },
+    "high": {
+      "name": "High-Performance Mobile Device Profile",
+      "avd_name": "Pixel_7_API_34",
+      "android_version": "14.0 (API 34)",
+      "architecture": "x86_64",
+      "cpu_configuration": {
+        "cores": 8,
+        "frequency_mhz": 2800
+      },
+      "memory_configuration": {
+        "ram_mb": 8192,
+        "vm_heap_mb": 1024
+      },
+      "default_threads": 4,
+      "gpu_layers": 0
+    }
+  }
+}

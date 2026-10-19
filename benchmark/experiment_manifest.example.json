@@ -1,0 +1,45 @@
+{
+  "experiment_id": "android_effrag_YYYYMMDD_v1",
+  "source_revision": "<git-commit> or working-tree-digest>",
+  "package": "com.chat",
+  "device": {
+    "serial": "<adb-serial>",
+    "model": "<device-model>",
+    "android_build": "<build-fingerprint>"
+  },
+  "profile_id": "<profile-id>",
+  "corpus_id": "zephyr_handbook_v1",
+  "corpus_sha256": "<sha256>",
+  "index_sha256": "<sha256>",
+  "model_sha256": "<sha256>",
+  "embedding_model_sha256": "<sha256>",
+  "apk_sha256": "<sha256>",
+  "queries": "benchmark/zephyr_evaluation_queries.json",
+  "conditions": [
+    {
+      "policy": "ebmrag-v2",
+      "chat_mode": "document",
+      "inference_mode": "fixed",
+      "threads": 4,
+      "context_token_budget": 264,
+      "max_output_tokens": 132,
+      "allow_direct_evidence": false
+    },
+    {
+      "policy": "mobcert-v1",
+      "chat_mode": "document",
+      "inference_mode": "fixed",
+      "threads": 4,
+      "context_token_budget": 264,
+      "max_output_tokens": 132,
+      "allow_direct_evidence": false
+    }
+  ],
+  "warmups": 1,
+  "repetitions": 5,
+  "cooldown_seconds": 5,
+  "readiness": {
+    "minimum_battery_percent": 30,
+    "maximum_battery_temperature_c": 38
+  }
+}

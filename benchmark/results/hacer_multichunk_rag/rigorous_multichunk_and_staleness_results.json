@@ -1,0 +1,504 @@
+{
+  "metadata": {
+    "experiment": "hacer_rigorous_multichunk_and_expanded_staleness",
+    "device_serial": "36fef3202145",
+    "device_model": "Xiaomi Redmi 12 5G (Snapdragon 4 Gen 2)",
+    "os": "Android 14 (HyperOS)",
+    "pid": 13787,
+    "pairs_per_case": 3,
+    "timestamp": "2026-10-19T07:42:37Z"
+  },
+  "multichunk_paired_trials": [
+    {
+      "pair_id": "case1_remote_benefits_rep1",
+      "case_id": "case1_remote_benefits",
+      "rep": 1,
+      "baseline": {
+        "prompt_ms": 25227,
+        "decode_ms": 15151,
+        "overhead_ms": 88,
+        "wall_ms": 40466,
+        "storage_read_bytes": 44904448,
+        "peak_pss_kb": 2280940,
+        "text": "The one-time remote equipment stipend is $800 USD and the monthly internet allowance is $50 USD. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "reuse": {
+        "prompt_ms": 17197,
+        "decode_ms": 10503,
+        "overhead_ms": 300,
+        "cache_load_overhead_ms": 212,
+        "wall_ms": 28000,
+        "storage_read_bytes": 143388672,
+        "peak_pss_kb": 2290975,
+        "tokens_loaded": 85,
+        "tokens_eval": 103,
+        "text": "The one-time remote equipment stipend is $800 USD and the monthly internet allowance is $50 USD. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "delta": {
+        "prefill_saved_ms": 8030,
+        "prefill_reduction_pct": 31.83,
+        "wall_saved_ms": 12466,
+        "speedup": 1.45,
+        "accuracy_match": true
+      }
+    },
+    {
+      "pair_id": "case1_remote_benefits_rep2",
+      "case_id": "case1_remote_benefits",
+      "rep": 2,
+      "baseline": {
+        "prompt_ms": 30270,
+        "decode_ms": 13864,
+        "overhead_ms": 76,
+        "wall_ms": 44210,
+        "storage_read_bytes": 11702272,
+        "peak_pss_kb": 2288202,
+        "text": "The one-time remote equipment stipend is $800 USD and the monthly internet allowance is $50 USD. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "reuse": {
+        "prompt_ms": 15461,
+        "decode_ms": 9061,
+        "overhead_ms": 425,
+        "cache_load_overhead_ms": 349,
+        "wall_ms": 24947,
+        "storage_read_bytes": 125800448,
+        "peak_pss_kb": 2287984,
+        "tokens_loaded": 85,
+        "tokens_eval": 103,
+        "text": "The one-time remote equipment stipend is $800 USD and the monthly internet allowance is $50 USD. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "delta": {
+        "prefill_saved_ms": 14809,
+        "prefill_reduction_pct": 48.92,
+        "wall_saved_ms": 19263,
+        "speedup": 1.77,
+        "accuracy_match": true
+      }
+    },
+    {
+      "pair_id": "case1_remote_benefits_rep3",
+      "case_id": "case1_remote_benefits",
+      "rep": 3,
+      "baseline": {
+        "prompt_ms": 43943,
+        "decode_ms": 13596,
+        "overhead_ms": 98,
+        "wall_ms": 57637,
+        "storage_read_bytes": 921772032,
+        "peak_pss_kb": 2287619,
+        "text": "The one-time remote equipment stipend is $800 USD and the monthly internet allowance is $50 USD. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "reuse": {
+        "prompt_ms": 21024,
+        "decode_ms": 9971,
+        "overhead_ms": 575,
+        "cache_load_overhead_ms": 477,
+        "wall_ms": 31570,
+        "storage_read_bytes": 146771968,
+        "peak_pss_kb": 2237235,
+        "tokens_loaded": 85,
+        "tokens_eval": 103,
+        "text": "The one-time remote equipment stipend is $800 USD and the monthly internet allowance is $50 USD. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "delta": {
+        "prefill_saved_ms": 22919,
+        "prefill_reduction_pct": 52.16,
+        "wall_saved_ms": 26067,
+        "speedup": 1.83,
+        "accuracy_match": true
+      }
+    },
+    {
+      "pair_id": "case2_aerosense_vs_swarmkit_rep1",
+      "case_id": "case2_aerosense_vs_swarmkit",
+      "rep": 1,
+      "baseline": {
+        "prompt_ms": 48021,
+        "decode_ms": 17086,
+        "overhead_ms": 162,
+        "wall_ms": 65269,
+        "storage_read_bytes": 612884480,
+        "peak_pss_kb": 2225476,
+        "text": "The AeroSense X7 has a 72-hour battery life, and SwarmKit Pro supports up to 2,048 drones. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "reuse": {
+        "prompt_ms": 21001,
+        "decode_ms": 10825,
+        "overhead_ms": 491,
+        "cache_load_overhead_ms": 329,
+        "wall_ms": 32317,
+        "storage_read_bytes": 129880064,
+        "peak_pss_kb": 2239908,
+        "tokens_loaded": 100,
+        "tokens_eval": 119,
+        "text": "The AeroSense X7 has a 72-hour battery life, and SwarmKit Pro supports up to 2,048 drones. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "delta": {
+        "prefill_saved_ms": 27020,
+        "prefill_reduction_pct": 56.27,
+        "wall_saved_ms": 32952,
+        "speedup": 2.02,
+        "accuracy_match": true
+      }
+    },
+    {
+      "pair_id": "case2_aerosense_vs_swarmkit_rep2",
+      "case_id": "case2_aerosense_vs_swarmkit",
+      "rep": 2,
+      "baseline": {
+        "prompt_ms": 40049,
+        "decode_ms": 12026,
+        "overhead_ms": 71,
+        "wall_ms": 52146,
+        "storage_read_bytes": 17874944,
+        "peak_pss_kb": 2237036,
+        "text": "The AeroSense X7 has a 72-hour battery life, and SwarmKit Pro supports up to 2,048 drones. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "reuse": {
+        "prompt_ms": 20817,
+        "decode_ms": 11105,
+        "overhead_ms": 181,
+        "cache_load_overhead_ms": 110,
+        "wall_ms": 32103,
+        "storage_read_bytes": 36442112,
+        "peak_pss_kb": 2237611,
+        "tokens_loaded": 100,
+        "tokens_eval": 119,
+        "text": "The AeroSense X7 has a 72-hour battery life, and SwarmKit Pro supports up to 2,048 drones. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "delta": {
+        "prefill_saved_ms": 19232,
+        "prefill_reduction_pct": 48.02,
+        "wall_saved_ms": 20043,
+        "speedup": 1.62,
+        "accuracy_match": true
+      }
+    },
+    {
+      "pair_id": "case2_aerosense_vs_swarmkit_rep3",
+      "case_id": "case2_aerosense_vs_swarmkit",
+      "rep": 3,
+      "baseline": {
+        "prompt_ms": 48165,
+        "decode_ms": 14884,
+        "overhead_ms": 130,
+        "wall_ms": 63179,
+        "storage_read_bytes": 832401408,
+        "peak_pss_kb": 2224627,
+        "text": "The AeroSense X7 has a 72-hour battery life, and SwarmKit Pro supports up to 2,048 drones. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "reuse": {
+        "prompt_ms": 21296,
+        "decode_ms": 11049,
+        "overhead_ms": 368,
+        "cache_load_overhead_ms": 238,
+        "wall_ms": 32713,
+        "storage_read_bytes": 118243328,
+        "peak_pss_kb": 2238570,
+        "tokens_loaded": 100,
+        "tokens_eval": 119,
+        "text": "The AeroSense X7 has a 72-hour battery life, and SwarmKit Pro supports up to 2,048 drones. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "delta": {
+        "prefill_saved_ms": 26869,
+        "prefill_reduction_pct": 55.79,
+        "wall_saved_ms": 30466,
+        "speedup": 1.93,
+        "accuracy_match": true
+      }
+    },
+    {
+      "pair_id": "case3_ceo_office_and_sensor_altitude_rep1",
+      "case_id": "case3_ceo_office_and_sensor_altitude",
+      "rep": 1,
+      "baseline": {
+        "prompt_ms": 26484,
+        "decode_ms": 11131,
+        "overhead_ms": 78,
+        "wall_ms": 37693,
+        "storage_read_bytes": 6713344,
+        "peak_pss_kb": 2238515,
+        "text": "The CEO is based in the Stockholm office, and the AeroSense X7 can operate at altitudes up to 12,000 meters. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "reuse": {
+        "prompt_ms": 17921,
+        "decode_ms": 11754,
+        "overhead_ms": 136,
+        "cache_load_overhead_ms": 58,
+        "wall_ms": 29811,
+        "storage_read_bytes": 229376,
+        "peak_pss_kb": 2235854,
+        "tokens_loaded": 58,
+        "tokens_eval": 99,
+        "text": "The CEO is based in the Stockholm office, and the AeroSense X7 can operate at altitudes up to 12,000 meters. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "delta": {
+        "prefill_saved_ms": 8563,
+        "prefill_reduction_pct": 32.33,
+        "wall_saved_ms": 7882,
+        "speedup": 1.26,
+        "accuracy_match": true
+      }
+    },
+    {
+      "pair_id": "case3_ceo_office_and_sensor_altitude_rep2",
+      "case_id": "case3_ceo_office_and_sensor_altitude",
+      "rep": 2,
+      "baseline": {
+        "prompt_ms": 27407,
+        "decode_ms": 12648,
+        "overhead_ms": 75,
+        "wall_ms": 40130,
+        "storage_read_bytes": 503808,
+        "peak_pss_kb": 2236083,
+        "text": "The CEO is based in the Stockholm office, and the AeroSense X7 can operate at altitudes up to 12,000 meters. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "reuse": {
+        "prompt_ms": 17037,
+        "decode_ms": 11145,
+        "overhead_ms": 183,
+        "cache_load_overhead_ms": 108,
+        "wall_ms": 28365,
+        "storage_read_bytes": 27066368,
+        "peak_pss_kb": 2235135,
+        "tokens_loaded": 58,
+        "tokens_eval": 99,
+        "text": "The CEO is based in the Stockholm office, and the AeroSense X7 can operate at altitudes up to 12,000 meters. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "delta": {
+        "prefill_saved_ms": 10370,
+        "prefill_reduction_pct": 37.84,
+        "wall_saved_ms": 11765,
+        "speedup": 1.41,
+        "accuracy_match": true
+      }
+    },
+    {
+      "pair_id": "case3_ceo_office_and_sensor_altitude_rep3",
+      "case_id": "case3_ceo_office_and_sensor_altitude",
+      "rep": 3,
+      "baseline": {
+        "prompt_ms": 39630,
+        "decode_ms": 17334,
+        "overhead_ms": 73,
+        "wall_ms": 57037,
+        "storage_read_bytes": 1011712,
+        "peak_pss_kb": 2236969,
+        "text": "The CEO is based in the Stockholm office, and the AeroSense X7 can operate at altitudes up to 12,000 meters. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "reuse": {
+        "prompt_ms": 26139,
+        "decode_ms": 16050,
+        "overhead_ms": 496,
+        "cache_load_overhead_ms": 423,
+        "wall_ms": 42685,
+        "storage_read_bytes": 78286848,
+        "peak_pss_kb": 2236271,
+        "tokens_loaded": 58,
+        "tokens_eval": 99,
+        "text": "The CEO is based in the Stockholm office, and the AeroSense X7 can operate at altitudes up to 12,000 meters. \n<end_of_turn><eos>",
+        "eval": {
+          "hop1_matched": true,
+          "hop2_matched": true,
+          "multihop_correct": true
+        }
+      },
+      "delta": {
+        "prefill_saved_ms": 13491,
+        "prefill_reduction_pct": 34.04,
+        "wall_saved_ms": 14352,
+        "speedup": 1.34,
+        "accuracy_match": true
+      }
+    }
+  ],
+  "case_summaries": {
+    "case1_remote_benefits": {
+      "title": "Remote Work Stipend & Internet Allowance",
+      "pairs_count": 3,
+      "prefill_baseline_ms_mean": 33146.666666666664,
+      "prefill_baseline_ms_std": 7906.898773996176,
+      "prefill_reuse_ms_mean": 17894.0,
+      "prefill_reuse_ms_std": 2323.947647144115,
+      "prefill_reduction_pct_mean": 44.303333333333335,
+      "prefill_reduction_pct_std": 8.918611002965777,
+      "wall_baseline_ms_mean": 47437.666666666664,
+      "wall_reuse_ms_mean": 28172.333333333332,
+      "wall_speedup_mean": 1.6833333333333333,
+      "cache_load_overhead_ms_mean": 346.0,
+      "all_accuracies_preserved": true
+    },
+    "case2_aerosense_vs_swarmkit": {
+      "title": "AeroSense X7 Battery Life vs SwarmKit Drone Capacity",
+      "pairs_count": 3,
+      "prefill_baseline_ms_mean": 45411.666666666664,
+      "prefill_baseline_ms_std": 3792.4336367152014,
+      "prefill_reuse_ms_mean": 21038.0,
+      "prefill_reuse_ms_std": 197.29335180554529,
+      "prefill_reduction_pct_mean": 53.36000000000001,
+      "prefill_reduction_pct_std": 3.781031605263303,
+      "wall_baseline_ms_mean": 60198.0,
+      "wall_reuse_ms_mean": 32377.666666666668,
+      "wall_speedup_mean": 1.8566666666666667,
+      "cache_load_overhead_ms_mean": 225.66666666666666,
+      "all_accuracies_preserved": true
+    },
+    "case3_ceo_office_and_sensor_altitude": {
+      "title": "CEO Office Location vs Sensor Operating Altitude",
+      "pairs_count": 3,
+      "prefill_baseline_ms_mean": 31173.666666666668,
+      "prefill_baseline_ms_std": 5991.3917322178895,
+      "prefill_reuse_ms_mean": 20365.666666666668,
+      "prefill_reuse_ms_std": 4098.283976929314,
+      "prefill_reduction_pct_mean": 34.73666666666667,
+      "prefill_reduction_pct_std": 2.302756801941729,
+      "wall_baseline_ms_mean": 44953.333333333336,
+      "wall_reuse_ms_mean": 33620.333333333336,
+      "wall_speedup_mean": 1.3366666666666667,
+      "cache_load_overhead_ms_mean": 196.33333333333334,
+      "all_accuracies_preserved": true
+    }
+  },
+  "staleness_suite": {
+    "scenario_a_content_update": {
+      "title": "Content Update ($400 -> $800)",
+      "naive_reuse": {
+        "text": "The equipment stipend is $400 USD. \n\n\n<end_of_turn><eos>",
+        "stale_fact_output": true,
+        "correct": false
+      },
+      "hacer_repair": {
+        "text": "The equipment stipend is $800 USD. \n<end_of_turn><eos>",
+        "stale_fact_output": false,
+        "correct": true
+      }
+    },
+    "scenario_b_deletion_revocation": {
+      "title": "Document Revocation / Deletion (Childcare Subsidy)",
+      "naive_reuse": {
+        "text": "Answer: $500 \n<end_of_turn><eos>",
+        "hallucinated_revoked_fact": true
+      },
+      "hacer_repair": {
+        "text": "None \n<end_of_turn><eos>",
+        "hallucinated_revoked_fact": false,
+        "correct_abstention": true
+      }
+    },
+    "scenario_c_changed_ordering": {
+      "title": "Changed Chunk Ordering Permutation",
+      "naive_reuse": {
+        "text": "Headquarters: **Stockholm**\nSensor altitude: **12,000 meters** \n<end_of_turn><eos>",
+        "multihop_correct": true
+      },
+      "hacer_canonical": {
+        "text": "Headquarters: **Stockholm**\nSensor altitude: **12,000 meters** \n<end_of_turn><eos>",
+        "multihop_correct": true
+      }
+    },
+    "scenario_d_partial_update": {
+      "title": "Partial Multi-Chunk Update ($1,200 -> $1,600)",
+      "naive_reuse": {
+        "text": "**Answer:** Dr. Priya Nandakumar, $1,200. \n<end_of_turn><eos>",
+        "served_stale_fact": true,
+        "correct_updated": false
+      },
+      "hacer_partial_repair": {
+        "text": "**Answer:** Dr. Priya Nandakumar is CEO, and the monthly SwarmKit Pro subscription is $1,600. \n<end_of_turn>",
+        "served_stale_fact": false,
+        "correct_updated": true
+      }
+    },
+    "scenario_e_corrupted_cache_fallback": {
+      "title": "Corrupted Cache File Fallback",
+      "fallback_completed": true,
+      "factual_accuracy": true,
+      "text": "Stockholm\n<end_of_turn><eos>"
+    }
+  }
+}

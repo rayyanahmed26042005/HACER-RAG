@@ -1,0 +1,13 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "include": ["*.ts", "*.tsx", "screens/**/*.tsx", "tasks/**/*.ts", "utils/**/*.ts", "utils/**/*.tsx", "types/**/*.d.ts", "__tests__/**/*.tsx", "RTNMyAlarm/js/**/*.ts"],
+  "exclude": ["node_modules", "android", "ios"],
+  "compilerOptions": {
+    "types": ["react-native", "jest", "node"],
+    "esModuleInterop": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
+  }
+}

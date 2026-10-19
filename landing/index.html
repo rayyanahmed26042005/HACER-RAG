@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genix AI — On-Device Offline RAG with Gemma 2B</title>
+  <meta name="description" content="Genix AI runs a local Gemma 2B model entirely on your Android device. Zero cloud, zero servers, 100% offline RAG.">
+  
+  <!-- Google Fonts: Lora (Serif) & Plus Jakarta Sans (Sans-serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Colors from the reference images */
+      --color-bg-primary: #EAE3D5;       /* Primary light beige background */
+      --color-bg-secondary: #DFD7C5;     /* Slightly darker sand background */
+      --color-bg-white: #FFFFFF;         /* White card background */
+      --color-bg-dark: #1D2A3A;          /* Deep navy slate for headers, widgets & dark cards */
+      --color-bg-footer: #151F2C;        /* Extra deep navy for footer */
+      --color-accent: #F39E59;           /* Warm orange/gold accent */
+      --color-accent-hover: #E28945;     /* Darker orange on hover */
+      
+      --color-text-dark: #1D2A3A;        /* Dark navy text for readability on light sand */
+      --color-text-light: #F6F1E9;       /* Light sand text for dark sections */
+      --color-text-muted-dark: #5F6E7D;  /* Muted grey-blue text on light backgrounds */
+      --color-text-muted-light: #A4B2C1; /* Muted slate text on dark backgrounds */
+
+      --font-serif: 'Lora', serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--color-bg-primary);
+      color: var(--color-text-dark);
+      font-family: var(--font-sans);
+    }
+
+    body {
+      overflow-x: hidden;
+      background-color: var(--color-bg-primary);
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      color: var(--color-text-dark);
+      line-height: 1.2;
+    }
+
+    p {
+      color: var(--color-text-muted-dark);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    /* Section Spacing & Headers */
+    .section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      margin-bottom: 4rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .section-tag {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--color-accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--color-text-dark);
+      margin-bottom: 1rem;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .section-header h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 2px;
+      background-color: var(--color-accent);
+    }
+
+    .section-header p {
+      max-width: 600px;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      background-color: var(--color-bg-dark);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--color-text-light);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo span {
+      color: var(--color-accent);
+    }
+
+    .nav-links {
+      display: none;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    @media(min-width: 768px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--color-text-muted-light);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--color-text-light);
+    }
+
+    .nav-btn {
+      background-color: var(--color-accent);
+      color: var(--color-bg-dark);
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-btn:hover {
+      background-color: var(--color-accent-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 11rem 2rem 8.5rem 2rem; /* Increased vertical height to focus attention on hero */
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-tag {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--color-accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 7vw, 5rem); /* Increased size from 2.5-4.5rem to 3-5rem */
+      color: var(--color-text-dark);
+      margin-bottom: 1.75rem;
+      max-width: 950px;
+      letter-spacing: -1.2px;
+      line-height: 1.15;
+    }
+
+    .hero-subheadline {
+      font-family: var(--font-sans);
+      font-size: clamp(1.05rem, 2.3vw, 1.35rem); /* Slightly larger */
+      max-width: 720px;
+      margin-bottom: 3.5rem;
+      color: var(--color-text-muted-dark);
+      line-height: 1.75;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    @media(min-width: 500px) {
+      .hero-ctas {
+        flex-direction: row;
+      }
+    }
+
+    .btn-primary {
+      background-color: var(--color-accent);
+      color: var(--color-bg-dark);
+      font-family: var(--font-sans);
+      font-weight: 700;
+      padding: 0.95rem 2.2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 4px 15px rgba(243, 158, 89, 0.25);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--color-text-dark);
+      color: var(--color-text-dark);
+      font-family: var(--font-sans);
+      font-weight: 700;
+      padding: 0.95rem 2.2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--color-text-dark);
+      color: var(--color-bg-primary);
+      transform: translateY(-2px);
+    }
+
+    /* Stats Bar Widget */
+    .stat-bar {
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-light);
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      padding: 1.15rem 2rem; /* Reduced height/padding by ~24px (breadth reduction) */
+      text-align: center;
+    }
+
+    @media(min-width: 768px) {
+      .stat-bar {
+        grid-template-columns: repeat(4, 1fr);
+        padding: 1.35rem 4rem; /* Thinner stats bar on desktop */
+      }
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    @media(min-width: 768px) {
+      .stat-item:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: -1rem;
+        top: 15%;
+        height: 70%;
+        width: 1px;
+        background-color: rgba(246, 241, 233, 0.15);
+      }
+    }
+
+    .stat-number {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 2.5vw, 1.95rem); /* Reduced number size from 2.2-3.2rem */
+      font-weight: 700;
+      color: var(--color-accent);
+      margin-bottom: 0.15rem;
+    }
+
+    .stat-label {
+      font-family: var(--font-sans);
+      font-size: 0.68rem; /* Reduced label size from 0.8rem */
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--color-text-muted-light);
+    }
+
+    /* Alternating Features Section */
+    .features-section {
+      background-color: var(--color-bg-primary);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    @media(min-width: 768px) {
+      .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+    }
+
+    .feature-card {
+      padding: 3rem 2.25rem;
+      border-radius: 4px;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 340px;
+    }
+
+    /* Light Card Styling */
+    .feature-card.light {
+      background-color: var(--color-bg-white);
+      color: var(--color-text-dark);
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(29, 42, 58, 0.05);
+    }
+
+    /* Dark Card Styling with texture overlay */
+    .feature-card.dark {
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-light);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card.dark::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: linear-gradient(rgba(29, 42, 58, 0.9), rgba(29, 42, 58, 0.96)), 
+                        radial-gradient(rgba(243, 158, 89, 0.15) 1.5px, transparent 1.5px);
+      background-size: cover, 24px 24px;
+      z-index: 1;
+    }
+
+    .feature-card.dark > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(29, 42, 58, 0.08);
+    }
+
+    .feature-icon-container {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: rgba(243, 158, 89, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      color: var(--color-accent);
+    }
+
+    .feature-card.dark .feature-icon-container {
+      background-color: rgba(243, 158, 89, 0.2);
+    }
+
+    .feature-title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    .feature-desc {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    .feature-card.light .feature-desc {
+      color: var(--color-text-muted-dark);
+    }
+
+    .feature-card.dark .feature-desc {
+      color: var(--color-text-muted-light);
+    }
+
+    .feature-link {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      text-decoration: none;
+      letter-spacing: 1.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: gap 0.2s ease;
+      margin-top: auto;
+    }
+
+    .feature-card.light .feature-link {
+      color: var(--color-text-dark);
+    }
+
+    .feature-card.dark .feature-link {
+      color: var(--color-accent);
+    }
+
+    .feature-link:hover {
+      gap: 0.85rem;
+    }
+
+    /* How It Works Section (Interactive Tab Timeline) */
+    .how-it-works-section {
+      background-color: var(--color-bg-secondary);
+    }
+
+    .how-it-works-tabs {
+      background-color: var(--color-bg-white);
+      border-radius: 6px;
+      padding: 3.5rem 2.5rem;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(29, 42, 58, 0.04);
+      margin-top: 2rem;
+    }
+
+    .tab-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-bottom: 4rem;
+      padding: 0 1rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    /* Horizontal line behind timeline */
+    @media(min-width: 600px) {
+      .tab-nav::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 3.5rem;
+        right: 3.5rem;
+        height: 2px;
+        background-color: #E6DFD3;
+        z-index: 1;
+      }
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      outline: none;
+      flex: 1;
+      min-width: 80px;
+    }
+
+    .tab-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--color-bg-white);
+      border: 2px solid #E6DFD3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--color-text-muted-dark);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-bottom: 0.65rem;
+    }
+
+    .tab-label {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-text-muted-dark);
+      transition: color 0.3s ease;
+      text-align: center;
+    }
+
+    .tab-btn.active .tab-num {
+      background-color: var(--color-accent);
+      border-color: var(--color-accent);
+      color: var(--color-bg-dark);
+      box-shadow: 0 0 0 6px rgba(243, 158, 89, 0.2);
+    }
+
+    .tab-btn.active .tab-label {
+      color: var(--color-text-dark);
+    }
+
+    .tab-content-container {
+      position: relative;
+    }
+
+    .tab-pane {
+      display: none;
+      animation: fadeInPane 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .tab-pane.active {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    @media(min-width: 768px) {
+      .tab-pane.active {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+    }
+
+    .pane-badge {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.75rem;
+      display: inline-block;
+    }
+
+    .pane-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: var(--color-text-dark);
+      margin-bottom: 1.25rem;
+    }
+
+    .pane-desc {
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--color-text-muted-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Abstract Tech Graphics replacing real images */
+    .pane-visual {
+      width: 100%;
+      height: 280px;
+      border-radius: 4px;
+      background-color: var(--color-bg-dark);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(29, 42, 58, 0.08);
+    }
+
+    /* Premium dynamic lines in visual */
+    .pane-visual::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(circle, rgba(243, 158, 89, 0.15) 0%, transparent 60%),
+                  radial-gradient(circle, rgba(246, 241, 233, 0.05) 10%, transparent 80%);
+      z-index: 1;
+    }
+
+    .pane-visual svg {
+      width: 80px;
+      height: 80px;
+      color: var(--color-accent);
+      z-index: 2;
+      filter: drop-shadow(0 4px 10px rgba(243, 158, 89, 0.3));
+    }
+
+    @keyframes fadeInPane {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Removed testimonials styling */
+
+    /* Technology Stack Section (Partners Layout) */
+    .tech-stack-section {
+      background-color: var(--color-bg-secondary);
+      border-top: 1px solid rgba(29, 42, 58, 0.05);
+      border-bottom: 1px solid rgba(29, 42, 58, 0.05);
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    @media(min-width: 600px) {
+      .tech-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media(min-width: 900px) {
+      .tech-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 1.25rem;
+      }
+    }
+
+    .tech-card {
+      background-color: var(--color-bg-white);
+      border-left: 4px solid var(--color-accent);
+      padding: 1.5rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .tech-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.03);
+    }
+
+    .tech-name {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--color-text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tech-label {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      color: var(--color-text-muted-dark);
+      margin-top: 0.25rem;
+    }
+
+    /* Download Action Box (Widget styling) */
+    .download-section {
+      background-color: var(--color-bg-primary);
+      text-align: center;
+    }
+
+    .download-card {
+      background-color: var(--color-bg-dark);
+      border-radius: 4px;
+      padding: 5rem 2rem;
+      box-shadow: 0 10px 45px rgba(29, 42, 58, 0.15);
+      color: var(--color-text-light);
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .download-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at top right, rgba(243, 158, 89, 0.1) 0%, transparent 60%);
+      z-index: 1;
+    }
+
+    .download-content {
+      max-width: 650px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .download-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      color: var(--color-text-light);
+      margin-bottom: 1.25rem;
+    }
+
+    .download-subtext {
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--color-text-muted-light);
+      margin-bottom: 3rem;
+    }
+
+    .btn-large {
+      padding: 1.1rem 3rem;
+      font-size: 1.05rem;
+    }
+
+    .download-note {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      color: var(--color-text-muted-light);
+      margin-top: 1.75rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Footer (Multi-column professional design) */
+    .footer {
+      background-color: var(--color-bg-footer);
+      color: var(--color-text-light);
+      padding: 5rem 2rem 3rem 2rem;
+      border-top: 1px solid rgba(246, 241, 233, 0.05);
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+    }
+
+    @media(min-width: 768px) {
+      .footer-container {
+        grid-template-columns: 1.5fr 1fr 1.5fr;
+      }
+    }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-logo {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--color-text-light);
+      text-decoration: none;
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-logo span {
+      color: var(--color-accent);
+    }
+
+    .footer-desc {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--color-text-muted-light);
+      margin-bottom: 2rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .social-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(246, 241, 233, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-light);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .social-icon:hover {
+      background-color: var(--color-accent);
+      border-color: var(--color-accent);
+      color: var(--color-bg-dark);
+      transform: translateY(-2px);
+    }
+
+    .col-title {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--color-text-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .footer-link {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--color-text-muted-light);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--color-accent);
+    }
+
+    .contact-info {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      color: var(--color-text-muted-light);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .contact-item svg {
+      width: 18px;
+      height: 18px;
+      color: var(--color-accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .btn-footer {
+      background-color: var(--color-accent);
+      color: var(--color-bg-dark);
+      font-family: var(--font-sans);
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-footer:hover {
+      background-color: var(--color-accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 4rem auto 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(246, 241, 233, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    @media(min-width: 768px) {
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .copy-text {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      color: var(--color-text-muted-light);
+    }
+
+    /* Scroll Reveal Animation base classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">Genix<span>.</span></a>
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#technology" class="nav-link">Technology</a>
+      </div>
+      <a href="#download" class="nav-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+        Download APK
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <span class="hero-tag">Secure On-Device Intelligence</span>
+    <h1 class="hero-headline">Your AI. Fully Offline.</h1>
+    <p class="hero-subheadline">
+      Genix AI runs Gemma 2B entirely on your Android device. No server connections, no analytics tracking, 100% confidentiality.
+    </p>
+    <div class="hero-ctas">
+      <a href="#download" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+        Download APK
+      </a>
+      <a href="https://github.com/placeholder" target="_blank" class="btn-secondary">View on GitHub</a>
+    </div>
+  </section>
+
+  <!-- Stats Bar Widget -->
+  <div class="stat-bar">
+    <div class="stat-item">
+      <span class="stat-number">100%</span>
+      <span class="stat-label">Offline Execution</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">0 ms</span>
+      <span class="stat-label">Server Latency</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">2.5B</span>
+      <span class="stat-label">Parameters (Gemma)</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">0 KB</span>
+      <span class="stat-label">Data Uploaded</span>
+    </div>
+  </div>
+
+  <!-- Features Grid Section (Alternating styling) -->
+  <section id="features" class="section reveal">
+    <div class="section-header">
+      <span class="section-tag">High-End Architecture</span>
+      <h2>Core Capability</h2>
+      <p>Custom-built for maximum offline performance, utilizing modern hardware boundaries and zero cloud dependencies.</p>
+    </div>
+    <div class="features-grid">
+      <!-- Card 1: Light -->
+      <div class="feature-card light">
+        <div class="feature-icon-container">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <div>
+          <h3 class="feature-title">Fully Offline</h3>
+          <p class="feature-desc">Genix AI performs 100% of its reasoning locally. Bypasses cellular and WiFi networks entirely for total privacy.</p>
+        </div>
+        <a href="#how-it-works" class="feature-link">Learn More &rarr;</a>
+      </div>
+
+      <!-- Card 2: Dark (Featured) -->
+      <div class="feature-card dark">
+        <div class="feature-icon-container">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        </div>
+        <div>
+          <h3 class="feature-title">On-Device RAG</h3>
+          <p class="feature-desc">In-memory document index structure yields lightning-fast query retrieval times using native cosine similarity.</p>
+        </div>
+        <a href="#how-it-works" class="feature-link">Learn More &rarr;</a>
+      </div>
+
+      <!-- Card 3: Light -->
+      <div class="feature-card light">
+        <div class="feature-icon-container">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        </div>
+        <div>
+          <h3 class="feature-title">Gemma via llama.rn</h3>
+          <p class="feature-desc">Runs a quantized model context natively inside React Native bindings leveraging the llama.cpp execution core.</p>
+        </div>
+        <a href="#how-it-works" class="feature-link">Learn More &rarr;</a>
+      </div>
+
+      <!-- Card 4: Light -->
+      <div class="feature-card light">
+        <div class="feature-icon-container">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+        </div>
+        <div>
+          <h3 class="feature-title">Smart Chunking</h3>
+          <p class="feature-desc">Advanced text parsing and chunk partitioning optimized for smaller mobile context windows and high relevance.</p>
+        </div>
+        <a href="#how-it-works" class="feature-link">Learn More &rarr;</a>
+      </div>
+
+      <!-- Card 5: Dark (Featured) -->
+      <div class="feature-card dark">
+        <div class="feature-icon-container">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </div>
+        <div>
+          <h3 class="feature-title">Private by Design</h3>
+          <p class="feature-desc">Zero external analytics logging, zero telemetry. Your documents and queries are stored purely within app boundaries.</p>
+        </div>
+        <a href="#how-it-works" class="feature-link">Learn More &rarr;</a>
+      </div>
+
+      <!-- Card 6: Light -->
+      <div class="feature-card light">
+        <div class="feature-icon-container">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+        </div>
+        <div>
+          <h3 class="feature-title">Android Native</h3>
+          <p class="feature-desc">Specially optimized for contemporary ARM devices to unlock maximum processor thread availability and usage.</p>
+        </div>
+        <a href="#how-it-works" class="feature-link">Learn More &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section (Interactive Timeline) -->
+  <section id="how-it-works" class="section reveal how-it-works-section">
+    <div class="section-header">
+      <span class="section-tag">System Execution</span>
+      <h2>Local Process Flow</h2>
+      <p>See exactly how Genix AI queries files, filters chunks, and serves private responses securely on-device.</p>
+    </div>
+
+    <div class="how-it-works-tabs">
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchStep(1)">
+          <span class="tab-num">01</span>
+          <span class="tab-label">Import</span>
+        </button>
+        <button class="tab-btn" onclick="switchStep(2)">
+          <span class="tab-num">02</span>
+          <span class="tab-label">Index</span>
+        </button>
+        <button class="tab-btn" onclick="switchStep(3)">
+          <span class="tab-num">03</span>
+          <span class="tab-label">Retrieve</span>
+        </button>
+        <button class="tab-btn" onclick="switchStep(4)">
+          <span class="tab-num">04</span>
+          <span class="tab-label">Generate</span>
+        </button>
+      </div>
+      
+      <div class="tab-content-container">
+        <!-- Step 1 Pane -->
+        <div class="tab-pane active" id="step-pane-1">
+          <div>
+            <span class="pane-badge">Step 01 &middot; Import Sandbox</span>
+            <h3 class="pane-title">Import &amp; Store Locally</h3>
+            <p class="pane-desc">Your target PDFs or text files are imported straight into the application's isolated local database storage directory. At no point do these files connect to, or pass through, any central server or network node.</p>
+          </div>
+          <div class="pane-visual">
+            <!-- SVG Graphic for Import -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <polyline points="9 15 12 12 15 15"></polyline>
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Step 2 Pane -->
+        <div class="tab-pane" id="step-pane-2">
+          <div>
+            <span class="pane-badge">Step 02 &middot; Text Processing</span>
+            <h3 class="pane-title">On-Device Text Indexing</h3>
+            <p class="pane-desc">The application reads the document, performs smart sentence boundaries evaluation, and breaks the text into structured semantic chunks. A local vector index structure is generated instantly in native system RAM.</p>
+          </div>
+          <div class="pane-visual">
+            <!-- SVG Graphic for Indexing -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="9"></rect>
+              <rect x="14" y="3" width="7" height="5"></rect>
+              <rect x="14" y="12" width="7" height="9"></rect>
+              <rect x="3" y="16" width="7" height="5"></rect>
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Step 3 Pane -->
+        <div class="tab-pane" id="step-pane-3">
+          <div>
+            <span class="pane-badge">Step 03 &middot; Similarity Search</span>
+            <h3 class="pane-title">Cosine Similarity Search</h3>
+            <p class="pane-desc">When you enter a prompt, the application encodes the query text locally and performs high-speed cosine similarity match calculations against the loaded document chunks. The highest scoring contexts are retrieved instantly.</p>
+          </div>
+          <div class="pane-visual">
+            <!-- SVG Graphic for Similarity Search -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="11" y1="8" x2="11" y2="14"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Step 4 Pane -->
+        <div class="tab-pane" id="step-pane-4">
+          <div>
+            <span class="pane-badge">Step 04 &middot; Synthesis</span>
+            <h3 class="pane-title">Quantized Model Generation</h3>
+            <p class="pane-desc">The localized context chunks are structured and passed as strict prompts to the quantized Gemma 2B model context. The model generates answers word-by-word right on your processor with zero network activity.</p>
+          </div>
+          <div class="pane-visual">
+            <!-- SVG Graphic for Synthesis -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Stack Section (Partners style) -->
+  <section id="technology" class="section reveal tech-stack-section">
+    <div class="section-header">
+      <span class="section-tag">Integrations</span>
+      <h2>Built With Open Standards</h2>
+      <p>Genix AI relies on reliable on-device execution libraries to enable production-grade local inference.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <span class="tech-name">React Native</span>
+        <span class="tech-label">UI Skeleton</span>
+      </div>
+      <div class="tech-card">
+        <span class="tech-name">llama.rn</span>
+        <span class="tech-label">C++ Bindings</span>
+      </div>
+      <div class="tech-card">
+        <span class="tech-name">Gemma 2B</span>
+        <span class="tech-label">Local LLM</span>
+      </div>
+      <div class="tech-card">
+        <span class="tech-name">llama.cpp</span>
+        <span class="tech-label">Inference Engine</span>
+      </div>
+      <div class="tech-card">
+        <span class="tech-name">TypeScript</span>
+        <span class="tech-label">App Logic</span>
+      </div>
+      <div class="tech-card">
+        <span class="tech-name">Android NDK</span>
+        <span class="tech-label">Native Layer</span>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Download Section (Featured Action Box) -->
+  <section id="download" class="section reveal download-section">
+    <div class="download-card">
+      <div class="download-content">
+        <h2 class="download-title">Get Genix AI Today</h2>
+        <p class="download-subtext">
+          Download the raw Android APK and run private artificial intelligence locally on your device storage. Enable 'Install from unknown sources' in settings.
+        </p>
+        <a href="./app-release.apk" download class="btn-primary btn-large">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+          Download APK
+        </a>
+        <p class="download-note">Android 10+ Required &middot; Quantized Gemma Model &middot; Free &amp; Open Source</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (BuildCraft Slate Style) -->
+  <footer class="footer">
+    <div class="footer-container">
+      <!-- Col 1: About -->
+      <div class="footer-col">
+        <a href="#" class="footer-logo">Genix<span>.</span></a>
+        <p class="footer-desc">
+          Your AI. Fully Offline. Bringing secure, local vector retrieval and quantized language models to Android devices.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+          </a>
+          <a href="#" class="social-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 2: Navigation Links -->
+      <div class="footer-col">
+        <h4 class="col-title">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#features" class="footer-link">Core Features</a></li>
+          <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+          <li><a href="#technology" class="footer-link">Technology Stack</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Contact & Action -->
+      <div class="footer-col">
+        <h4 class="col-title">Download &amp; Support</h4>
+        <ul class="contact-info">
+          <li class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            Built by Akif Ali &middot; Open Source Initiative
+          </li>
+          <li class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            support@genixai.local
+          </li>
+        </ul>
+        <a href="#download" class="btn-footer">Download APK</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="copy-text">&copy; 2026 Genix AI. All rights reserved. Crafted with care.</span>
+      <a href="https://github.com/placeholder" target="_blank" class="footer-link">GitHub Codebase</a>
+    </div>
+  </footer>
+
+  <!-- Scroll Animation & Tab timeline scripts -->
+  <script>
+    // Step Timeline Switcher
+    function switchStep(stepNum) {
+      // Deactivate all tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Deactivate all tab panes
+      document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('active');
+      });
+      
+      // Activate selected button
+      const selectedBtn = document.querySelectorAll('.tab-btn')[stepNum - 1];
+      if (selectedBtn) selectedBtn.classList.add('active');
+      
+      // Activate selected pane
+      const selectedPane = document.getElementById(`step-pane-${stepNum}`);
+      if (selectedPane) selectedPane.classList.add('active');
+    }
+
+    // Scroll reveal observer
+    document.addEventListener("DOMContentLoaded", () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.05
+      });
+
+      document.querySelectorAll(".reveal").forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+[
+  {
+    "query_id": "q3_single_hop_bonus",
+    "query": "What is the annual learning budget and gym allowance of employees?",
+    "expected_action": "answer",
+    "model_action": "answered",
+    "context_recall": 1.0,
+    "context_precision": 0.7273,
+    "faithfulness": 0.9706,
+    "hallucination_rate": 0.0294,
+    "token_precision": 0.9545,
+    "token_recall": 1.0,
+    "token_f1": 0.9767,
+    "rouge_l": 0.9767,
+    "fluency": 1.0,
+    "telemetry": {
+      "decode_tok_per_sec": 3.6,
+      "prefill_tok_per_sec": 6.0,
+      "ttft_ms": 36683.7,
+      "total_ms": 45881.7,
+      "prompt_tokens": 218,
+      "gen_tokens": 33,
+      "mode": "ADAPTIVE (4T)",
+      "bottleneck": "prompt_prefill"
+    }
+  },
+  {
+    "query_id": "q2_single_hop_clo",
+    "query": "Who is chief legal officer and which office are they based in ?",
+    "expected_action": "answer",
+    "model_action": "answered",
+    "context_recall": 0.125,
+    "context_precision": 0.0455,
+    "faithfulness": 0.0455,
+    "hallucination_rate": 0.9545,
+    "token_precision": 0.2941,
+    "token_recall": 0.4167,
+    "token_f1": 0.3448,
+    "rouge_l": 0.2759,
+    "fluency": 1.0,
+    "telemetry": {
+      "decode_tok_per_sec": 3.2,
+      "ttft_ms": 80880.0,
+      "total_ms": 89060.0,
+      "mode": "BASELINE (4T)",
+      "bottleneck": "prompt_prefill"
+    }
+  },
+  {
+    "query_id": "q1_single_hop_battery",
+    "query": "What is battery life and weight of aerosence X7?",
+    "expected_action": "answer",
+    "model_action": "false_refusal",
+    "context_recall": 0.0,
+    "context_precision": 0.0,
+    "faithfulness": 1.0,
+    "token_f1": 0.0,
+    "rouge_l": 0.0,
+    "fluency": 1.0,
+    "telemetry": {
+      "decode_tok_per_sec": 3.0,
+      "ttft_ms": 34030.0,
+      "total_ms": 40950.0,
+      "mode": "ADAPTIVE (4T)",
+      "bottleneck": "prompt_prefill"
+    }
+  },
+  {
+    "query_id": "q_overview_zypher",
+    "query": "What is zypher?",
+    "expected_action": "answer",
+    "model_action": "answered",
+    "context_recall": 1.0,
+    "context_precision": 0.4615,
+    "faithfulness": 1.0,
+    "hallucination_rate": 0.0,
+    "token_precision": 1.0,
+    "token_recall": 1.0,
+    "token_f1": 1.0,
+    "rouge_l": 1.0,
+    "fluency": 1.0,
+    "telemetry": {
+      "decode_tok_per_sec": 2.8,
+      "prefill_tok_per_sec": 6.6,
+      "ttft_ms": 39159.1,
+      "total_ms": 46300.1,
+      "prompt_tokens": 255,
+      "gen_tokens": 20,
+      "mode": "ADAPTIVE (4T)",
+      "bottleneck": "prompt_prefill"
+    }
+  }
+]

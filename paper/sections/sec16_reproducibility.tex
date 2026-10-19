@@ -1,0 +1,42 @@
+\section{Reproducibility and Artifact Availability}
+\label{sec:reproducibility}
+
+\subsection{Claim-to-Evidence Matrix}
+To maintain the highest standard of scientific integrity, Table~\ref{tab:claim_matrix} provides an explicit Claim-to-Evidence mapping linking every major empirical claim in this paper directly to its corresponding experimental dataset, log file, and quantitative summary.
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{Claim-to-Evidence Verification Matrix.}}
+\label{tab:claim_matrix}
+\small
+\begin{tabular}{p{3.8cm}p{3.2cm}p{4.2cm}p{4.5cm}}
+\toprule
+\textbf{Paper Claim} & \textbf{Evaluation Dataset} & \textbf{Supporting Artifacts} & \textbf{Quantitative Evidence} \\
+\midrule
+\textbf{Prefix Compute Reduction:\newline 19.3\% to 86.7\%} & 90 Matched Pairs across 9 Configurations & \texttt{scaling\_trials.jsonl}\newline \texttt{scaling\_trials.summary.json} & $K=1$: $19.34$--$21.21\%$\newline $K=2$: $38.53$--$40.37\%$\newline $K=4$: $86.06$--$86.67\%$\newline Up to 3.65$\times$ wall speedup. \\
+\addlinespace
+\textbf{Context Capacity Independence} & Balanced Two-Way ANOVA ($3 \times 3$ Factorial, $N=90$) & \texttt{anova\_context\_invariance.json}\newline \texttt{analyze\_context\_invariance.py} & Factor A ($K$): $F=1920.56, p < 10^{-68}$\newline Factor B ($n_{\text{ctx}}$): $F=0.019, p=0.9808$ (n.s.)\newline Interaction: $F=0.510, p=0.7287$ (n.s.)\newline $\beta_{\text{ctx}} = -0.000109, p=0.874$. \\
+\addlinespace
+\textbf{Multi-Hop Factual Recall Preserved (100\%)} & Repeated Paired Multi-Chunk Trials (3 Cases $\times$ 3 Reps) & \texttt{rigorous\_multichunk\_and\_}\newline\texttt{staleness\_results.json} & 9 of 9 pairs achieved 100\% factual match on both hops. Average prefill reduction 44.13\%, wall speedup 1.63$\times$. \\
+\addlinespace
+\textbf{Resolution of Case 3 Latency Anomaly} & Repeated Paired Trials with I/O Profiling & \texttt{rigorous\_multichunk\_and\_}\newline\texttt{staleness\_results.json} & Isolated kernel compaction noise; repeated runs showed 34.74\% $\pm$ 2.30\% prefill reduction, saving 10.8s with 196.3~ms flash overhead. \\
+\addlinespace
+\textbf{Elimination of Stale-KV Hallucination} & Dynamic Staleness Suite (5 Controlled Scenarios) & \texttt{rigorous\_multichunk\_and\_}\newline\texttt{staleness\_results.json} & Naive reuse served stale facts in 3/3 mutation cases; HACER achieved 100\% fresh factual recovery, safe abstention, and robust fallback. \\
+\addlinespace
+\textbf{Flash I/O vs. Compute Asymmetry} & Linux Kernel I/O (\texttt{/proc/\{PID\}/io}) & \texttt{scaling\_trials.summary.json}\newline \texttt{rigorous\_multichunk\_and\_}\newline\texttt{staleness\_results.json} & Physical flash load overhead averaged 256.0~ms, compared to 16.8 to 47.3~seconds of CPU prefill computation saved ($>150\times$ faster). \\
+\addlinespace
+\textbf{Context-Budget Safety and Zero Truncation} & Full 182-Execution Benchmark Log & \texttt{scaling\_trials.jsonl}\newline \texttt{audit\_scaling\_records.py} & $\text{Headroom} \ge 78$ tokens across all runs; \texttt{truncated == 0} in 100\% of trials; byte-identical deterministic output. \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Artifact Availability and Open Science}
+All benchmark harnesses, analysis scripts, raw JSON/JSONL execution logs, and figure generation routines are packaged in the project repository:
+\begin{itemize}
+    \item \textbf{Scaling Matrix Controller:} \texttt{benchmark/run\_hacer\_scaling\_matrix.py}
+    \item \textbf{Multi-Chunk and Staleness Benchmark:} \texttt{benchmark/run\_hacer\_rigorous\_evaluation.py}
+    \item \textbf{Independent Audit Script:} \texttt{benchmark/audit\_scaling\_records.py}
+    \item \textbf{ANOVA and Regression Analysis:} \texttt{benchmark/analyze\_context\_invariance.py}
+    \item \textbf{Figure Generation Pipeline:} \texttt{paper/scripts/generate\_figures.py}
+\end{itemize}
+All physical test logs—including execution timestamps, microsecond hardware counters, Linux I/O profiles, and full generated strings—are preserved in the accompanying dataset for complete external verification.

@@ -1,0 +1,106 @@
+\documentclass[10pt,twocolumn]{article}
+
+% ------------------------------------------------------------------------------
+% Packages for Professional Typography and Layout
+% ------------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.75in,columnsep=0.25in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{cite}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% ------------------------------------------------------------------------------
+% Custom Definitions and Formatting
+% ------------------------------------------------------------------------------
+\newcommand{\systemname}{\textsc{HACER-RAG}}
+
+\newenvironment{IEEEkeywords}
+  {\vspace{0.5em}\noindent\textbf{\textit{Keywords---}}\ignorespaces}
+  {\vspace{1.0em}}
+
+% Title and Authors
+\title{\Large\textbf{\systemname: Evidence-Version-Aware KV-Cache Reuse and Selective Repair for On-Device Retrieval-Augmented Generation}}
+
+\author{
+  \textbf{Mobile Systems and Language Model Research Group}\\
+  PortingLLM Research Project\\
+  \texttt{\{systems-research, mobile-llm\}@portingllm.org}
+}
+
+\date{\today}
+
+% ------------------------------------------------------------------------------
+% Main Document Content
+% ------------------------------------------------------------------------------
+\begin{document}
+
+\maketitle
+
+% Section 1: Abstract & Keywords
+\input{sections/sec01_abstract.tex}
+
+% Section 2: Introduction & Motivation
+\input{sections/sec02_intro_motivation.tex}
+
+% Section 3: Background & Related Work
+\input{sections/sec03_background_related.tex}
+
+% Section 4: Research Questions & Contributions
+\input{sections/sec04_rq_contributions.tex}
+
+% Section 5: HACER-RAG System Architecture
+\input{sections/sec05_architecture.tex}
+
+% Section 6: Evidence Versioning, Cache Validation & Selective Repair
+\input{sections/sec06_versioning_repair.tex}
+
+% Section 7: Context-Budget Safety & Boundary-Aware Prefix Alignment
+\input{sections/sec07_context_safety.tex}
+
+% Section 8: Experimental Methodology
+\input{sections/sec08_methodology.tex}
+
+% Section 9: Baselines & Evaluation Metrics
+\input{sections/sec09_baselines_metrics.tex}
+
+% Section 10: Performance Results (90 Matched Pairs Scaling Matrix)
+\input{sections/sec10_results_scaling.tex}
+
+% Section 11: Multi-Chunk Answer Correctness & Latency Isolation
+\input{sections/sec11_results_multichunk.tex}
+
+% Section 12: Dynamic Evidence and Staleness Evaluation (5 Scenarios)
+\input{sections/sec12_results_staleness.tex}
+
+% Section 13: Statistical Analysis (Two-Way ANOVA & Linear Regression)
+\input{sections/sec13_statistical_analysis.tex}
+
+% Section 14: Systems Discussion
+\input{sections/sec14_discussion.tex}
+
+% Section 15: Limitations and Threats to Validity
+\input{sections/sec15_limitations.tex}
+
+% Section 16: Reproducibility and Artifact Availability
+\input{sections/sec16_reproducibility.tex}
+
+% Section 17: Conclusion
+\input{sections/sec17_conclusion.tex}
+
+% ------------------------------------------------------------------------------
+% Bibliography
+% ------------------------------------------------------------------------------
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

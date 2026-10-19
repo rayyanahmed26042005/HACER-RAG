@@ -1,0 +1,19 @@
+﻿# Auto-detect text files and normalize line endings to LF on commit
+* text=auto eol=lf
+
+# Explicitly ensure bash/gradlew scripts have LF line endings
+*.sh text eol=lf
+gradlew text eol=lf
+
+# Windows batch files must have CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.keystore binary
+*.jar binary
+*.apk binary
+*.aab binary

@@ -1,0 +1,169 @@
+{
+  "metadata": {
+    "experiment": "hacer_multichunk_and_staleness_physical_evaluation",
+    "device_serial": "36fef3202145",
+    "device_model": "Xiaomi Redmi 12 5G (Qualcomm Snapdragon 4 Gen 2)",
+    "os": "Android 14 (HyperOS)",
+    "pid": 13787,
+    "timestamp": "2026-10-19T06:39:41Z"
+  },
+  "multihop_cases": [
+    {
+      "case_id": "case1_remote_benefits",
+      "title": "Remote Work Equipment Stipend & Monthly Internet Allowance",
+      "baseline": {
+        "prompt_tokens_evaluated": 187,
+        "prompt_ms": 20678,
+        "decode_ms": 6870,
+        "total_wall_ms": 27594,
+        "storage_read_bytes": 14958592,
+        "text": "The one-time remote equipment stipend is $800 USD and the monthly internet allowance is $50 USD. \n<end_of_turn><eos>",
+        "hop1_matched": true,
+        "hop2_matched": true,
+        "multihop_correct": true
+      },
+      "hacer_reuse": {
+        "tokens_loaded": 85,
+        "prompt_tokens_evaluated": 103,
+        "prompt_ms": 14924,
+        "decode_ms": 7249,
+        "total_wall_ms": 22316,
+        "storage_read_bytes": 35807232,
+        "text": "The one-time remote equipment stipend is $800 USD and the monthly internet allowance is $50 USD. \n<end_of_turn><eos>",
+        "hop1_matched": true,
+        "hop2_matched": true,
+        "multihop_correct": true
+      },
+      "ablation_incomplete_chunk_a_only": {
+        "text": "The provided text does not mention the monthly internet allowance. \n<end_of_turn><eos>",
+        "hop1_matched": false,
+        "hop2_matched": false,
+        "multihop_correct": false
+      },
+      "delta": {
+        "prefill_saved_ms": 5754,
+        "wall_saved_ms": 5278,
+        "prefill_reduction_pct": 27.83,
+        "speedup": 1.24,
+        "accuracy_preserved": true
+      }
+    },
+    {
+      "case_id": "case2_aerosense_vs_swarmkit",
+      "title": "AeroSense X7 Battery Life vs SwarmKit Pro Drone Capacity",
+      "baseline": {
+        "prompt_tokens_evaluated": 218,
+        "prompt_ms": 28110,
+        "decode_ms": 8099,
+        "total_wall_ms": 36256,
+        "storage_read_bytes": 20533248,
+        "text": "The AeroSense X7 has a 72-hour battery life, and SwarmKit Pro supports up to 2,048 drones. \n<end_of_turn><eos>",
+        "hop1_matched": true,
+        "hop2_matched": true,
+        "multihop_correct": true
+      },
+      "hacer_reuse": {
+        "tokens_loaded": 100,
+        "prompt_tokens_evaluated": 119,
+        "prompt_ms": 15341,
+        "decode_ms": 8603,
+        "total_wall_ms": 24086,
+        "storage_read_bytes": 35102720,
+        "text": "The AeroSense X7 has a 72-hour battery life, and SwarmKit Pro supports up to 2,048 drones. \n<end_of_turn><eos>",
+        "hop1_matched": true,
+        "hop2_matched": true,
+        "multihop_correct": true
+      },
+      "ablation_incomplete_chunk_a_only": {
+        "text": "The AeroSense X7 has a 72-hour battery life, and the SwarmKit Pro has a maximum drone capacity of 1000 grams.",
+        "hop1_matched": true,
+        "hop2_matched": false,
+        "multihop_correct": false
+      },
+      "delta": {
+        "prefill_saved_ms": 12769,
+        "wall_saved_ms": 12170,
+        "prefill_reduction_pct": 45.43,
+        "speedup": 1.51,
+        "accuracy_preserved": true
+      }
+    },
+    {
+      "case_id": "case3_ceo_office_and_sensor_altitude",
+      "title": "CEO Office Location vs Sensor Operating Altitude",
+      "baseline": {
+        "prompt_tokens_evaluated": 156,
+        "prompt_ms": 19143,
+        "decode_ms": 8757,
+        "total_wall_ms": 27953,
+        "storage_read_bytes": 2002944,
+        "text": "The CEO is based in the Stockholm office, and the AeroSense X7 can operate at altitudes up to 12,000 meters. \n<end_of_turn><eos>",
+        "hop1_matched": true,
+        "hop2_matched": true,
+        "multihop_correct": true
+      },
+      "hacer_reuse": {
+        "tokens_loaded": 58,
+        "prompt_tokens_evaluated": 99,
+        "prompt_ms": 20581,
+        "decode_ms": 10044,
+        "total_wall_ms": 30749,
+        "storage_read_bytes": 693424128,
+        "text": "The CEO is based in the Stockholm office, and the AeroSense X7 can operate at altitudes up to 12,000 meters. \n<end_of_turn><eos>",
+        "hop1_matched": true,
+        "hop2_matched": true,
+        "multihop_correct": true
+      },
+      "ablation_incomplete_chunk_a_only": {
+        "text": "The CEO is based in the Stockholm office, and the maximum operating altitude of the AeroSense X7 is 25,000 feet. \n<end_of_turn><eos>",
+        "hop1_matched": true,
+        "hop2_matched": false,
+        "multihop_correct": false
+      },
+      "delta": {
+        "prefill_saved_ms": -1438,
+        "wall_saved_ms": -2796,
+        "prefill_reduction_pct": -7.51,
+        "speedup": 0.91,
+        "accuracy_preserved": true
+      }
+    }
+  ],
+  "stale_cache_evaluation": {
+    "title": "Stale Cached Policy vs Updated Ground Truth Document",
+    "naive_session_reuse": {
+      "policy": "ordinary_session_reuse_blind",
+      "prompt_tokens_evaluated": 61,
+      "tokens_loaded": 55,
+      "prompt_ms": 8514,
+      "decode_ms": 11415,
+      "total_wall_ms": 20146,
+      "storage_read_bytes": 37404672,
+      "generated_text": "The current one-time remote equipment stipend is $400 USD and the monthly internet allowance is $50 USD. \n<end_of_turn><eos>",
+      "generated_stale_fact": true,
+      "ground_truth_correct": false,
+      "hop2_matched": true,
+      "assessment": "FAILED: Blindly reuses stale KV cache; generates outdated $400 fact."
+    },
+    "hacer_adaptive_repair": {
+      "policy": "hacer_hash_verified_repair",
+      "staleness_detected": true,
+      "cache_invalidated": true,
+      "prompt_tokens_evaluated": 118,
+      "prompt_ms": 16297,
+      "decode_ms": 8743,
+      "total_wall_ms": 25089,
+      "storage_read_bytes": 3624960,
+      "generated_text": "The current one-time remote equipment stipend is $800 USD and the monthly internet allowance is $50 USD. \n<end_of_turn><eos>",
+      "generated_stale_fact": false,
+      "ground_truth_correct": true,
+      "hop2_matched": true,
+      "assessment": "SUCCESS: Hash mismatch triggers cache invalidation and re-prefill; generates correct $800 fact."
+    },
+    "tradeoff": {
+      "repair_prefill_overhead_ms": 7783,
+      "repair_wall_overhead_ms": 4943,
+      "factual_integrity_guarantee": "HACER eliminates stale hallucination at the cost of one online prefill repair."
+    }
+  }
+}

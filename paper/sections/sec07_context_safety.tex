@@ -1,0 +1,49 @@
+\section{Context-Budget Safety and Boundary-Aware Prefix Alignment}
+\label{sec:context_safety}
+
+\subsection{Dynamic Context Budgeting on Mobile Platforms}
+Mobile operating systems enforce aggressive process management through the Low Memory Killer daemon (LMKD). In React Native and native Android execution environments, initializing a large context window ($n_{\text{ctx}} \ge 4096$) can allocate upwards of 1.2~GB of contiguous memory exclusively for KV caches, triggering immediate process termination on 4~GB devices.
+
+To guarantee that on-device RAG operations never crash the host application or trigger ungraceful context truncation, HACER-RAG introduces a JNI-level \emph{Context-Budget Safety Guard}. The guard enforces the following headroom constraint prior to initiating inference:
+\begin{equation}
+    \text{Headroom}(n_{\text{ctx}}, N_{\text{prompt}}, N_{\text{predict}}) = (n_{\text{ctx}} - \Delta_{\text{reserved}}) - (N_{\text{prompt}} + N_{\text{predict}}) \ge 0
+    \label{eq:headroom}
+\end{equation}
+where $\Delta_{\text{reserved}} = 4$ represents internal tokens reserved by the \texttt{llama.cpp} core engine for sequence demarcation and special end-of-turn tokens, $N_{\text{prompt}}$ is the total token length of the canonical prompt, and $N_{\text{predict}}$ is the requested generation budget.
+
+If the headroom calculation indicates a budget violation ($\text{Headroom} < 0$), HACER-RAG rejects the request at the React Native bridge layer rather than allowing the native engine to silently truncate prompt context. In our experimental evaluations across all nine configurations, the enforced headroom values were:
+\begin{itemize}
+    \item $n_{\text{ctx}} = 512$: $(512 - 4) - (395 + 35) = 78$~tokens
+    \item $n_{\text{ctx}} = 1024$: $(1024 - 4) - (395 + 35) = 590$~tokens
+    \item $n_{\text{ctx}} = 2048$: $(2048 - 4) - (395 + 35) = 1614$~tokens
+\end{itemize}
+Across all 182 recorded benchmark executions, the reported headroom matched the theoretical budget calculation exactly, with zero native engine truncations (\texttt{truncated == 0}).
+
+\subsection{The Continuation Boundary-Token Invariant}
+In naive implementations of session restoration, developers assume that if $N_{\text{loaded}}$ tokens are restored from disk for a prompt of total length $N_{\text{prompt}}$, the native prefill engine will evaluate exactly $N_{\text{prompt}} - N_{\text{loaded}}$ tokens online.
+
+However, detailed code-level tracing of \texttt{llama.rn} (v0.5.8) and \texttt{llama.cpp} reveals a subtle but crucial systems behavior: \emph{the boundary token re-evaluation}. When a session is restored, the engine retains KV entries up to index $N_{\text{loaded}} - 1$. When tokenizing the continuation string, Byte-Pair Encoding (BPE) merges the leading whitespace or delimiter with preceding context. To guarantee that the attention representation of the first newly introduced token incorporates complete cross-boundary context, the runtime executes prefill starting from index $N_{\text{loaded}} - 1$. Consequently, the number of newly evaluated tokens $N_{\text{eval}}$ adheres strictly to the following invariant:
+\begin{equation}
+    N_{\text{eval}} = N_{\text{prompt}} - N_{\text{loaded}} + 1 \quad (\text{for } N_{\text{loaded}} > 0)
+    \label{eq:boundary_token}
+\end{equation}
+For baseline runs starting from a cold context ($N_{\text{loaded}} = 0$), $N_{\text{eval}} = N_{\text{prompt}} = 395$.
+
+Table~\ref{tab:token_accounting} confirms this token accounting across all configurations evaluated in our physical benchmark. Failing to account for this $+1$ boundary token in naive implementations leads to off-by-one prefill errors, corrupted positional embeddings, or incorrect compute attribution.
+
+\begin{table}[h]
+\centering
+\caption{\textbf{Verified Token Accounting and Boundary Invariant ($N_{\text{prompt}} = 395$).}}
+\label{tab:token_accounting}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Configuration} & \textbf{Prefix Chunks ($K$)} & $N_{\text{loaded}}$ & $N_{\text{eval}}$ & \textbf{Accounting Status} \\
+\midrule
+\textbf{Baseline (Cold)} & 0 & 0 & 395 & $N_{\text{eval}} = N_{\text{prompt}}$ (Verified) \\
+\textbf{HACER $K=1$} & 1 & 84 & 312 & $395 - 84 + 1 = 312$ (Verified) \\
+\textbf{HACER $K=2$} & 2 & 158 & 238 & $395 - 158 + 1 = 238$ (Verified) \\
+\textbf{HACER $K=4$} & 4 & 341 & 55 & $395 - 341 + 1 = 55$ (Verified) \\
+\bottomrule
+\end{tabular}
+\end{table}

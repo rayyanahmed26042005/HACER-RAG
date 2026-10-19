@@ -1,0 +1,974 @@
+{
+  "rag": {
+    "context": "",
+    "sources": [],
+    "strategy": "mobcert-v1",
+    "embeddingMs": 4.4204690009355545,
+    "indexLoadMs": 0.04265599697828293,
+    "vectorSearchMs": 3.7105209976434708,
+    "contextConstructionMs": 202.08958300203085,
+    "candidateK": 8,
+    "candidateChunkCount": 7,
+    "selectedChunkCount": 0,
+    "duplicateChunksRemoved": 0,
+    "contextChars": 0,
+    "contextTokenEstimate": 0,
+    "contextTokens": 0,
+    "tokenCountMethod": "native",
+    "requestedContextTokenBudget": 264,
+    "appliedContextTokenBudget": 264,
+    "compressionRatio": 0,
+    "topScore": 0.03278688524590164,
+    "scoreMargin": 0.0005288207297726097,
+    "queryTermCount": 8,
+    "matchedQueryTermCount": 0,
+    "queryTermCoverage": 0,
+    "uncoveredQueryTerms": [
+      "paid",
+      "sick",
+      "leave",
+      "allowance",
+      "part",
+      "time",
+      "hourly",
+      "contractors"
+    ],
+    "lexicalHit": true,
+    "exactTermMatches": 4,
+    "selectedChunkIds": [],
+    "candidateChunkIds": [
+      "doc_1791799440107:8",
+      "doc_1791799440107:10",
+      "doc_1791799440107:9",
+      "doc_1791799440107:13",
+      "doc_1791799440107:6",
+      "doc_1791799440107:7",
+      "doc_1791799440107:1"
+    ],
+    "failureReason": "contract_missing_demands",
+    "queryEmbeddingCacheHit": true,
+    "indexChunks": 14,
+    "vectorBytes": 21504,
+    "legacyChunks": 0,
+    "embeddingIdentityVerified": true,
+    "budgetLimited": false,
+    "rejectedByBudget": 0,
+    "tokenChecks": 1,
+    "answerContract": {
+      "query": "What is the paid sick leave allowance for part-time hourly contractors?",
+      "demands": [
+        {
+          "demandId": "demand-1",
+          "label": "allowance",
+          "status": "missing",
+          "sourceIds": [],
+          "matchedTerms": [],
+          "values": [],
+          "valueLabels": [],
+          "units": [],
+          "polarities": [],
+          "conflictingValues": []
+        }
+      ],
+      "selectedAtomIds": [],
+      "selectedTokens": 0,
+      "tokenBudget": 264,
+      "certifiedDemandCount": 0,
+      "ambiguousDemandCount": 0,
+      "missingDemandCount": 1,
+      "requiredCoverage": 0
+    },
+    "answerContractAtoms": [],
+    "evidenceSelectionDiagnostics": [
+      {
+        "atomId": "doc_1791799440107:8:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 22
+      },
+      {
+        "atomId": "doc_1791799440107:8:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:8:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:8:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:8:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 18
+      },
+      {
+        "atomId": "doc_1791799440107:8:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:8:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 22
+      },
+      {
+        "atomId": "doc_1791799440107:8:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:8:8",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 23
+      },
+      {
+        "atomId": "doc_1791799440107:10:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:10:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 19
+      },
+      {
+        "atomId": "doc_1791799440107:10:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 16
+      },
+      {
+        "atomId": "doc_1791799440107:10:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 13
+      },
+      {
+        "atomId": "doc_1791799440107:10:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:10:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:10:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:9:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:9:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:9:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:9:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:9:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:9:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 19
+      },
+      {
+        "atomId": "doc_1791799440107:9:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 12
+      },
+      {
+        "atomId": "doc_1791799440107:9:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:9:8",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:13:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 23
+      },
+      {
+        "atomId": "doc_1791799440107:13:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 7
+      },
+      {
+        "atomId": "doc_1791799440107:13:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 18
+      },
+      {
+        "atomId": "doc_1791799440107:13:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      },
+      {
+        "atomId": "doc_1791799440107:13:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:13:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 13
+      },
+      {
+        "atomId": "doc_1791799440107:6:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:6:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:6:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 24
+      },
+      {
+        "atomId": "doc_1791799440107:6:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 18
+      },
+      {
+        "atomId": "doc_1791799440107:6:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 7
+      },
+      {
+        "atomId": "doc_1791799440107:6:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 21
+      },
+      {
+        "atomId": "doc_1791799440107:7:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 1
+      },
+      {
+        "atomId": "doc_1791799440107:7:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:1:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 24
+      },
+      {
+        "atomId": "doc_1791799440107:1:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 2
+      },
+      {
+        "atomId": "doc_1791799440107:1:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 21
+      },
+      {
+        "atomId": "doc_1791799440107:1:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:1:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:1:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 13
+      },
+      {
+        "atomId": "doc_1791799440107:1:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:1:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 13
+      },
+      {
+        "atomId": "doc_1791799440107:1:8",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 12
+      },
+      {
+        "atomId": "doc_1791799440107:1:9",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      }
+    ]
+  },
+  "rag_contract_audit": {
+    "status": "abstained",
+    "unsupportedProtectedTokens": [],
+    "citedSourceIds": [],
+    "requiredCitationCoverage": 1,
+    "demandStatuses": [
+      {
+        "demandId": "demand-1",
+        "label": "allowance",
+        "status": "missing",
+        "sourceIds": [],
+        "matchedTerms": [],
+        "values": [],
+        "valueLabels": [],
+        "units": [],
+        "polarities": [],
+        "conflictingValues": []
+      }
+    ]
+  },
+  "rag_evidence_selection_diagnostics": [
+    {
+      "atomId": "doc_1791799440107:8:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 22
+    },
+    {
+      "atomId": "doc_1791799440107:8:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:8:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:8:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:8:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 18
+    },
+    {
+      "atomId": "doc_1791799440107:8:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:8:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 22
+    },
+    {
+      "atomId": "doc_1791799440107:8:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:8:8",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 23
+    },
+    {
+      "atomId": "doc_1791799440107:10:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:10:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 19
+    },
+    {
+      "atomId": "doc_1791799440107:10:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 16
+    },
+    {
+      "atomId": "doc_1791799440107:10:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 13
+    },
+    {
+      "atomId": "doc_1791799440107:10:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:10:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:10:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:9:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:9:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:9:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:9:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:9:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:9:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 19
+    },
+    {
+      "atomId": "doc_1791799440107:9:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 12
+    },
+    {
+      "atomId": "doc_1791799440107:9:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:9:8",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:13:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 23
+    },
+    {
+      "atomId": "doc_1791799440107:13:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 7
+    },
+    {
+      "atomId": "doc_1791799440107:13:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 18
+    },
+    {
+      "atomId": "doc_1791799440107:13:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    },
+    {
+      "atomId": "doc_1791799440107:13:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:13:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 13
+    },
+    {
+      "atomId": "doc_1791799440107:6:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:6:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:6:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 24
+    },
+    {
+      "atomId": "doc_1791799440107:6:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 18
+    },
+    {
+      "atomId": "doc_1791799440107:6:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 7
+    },
+    {
+      "atomId": "doc_1791799440107:6:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 21
+    },
+    {
+      "atomId": "doc_1791799440107:7:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 1
+    },
+    {
+      "atomId": "doc_1791799440107:7:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:1:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 24
+    },
+    {
+      "atomId": "doc_1791799440107:1:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 2
+    },
+    {
+      "atomId": "doc_1791799440107:1:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 21
+    },
+    {
+      "atomId": "doc_1791799440107:1:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:1:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:1:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 13
+    },
+    {
+      "atomId": "doc_1791799440107:1:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:1:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 13
+    },
+    {
+      "atomId": "doc_1791799440107:1:8",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 12
+    },
+    {
+      "atomId": "doc_1791799440107:1:9",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    }
+  ],
+  "rag_quality": {
+    "recallAtK": null,
+    "precisionAtK": null,
+    "reciprocalRank": null,
+    "answerTokenF1": null,
+    "answerContextTokenOverlap": 0,
+    "groundedness": null,
+    "correctness": null
+  },
+  "input_prompt_tokens": 108,
+  "output_tokens_requested": 132,
+  "inference_skipped": true,
+  "direct_evidence_answer": false,
+  "native_timings_available": false,
+  "native_prompt_truncated": false,
+  "output_limit_reached": false,
+  "tokens_cached": null,
+  "timestamp": "2026-10-17T16:11:51.638Z",
+  "query": "What is the paid sick leave allowance for part-time hourly contractors?",
+  "chat_mode": "document",
+  "profile_id": "p_1791008294421_84onr856",
+  "rag_retrieval_ms": 210.45671899616718,
+  "embedding_ms": 4.4204690009355545,
+  "vector_search_ms": 3.7105209976434708,
+  "context_construction_ms": 202.08958300203085,
+  "context_chars": 0,
+  "retrieved_chunk_count": 0,
+  "candidate_chunk_count": 7,
+  "rag_strategy": "mobcert-v1",
+  "rag_candidate_k": 8,
+  "rag_duplicate_chunks_removed": 0,
+  "rag_context_token_estimate": 0,
+  "rag_requested_context_budget": 264,
+  "rag_applied_context_budget": 264,
+  "rag_compression_ratio": 0,
+  "retrieved_top_score": 0.03278688524590164,
+  "retrieved_score_margin": 0.0005288207297726097,
+  "rag_query_term_count": 8,
+  "rag_matched_query_term_count": 0,
+  "rag_query_term_coverage": 0,
+  "rag_lexical_hit": true,
+  "rag_exact_term_matches": 4,
+  "rag_selected_chunk_ids": [],
+  "rag_failure_reason": "contract_missing_demands",
+  "prompt_chars": 400,
+  "prompt_tokenization_ms": 11.842865005135536,
+  "prompt_tokens": 108,
+  "prefill_ms": 0,
+  "prefill_tokens_per_second": 0,
+  "generated_tokens": 0,
+  "decode_ms": 0.09484399855136871,
+  "tokens_per_second": 0,
+  "ttft_ms": null,
+  "llm_ttft_ms": null,
+  "total_inference_ms": 0.09484399855136871,
+  "total_warm_latency_ms": 222.6378640010953,
+  "controller_mode": "baseline",
+  "evidence_demand": "broad",
+  "controller_workload_bucket": "document:short:broad",
+  "controller_selection_reason": "historical fixed baseline",
+  "controller_state_read_ms": 0,
+  "device_thermal_status": "not-read",
+  "device_available_memory_mb": null,
+  "device_low_memory": false,
+  "device_battery_level": null,
+  "device_battery_temp_c": null,
+  "device_cpu_frequencies_khz": [],
+  "n_threads": 4,
+  "n_predict": 132,
+  "context_token_budget": null,
+  "primary_bottleneck": "not_applicable",
+  "quality_evaluation": "not_measured",
+  "response_text": "I don't have enough information in the uploaded documents to answer that.",
+  "research_metrics": {
+    "policy": "mobcert-v1",
+    "queryId": "q6_negative_contractor_leave",
+    "expectedAction": "refuse",
+    "modelAction": "refused",
+    "contextRecall": null,
+    "contextPrecision": null,
+    "retrievalEvidenceCoverage": null,
+    "selectedChunkCount": 0,
+    "candidateChunkCount": 7,
+    "compressionRatio": 0,
+    "retrievalLatencyMs": 210.5,
+    "faithfulness": null,
+    "hallucinationRate": null,
+    "answerF1": null,
+    "answerPrecision": null,
+    "answerRecall": null,
+    "rougeL": null,
+    "hasGroundTruth": true,
+    "refusalCorrectness": 1,
+    "contractStatus": "abstained",
+    "demandsCount": 1,
+    "demandsSatisfied": 0,
+    "demandsMissing": 1,
+    "demandsAmbiguous": 0,
+    "conflictsDetected": [],
+    "avoidedInference": true,
+    "answerGenerated": false,
+    "qualityStatus": "not_applicable",
+    "totalLatencyMs": 222.6,
+    "ttftMs": null,
+    "prefillMs": 0,
+    "prefillTokPerSec": 0,
+    "decodeMs": 0.1,
+    "decodeTokPerSec": 0,
+    "promptTokens": 108,
+    "generatedTokens": 0,
+    "primaryBottleneck": "not_applicable",
+    "threads": 4,
+    "availableRamMb": null,
+    "batteryTempC": null,
+    "thermalStatus": "normal"
+  },
+  "hardware": {
+    "pre_test": {
+      "current_frequencies_khz": [
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        1190400,
+        1190400
+      ],
+      "max_frequencies_khz": [
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        1190400,
+        1190400
+      ],
+      "battery_temp_c": 41.0,
+      "battery_level_percent": 12,
+      "thermal_status": null,
+      "pss_mb": 2015.36
+    },
+    "post_test": {
+      "current_frequencies_khz": [
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        1190400,
+        1190400
+      ],
+      "max_frequencies_khz": [
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        1190400,
+        1190400
+      ],
+      "battery_temp_c": 41.0,
+      "battery_level_percent": 12,
+      "thermal_status": null,
+      "pss_mb": 2017.75
+    },
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "context_length": 512,
+    "batch_size": 512,
+    "ubatch_size": 512
+  },
+  "requested_rag_policy": "mobcert-v1",
+  "requested_inference_mode": "baseline",
+  "evidence_status": "PHYSICAL_DEVICE",
+  "benchmark_script": "run_device_inference.py",
+  "run_id": "batch_mobcert-v1_q6_negative_contractor_leave_1792253512",
+  "result_path": "/mnt/c/projects/portingllm/Porting-LLM-s-Model-Project/benchmark/results/physical_runs/batch_mobcert-v1_q6_negative_contractor_leave_1792253512_mobcert-v1_baseline.json"
+}

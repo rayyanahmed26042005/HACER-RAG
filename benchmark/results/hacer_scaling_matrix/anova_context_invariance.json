@@ -1,0 +1,33 @@
+{
+  "N": 90,
+  "two_way_anova": {
+    "factor_A_K": {
+      "F": 1920.5568634527017,
+      "p": 5.702638935179373e-69,
+      "df": 2,
+      "eta_p_squared": 0.979347870653432,
+      "significant": true
+    },
+    "factor_B_ctx": {
+      "F": 0.01939639471349466,
+      "p": 0.9807950590335335,
+      "df": 2,
+      "eta_p_squared": 0.00047869406850357916,
+      "significant": false
+    },
+    "interaction_K_ctx": {
+      "F": 0.509730480013462,
+      "p": 0.7287070553606716,
+      "df": 4,
+      "eta_p_squared": 0.02455381010385504,
+      "significant": false
+    }
+  },
+  "regression": {
+    "cached_tokens_coef": 0.2566625745441721,
+    "cached_tokens_p": 1.25789404457716e-74,
+    "ctx_capacity_coef": -0.00010867679402881258,
+    "ctx_capacity_p": 0.8742111551334376,
+    "r_squared": 0.9788353796885977
+  }
+}

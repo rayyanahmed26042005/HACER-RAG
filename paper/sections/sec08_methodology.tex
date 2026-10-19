@@ -1,0 +1,47 @@
+\section{Experimental Methodology}
+\label{sec:methodology}
+
+\subsection{Physical Testbed and Hardware Platform}
+All empirical experiments were conducted on a commercial, unmodified Android smartphone:
+\begin{itemize}
+    \item \textbf{Device Model:} Xiaomi Redmi 12 5G (Model 23076RN4BI, Serial \texttt{36fef3202145}).
+    \item \textbf{Processor:} Qualcomm Snapdragon 4 Gen 2 (SM4450, 4~nm process), featuring an octa-core CPU configuration: 2$\times$ ARM Cortex-A78 performance cores clocked at 2.2~GHz and 6$\times$ ARM Cortex-A55 efficiency cores clocked at 2.0~GHz.
+    \item \textbf{Memory:} 4~GB LPDDR4X SDRAM operating at 2133~MHz, shared between the Android OS, GPU, display compositor, and application processes.
+    \item \textbf{Storage:} 128~GB UFS 2.2 non-volatile physical flash storage.
+    \item \textbf{Operating System:} Android 14 with Xiaomi HyperOS (kernel 5.15 LTS). The device was maintained in a fixed physical orientation with screen stay-on enabled (\texttt{svc power stayon true}) and thermal states continuously tracked.
+\end{itemize}
+
+\subsection{Software Stack and Model Configuration}
+The mobile inference runtime is implemented as a React Native application (\texttt{com.chat}) interfacing with the native layer via \texttt{llama.rn} (v0.5.8), which compiles \texttt{llama.cpp} with ARM NEON SIMD vector extensions and OpenMP multi-threading. In all trials, thread count was set to 4 (utilizing the 2 Cortex-A78 cores and 2 Cortex-A55 cores).
+
+The evaluated language model is \textbf{Gemma 2 2B Instruct}~\cite{gemma2024gemma2}, converted to GGUF format and quantized to 4-bit integers using the standard \texttt{Q4\_K\_M} quantization scheme (approximately 1.6~GB model file). Autoregressive generation was executed with greedy decoding ($\text{temperature} = 0$) and a fixed budget of $N_{\text{predict}} = 35$ tokens to ensure strict deterministic reproducibility across all paired runs.
+
+\subsection{Workload Design and Canonical Prompt Formulation}
+To evaluate scaling behavior under strictly controlled conditions, we constructed a canonical enterprise knowledge corpus representing a multi-faceted enterprise (Zephyr Dynamics). The canonical prompt comprises four structured evidence chunks followed by a multi-hop question:
+\begin{itemize}
+    \item \textbf{Chunk 1 (Company Overview):} Founding year (2011), headquarters, workforce (847 employees), revenue.
+    \item \textbf{Chunk 2 (Leadership Team):} Executive roles (CEO Priya Nandakumar, CLO Jorge Fonseca, CTO Marcus L{\"o}bell, CFO Saoirse Hennessey).
+    \item \textbf{Chunk 3 (AeroSense X7 Specifications):} Atmospheric sensor capabilities, altitude limits (12,000~m), battery life (72 hours), unit price.
+    \item \textbf{Chunk 4 (SwarmKit Pro Platform):} Micro-drone platform capacity (2,048 drones), licensing tiers ($1,200 standard, $3,800 full capacity).
+    \item \textbf{Multi-Hop Question:} Inquiring simultaneously about founding year, CLO identity, battery life, and full-capacity tier pricing.
+\end{itemize}
+The complete canonical prompt tokenizes to exactly $N_{\text{prompt}} = 395$ native tokens. Its text representation has a verified SHA-256 digest of:
+\begin{center}
+\texttt{a5f1db09b904e81393eb06119c537db0e337ed12cfcf78b927e6e9e030727c6d}
+\end{center}
+Across all 182 executions recorded in the scaling benchmark, this SHA-256 digest remained 100\% invariant.
+
+\subsection{Benchmark Protocol and Thermal Controls}
+To guarantee rigorous comparisons between baseline (cold full prefill) and HACER (prefix reuse), the host controller implemented the following experimental protocol:
+\begin{enumerate}
+    \item \textbf{Paired Execution with Context Flushing:} Prior to each baseline run, the on-device context arena was explicitly flushed by evaluating an orthogonal conversational prompt, ensuring that no resident KV tokens lingered in RAM.
+    \item \textbf{Randomized Execution Order:} The order of execution within each paired trial (baseline first vs. reuse first) was randomized to prevent systematic bias from progressive battery heating or background OS tasks.
+    \item \textbf{Telemetry Instrumentation:} For every run, the host recorded:
+    \begin{itemize}
+        \item Native prefill compute latency (\texttt{prompt\_ms}) and decode latency (\texttt{predicted\_ms}) from \texttt{llama.cpp} internal microsecond timers.
+        \item Total end-to-end wall-clock latency (\texttt{wall\_ms}) measured at the host bridge.
+        \item Physical storage I/O delta from Linux kernel counters in \texttt{/proc/\{PID\}/io}.
+        \item Memory footprint (PSS) from Android \texttt{dumpsys meminfo}.
+        \item Full generated text string for byte-level output validation.
+    \end{itemize}
+\end{enumerate}

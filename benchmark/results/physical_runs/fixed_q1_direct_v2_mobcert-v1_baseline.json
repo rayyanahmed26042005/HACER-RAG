@@ -1,0 +1,901 @@
+{
+  "rag": {
+    "context": "Evidence status:\n- battery: certified supported by [2]\n- weight: certified supported by [1]\n\nExcerpts:\n[1] offlineRag.pdf \u2014 2. Product Catalog > 2.1 AeroSense X7\nIt weighs 2.3 kg and has an operating temperature range of -60\u00b0C to +85\u00b0C.\n\n[2] offlineRag.pdf \u2014 2. Product Catalog > 2.1 AeroSense X7\nThe X7 uses a proprietary QuantumCell battery that lasts 72 hours on",
+    "sources": [
+      {
+        "id": "doc_1791799440107:4",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 4,
+        "sectionHeader": "2. Product Catalog > 2.1 AeroSense X7",
+        "excerpts": [
+          "It weighs 2.3 kg and has an operating temperature range of -60\u00b0C to +85\u00b0C.",
+          "The X7 uses a proprietary QuantumCell battery that lasts 72 hours on"
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      }
+    ],
+    "strategy": "mobcert-v1",
+    "embeddingMs": 55.98151000216603,
+    "indexLoadMs": 0.03385400027036667,
+    "vectorSearchMs": 2.7084369994699955,
+    "contextConstructionMs": 175.22661500051618,
+    "candidateK": 3,
+    "candidateChunkCount": 3,
+    "selectedChunkCount": 1,
+    "duplicateChunksRemoved": 0,
+    "contextChars": 365,
+    "contextTokenEstimate": 92,
+    "contextTokens": 116,
+    "tokenCountMethod": "native",
+    "requestedContextTokenBudget": 264,
+    "appliedContextTokenBudget": 264,
+    "compressionRatio": 0.10831426392067124,
+    "topScore": 0.03278688524590164,
+    "scoreMargin": 0.0005288207297726097,
+    "queryTermCount": 5,
+    "matchedQueryTermCount": 4,
+    "queryTermCoverage": 0.8,
+    "uncoveredQueryTerms": [
+      "life"
+    ],
+    "lexicalHit": true,
+    "exactTermMatches": 3,
+    "selectedChunkIds": [
+      "doc_1791799440107:4"
+    ],
+    "candidateChunkIds": [
+      "doc_1791799440107:4",
+      "doc_1791799440107:12",
+      "doc_1791799440107:6"
+    ],
+    "failureReason": null,
+    "queryEmbeddingCacheHit": false,
+    "indexChunks": 14,
+    "vectorBytes": 21504,
+    "legacyChunks": 0,
+    "embeddingIdentityVerified": true,
+    "budgetLimited": false,
+    "rejectedByBudget": 0,
+    "tokenChecks": 2,
+    "answerContract": {
+      "query": "What is the battery life and weight of the AeroSense X7?",
+      "demands": [
+        {
+          "demandId": "demand-1",
+          "label": "battery",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:4:4"
+          ],
+          "matchedTerms": [
+            "aerosense",
+            "battery"
+          ],
+          "values": [
+            "72"
+          ],
+          "valueLabels": [],
+          "units": [
+            "hours"
+          ],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        },
+        {
+          "demandId": "demand-2",
+          "label": "weight",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:4:6"
+          ],
+          "matchedTerms": [
+            "aerosense",
+            "x7",
+            "weight"
+          ],
+          "values": [
+            "2.3"
+          ],
+          "valueLabels": [],
+          "units": [
+            "kg"
+          ],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        }
+      ],
+      "selectedAtomIds": [
+        "doc_1791799440107:4:6",
+        "doc_1791799440107:4:4"
+      ],
+      "selectedTokens": 36,
+      "tokenBudget": 264,
+      "certifiedDemandCount": 2,
+      "ambiguousDemandCount": 0,
+      "missingDemandCount": 0,
+      "requiredCoverage": 1
+    },
+    "answerContractAtoms": [
+      {
+        "id": "doc_1791799440107:4:6",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 4,
+        "sourceOrder": 6,
+        "sectionHeader": "2. Product Catalog > 2.1 AeroSense X7",
+        "text": "It weighs 2.3 kg and has an operating temperature range of -60\u00b0C to +85\u00b0C.",
+        "terms": [
+          "2",
+          "product",
+          "catalog",
+          "1",
+          "aerosense",
+          "x7",
+          "weighs",
+          "3",
+          "kg",
+          "has",
+          "operating",
+          "temperature",
+          "range",
+          "60",
+          "c",
+          "85"
+        ],
+        "entities": [
+          "aerosense x7",
+          "product catalog"
+        ],
+        "attributes": [
+          "product",
+          "temperature",
+          "weight"
+        ],
+        "numbers": [
+          "2.3",
+          "60",
+          "85"
+        ],
+        "units": [
+          "kg",
+          "\u00b0c"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "temperature",
+            "numbers": [
+              "60",
+              "85"
+            ],
+            "units": [
+              "\u00b0c"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "weight",
+            "numbers": [
+              "2.3"
+            ],
+            "units": [
+              "kg"
+            ],
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "aerosense x7+product catalog|product",
+          "aerosense x7+product catalog|temperature",
+          "aerosense x7+product catalog|weight"
+        ],
+        "estimatedTokens": 19
+      },
+      {
+        "id": "doc_1791799440107:4:4",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 4,
+        "sourceOrder": 4,
+        "sectionHeader": "2. Product Catalog > 2.1 AeroSense X7",
+        "text": "The X7 uses a proprietary QuantumCell battery that lasts 72 hours on",
+        "terms": [
+          "2",
+          "product",
+          "catalog",
+          "1",
+          "aerosense",
+          "x7",
+          "uses",
+          "proprietary",
+          "quantumcell",
+          "battery",
+          "lasts",
+          "72",
+          "hours"
+        ],
+        "entities": [
+          "aerosense x7",
+          "product catalog",
+          "quantumcell",
+          "the x7"
+        ],
+        "attributes": [
+          "product",
+          "battery",
+          "hours",
+          "duration"
+        ],
+        "numbers": [
+          "7",
+          "72"
+        ],
+        "units": [
+          "hours"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "battery",
+            "numbers": [
+              "72"
+            ],
+            "units": [
+              "hours"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "hours",
+            "numbers": [],
+            "units": [
+              "hours"
+            ],
+            "value": "hours on",
+            "polarity": "positive"
+          },
+          {
+            "attribute": "duration",
+            "numbers": [
+              "72"
+            ],
+            "units": [
+              "hours"
+            ],
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "aerosense x7+product catalog+quantumcell+the x7|product",
+          "aerosense x7+product catalog+quantumcell+the x7|battery",
+          "aerosense x7+product catalog+quantumcell+the x7|hours",
+          "aerosense x7+product catalog+quantumcell+the x7|duration"
+        ],
+        "estimatedTokens": 17
+      }
+    ],
+    "evidenceSelectionDiagnostics": [
+      {
+        "atomId": "doc_1791799440107:4:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 23
+      },
+      {
+        "atomId": "doc_1791799440107:4:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 1
+      },
+      {
+        "atomId": "doc_1791799440107:4:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 25
+      },
+      {
+        "atomId": "doc_1791799440107:4:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      },
+      {
+        "atomId": "doc_1791799440107:4:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:4:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:4:8",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:4:9",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 15
+      },
+      {
+        "atomId": "doc_1791799440107:4:10",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 8
+      },
+      {
+        "atomId": "doc_1791799440107:4:11",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:12:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:12:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:12:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 25
+      },
+      {
+        "atomId": "doc_1791799440107:12:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      },
+      {
+        "atomId": "doc_1791799440107:12:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 16
+      },
+      {
+        "atomId": "doc_1791799440107:12:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 5
+      },
+      {
+        "atomId": "doc_1791799440107:12:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:12:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:6:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:6:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:6:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 24
+      },
+      {
+        "atomId": "doc_1791799440107:6:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 18
+      },
+      {
+        "atomId": "doc_1791799440107:6:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 7
+      },
+      {
+        "atomId": "doc_1791799440107:6:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 21
+      },
+      {
+        "atomId": "doc_1791799440107:4:6",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 19
+      },
+      {
+        "atomId": "doc_1791799440107:4:4",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-1"
+        ],
+        "estimatedTokens": 17
+      }
+    ]
+  },
+  "rag_contract_audit": {
+    "status": "certified",
+    "unsupportedProtectedTokens": [],
+    "citedSourceIds": [
+      "doc_1791799440107:4:4",
+      "doc_1791799440107:4:6"
+    ],
+    "requiredCitationCoverage": 1,
+    "demandStatuses": [
+      {
+        "demandId": "demand-1",
+        "label": "battery",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:4:4"
+        ],
+        "matchedTerms": [
+          "aerosense",
+          "battery"
+        ],
+        "values": [
+          "72"
+        ],
+        "valueLabels": [],
+        "units": [
+          "hours"
+        ],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      },
+      {
+        "demandId": "demand-2",
+        "label": "weight",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:4:6"
+        ],
+        "matchedTerms": [
+          "aerosense",
+          "x7",
+          "weight"
+        ],
+        "values": [
+          "2.3"
+        ],
+        "valueLabels": [],
+        "units": [
+          "kg"
+        ],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      }
+    ]
+  },
+  "rag_evidence_selection_diagnostics": [
+    {
+      "atomId": "doc_1791799440107:4:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 23
+    },
+    {
+      "atomId": "doc_1791799440107:4:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 1
+    },
+    {
+      "atomId": "doc_1791799440107:4:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 25
+    },
+    {
+      "atomId": "doc_1791799440107:4:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    },
+    {
+      "atomId": "doc_1791799440107:4:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:4:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:4:8",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:4:9",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 15
+    },
+    {
+      "atomId": "doc_1791799440107:4:10",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 8
+    },
+    {
+      "atomId": "doc_1791799440107:4:11",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:12:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:12:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:12:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 25
+    },
+    {
+      "atomId": "doc_1791799440107:12:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    },
+    {
+      "atomId": "doc_1791799440107:12:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 16
+    },
+    {
+      "atomId": "doc_1791799440107:12:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 5
+    },
+    {
+      "atomId": "doc_1791799440107:12:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:12:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:6:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:6:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:6:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 24
+    },
+    {
+      "atomId": "doc_1791799440107:6:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 18
+    },
+    {
+      "atomId": "doc_1791799440107:6:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 7
+    },
+    {
+      "atomId": "doc_1791799440107:6:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 21
+    },
+    {
+      "atomId": "doc_1791799440107:4:6",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 19
+    },
+    {
+      "atomId": "doc_1791799440107:4:4",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-1"
+      ],
+      "estimatedTokens": 17
+    }
+  ],
+  "rag_quality": {
+    "recallAtK": null,
+    "precisionAtK": null,
+    "reciprocalRank": null,
+    "answerTokenF1": null,
+    "answerContextTokenOverlap": 1,
+    "groundedness": null,
+    "correctness": null
+  },
+  "input_prompt_tokens": 225,
+  "output_tokens_requested": 132,
+  "inference_skipped": true,
+  "direct_evidence_answer": true,
+  "native_timings_available": false,
+  "native_prompt_truncated": false,
+  "output_limit_reached": false,
+  "tokens_cached": null,
+  "timestamp": "2026-10-17T14:50:19.600Z",
+  "query": "What is the battery life and weight of the AeroSense X7?",
+  "chat_mode": "document",
+  "profile_id": "p_1791008294421_84onr856",
+  "rag_retrieval_ms": 234.08463500067592,
+  "embedding_ms": 55.98151000216603,
+  "vector_search_ms": 2.7084369994699955,
+  "context_construction_ms": 175.22661500051618,
+  "context_chars": 365,
+  "retrieved_chunk_count": 1,
+  "candidate_chunk_count": 3,
+  "rag_strategy": "mobcert-v1",
+  "rag_candidate_k": 3,
+  "rag_duplicate_chunks_removed": 0,
+  "rag_context_token_estimate": 92,
+  "rag_requested_context_budget": 264,
+  "rag_applied_context_budget": 264,
+  "rag_compression_ratio": 0.10831426392067124,
+  "retrieved_top_score": 0.03278688524590164,
+  "retrieved_score_margin": 0.0005288207297726097,
+  "rag_query_term_count": 5,
+  "rag_matched_query_term_count": 4,
+  "rag_query_term_coverage": 0.8,
+  "rag_lexical_hit": true,
+  "rag_exact_term_matches": 3,
+  "rag_selected_chunk_ids": [
+    "doc_1791799440107:4"
+  ],
+  "rag_failure_reason": null,
+  "prompt_chars": 750,
+  "prompt_tokenization_ms": 11.140416998416185,
+  "prompt_tokens": 225,
+  "prefill_ms": 0,
+  "prefill_tokens_per_second": 0,
+  "generated_tokens": 0,
+  "decode_ms": 0.08838599920272827,
+  "tokens_per_second": 0,
+  "ttft_ms": null,
+  "llm_ttft_ms": null,
+  "total_inference_ms": 0.08838599920272827,
+  "total_warm_latency_ms": 245.49989600107074,
+  "controller_mode": "baseline",
+  "evidence_demand": "multi_hop",
+  "controller_workload_bucket": "document:medium:multi_hop",
+  "controller_selection_reason": "historical fixed baseline",
+  "controller_state_read_ms": 0,
+  "device_thermal_status": "not-read",
+  "device_available_memory_mb": null,
+  "device_low_memory": false,
+  "device_battery_level": null,
+  "device_battery_temp_c": null,
+  "device_cpu_frequencies_khz": [],
+  "n_threads": 4,
+  "n_predict": 132,
+  "context_token_budget": null,
+  "primary_bottleneck": "not_applicable",
+  "quality_evaluation": "not_measured",
+  "response_text": "Battery: 72 hours [2]. Weight: 2.3 kg [1].",
+  "research_metrics": {
+    "policy": "mobcert-v1",
+    "queryId": "q1_single_hop_battery",
+    "expectedAction": "answer",
+    "modelAction": "answered",
+    "contextRecall": 0.8462,
+    "contextPrecision": 0.3793,
+    "retrievalEvidenceCoverage": 84.6,
+    "selectedChunkCount": 1,
+    "candidateChunkCount": 3,
+    "compressionRatio": 0.108,
+    "retrievalLatencyMs": 234.1,
+    "faithfulness": 1,
+    "hallucinationRate": 0,
+    "answerF1": 0.4444,
+    "answerPrecision": 0.8571,
+    "answerRecall": 0.3,
+    "rougeL": 0.4444,
+    "hasGroundTruth": true,
+    "refusalCorrectness": 1,
+    "contractStatus": "certified",
+    "demandsCount": 2,
+    "demandsSatisfied": 2,
+    "demandsMissing": 0,
+    "demandsAmbiguous": 0,
+    "conflictsDetected": [],
+    "avoidedInference": true,
+    "answerGenerated": true,
+    "qualityStatus": "measured",
+    "totalLatencyMs": 245.5,
+    "ttftMs": null,
+    "prefillMs": 0,
+    "prefillTokPerSec": 0,
+    "decodeMs": 0.1,
+    "decodeTokPerSec": 0,
+    "promptTokens": 225,
+    "generatedTokens": 0,
+    "primaryBottleneck": "not_applicable",
+    "threads": 4,
+    "availableRamMb": null,
+    "batteryTempC": null,
+    "thermalStatus": "normal"
+  },
+  "hardware": {
+    "pre_test": {
+      "current_frequencies_khz": [
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        1344000,
+        1344000
+      ],
+      "max_frequencies_khz": [
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        1344000,
+        1344000
+      ],
+      "battery_temp_c": 40.0,
+      "battery_level_percent": 14,
+      "thermal_status": null,
+      "pss_mb": 1835.92
+    },
+    "post_test": {
+      "current_frequencies_khz": [
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        1344000,
+        1344000
+      ],
+      "max_frequencies_khz": [
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        1344000,
+        1344000
+      ],
+      "battery_temp_c": 40.0,
+      "battery_level_percent": 14,
+      "thermal_status": null,
+      "pss_mb": 1840.7
+    },
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "context_length": 512,
+    "batch_size": 512,
+    "ubatch_size": 512
+  },
+  "requested_rag_policy": "mobcert-v1",
+  "requested_inference_mode": "baseline",
+  "evidence_status": "PHYSICAL_DEVICE",
+  "benchmark_script": "run_device_inference.py",
+  "run_id": "fixed_q1_direct_v2",
+  "result_path": "/mnt/c/projects/portingllm/Porting-LLM-s-Model-Project/benchmark/results/physical_runs/fixed_q1_direct_v2_mobcert-v1_baseline.json"
+}

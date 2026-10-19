@@ -1,0 +1,36 @@
+Sundae Offline AI Assistant Research Project Document C (Large Mobile Document).
+
+SECTION 1: Comprehensive Architecture of On-Device Mobile Intelligence
+On-device artificial intelligence has emerged as a cornerstone of privacy-preserving mobile systems. By eliminating external network socket communication, applications can execute complex reasoning tasks locally within the application sandbox. However, mobile hardware constraints—such as limited thermal envelopes, shared memory bandwidth, and CPU-bound execution without dedicated NPU/GPU offloading for custom GGUF runtimes—demand rigorous profiling and optimization.
+
+SECTION 2: Document Processing and Ingestion Deep Dive
+Document parsing begins when a user selects a target file. For `.txt` files, direct UTF-8 file reading is performed via `react-native-fs`. For `.pdf` files, `react-native-pdf-extractor` executes native parser bindings. The extracted text often contains artifacts, page headers, and irregular whitespace, which are cleaned via regex normalization.
+Chunking strategy uses a sliding window of 100 words with 20 words overlap. For a 15-page document containing approximately 8,000 words, this produces roughly 100 distinct chunks. Each chunk is encapsulated with metadata including document ID, chunk index, and document name.
+
+SECTION 3: Embedding Model Execution and Vector Space Indexing
+Embedding generation requires loading the MiniLM L6 v2 embedding GGUF model into a dedicated `llama.rn` context configured with embedding mode enabled (`embedding: true`). Each chunk is embedded sequentially or in batches, producing 384-dimensional floating-point vectors (`Float32Array`).
+The vector index stores these entries in memory and persists them to JSON storage. Index persistence involves serializing floating-point arrays into standard number arrays and writing them to flash storage. Index loading on application startup reconstructs `Float32Array` instances for high-performance vector similarity computations.
+
+SECTION 4: Vector Retrieval and Scoring Mechanics
+Query processing instantiates a query embedding vector and compares it against all indexed document vectors using Cosine Similarity. The mathematical formulation computes the dot product of the query vector and document vector divided by the product of their L2 norms.
+Scoring yields similarity values between -1.0 and 1.0. A relevance threshold filter discards noise, ensuring that only top-k chunks (typically top 3) are injected into the LLM context prompt template. Context construction prepends source citations and relevance scores to guide the generative model.
+
+SECTION 5: Local LLM Inference and Performance Metrics
+The generative phase utilizes quantized GGUF models (such as TinyLlama 1.1B or Llama 3.2 3B). Model loading time encompasses parsing the GGUF file header, allocating tensor memory, and initializing the compute graph across specified CPU threads (e.g., 4 threads).
+Inference telemetry measures:
+- Prompt preparation and tokenization time
+- Time to First Token (TTFT)
+- Prompt processing / prefill duration
+- Token generation duration and generated token count
+- Throughput expressed in tokens per second (tok/s)
+- End-to-end latency from document submission to final answer delivery.
+
+SECTION 6: Memory Profiling and Resource Constraints
+Memory consumption spans multiple layers:
+1. React Native JavaScript VM heap.
+2. Native Android Java/Kotlin heap and PSS (Proportional Set Size).
+3. C++ heap allocated by `llama.cpp` for model weights, KV-cache, and embedding contexts.
+Peak memory spikes occur during model loading, batch embedding generation, and large context prompt prefill.
+
+SECTION 7: Experimental Methodology and AVD Automation
+To ensure rigorous reproducibility without relying on physical hardware during early development, the benchmarking framework automates execution across multiple Android Virtual Device (AVD) profiles (Low, Medium, High). Automated scripts manage emulator lifecycles, APK installation, state resetting, benchmark execution, log collection, and metric aggregation. Statistical analysis computes mean, median, min, max, and standard deviation across multiple warm-up and measured runs.

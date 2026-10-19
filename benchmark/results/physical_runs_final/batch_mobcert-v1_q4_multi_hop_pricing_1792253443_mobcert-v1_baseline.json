@@ -1,0 +1,889 @@
+{
+  "rag": {
+    "context": "Evidence status:\n- compare subscription pricing: ambiguous supported by [1]\n- capacity: certified supported by [1]\n- tiers: missing\n\nExcerpts:\n[1] offlineRag.pdf \u2014 2. Product Catalog > 2.2 SwarmKit Pro\nsubscription-based: $1,200/month for up to 256 drones, $3,800/month for full 2,048-drone capacity.",
+    "sources": [
+      {
+        "id": "doc_1791799440107:5",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 5,
+        "sectionHeader": "2. Product Catalog > 2.2 SwarmKit Pro",
+        "excerpts": [
+          "subscription-based: $1,200/month for up to 256 drones, $3,800/month for full 2,048-drone capacity."
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      }
+    ],
+    "strategy": "mobcert-v1",
+    "embeddingMs": 4.4036980047822,
+    "indexLoadMs": 0.04078199714422226,
+    "vectorSearchMs": 4.890261001884937,
+    "contextConstructionMs": 290.6449479982257,
+    "candidateK": 3,
+    "candidateChunkCount": 3,
+    "selectedChunkCount": 1,
+    "duplicateChunksRemoved": 0,
+    "contextChars": 300,
+    "contextTokenEstimate": 75,
+    "contextTokens": 97,
+    "tokenCountMethod": "native",
+    "requestedContextTokenBudget": 262,
+    "appliedContextTokenBudget": 262,
+    "compressionRatio": 0.07216494845360824,
+    "topScore": 0.03278688524590164,
+    "scoreMargin": 0.0005288207297726097,
+    "queryTermCount": 10,
+    "matchedQueryTermCount": 5,
+    "queryTermCoverage": 0.5,
+    "uncoveredQueryTerms": [
+      "compare",
+      "pricing",
+      "customers",
+      "between",
+      "tiers"
+    ],
+    "lexicalHit": true,
+    "exactTermMatches": 5,
+    "selectedChunkIds": [
+      "doc_1791799440107:5"
+    ],
+    "candidateChunkIds": [
+      "doc_1791799440107:5",
+      "doc_1791799440107:12",
+      "doc_1791799440107:6"
+    ],
+    "failureReason": "contract_ambiguous_demands",
+    "queryEmbeddingCacheHit": true,
+    "indexChunks": 14,
+    "vectorBytes": 21504,
+    "legacyChunks": 0,
+    "embeddingIdentityVerified": true,
+    "budgetLimited": false,
+    "rejectedByBudget": 0,
+    "tokenChecks": 2,
+    "answerContract": {
+      "query": "Compare the subscription pricing, drone capacity, and customers between the SwarmKit Pro tiers.",
+      "demands": [
+        {
+          "demandId": "demand-1",
+          "label": "compare subscription pricing",
+          "status": "ambiguous",
+          "sourceIds": [
+            "doc_1791799440107:5:8"
+          ],
+          "matchedTerms": [
+            "swarmkit",
+            "pro",
+            "subscription"
+          ],
+          "values": [
+            "$1 200",
+            "256",
+            "$3 800",
+            "2 048"
+          ],
+          "valueLabels": [],
+          "units": [
+            "month"
+          ],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": [
+            "$1 200",
+            "256",
+            "$3 800",
+            "2 048"
+          ]
+        },
+        {
+          "demandId": "demand-2",
+          "label": "capacity",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:5:8"
+          ],
+          "matchedTerms": [
+            "swarmkit",
+            "pro",
+            "capacity",
+            "drone"
+          ],
+          "values": [],
+          "valueLabels": [
+            "capacity"
+          ],
+          "units": [],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        },
+        {
+          "demandId": "demand-3",
+          "label": "tiers",
+          "status": "missing",
+          "sourceIds": [],
+          "matchedTerms": [],
+          "values": [],
+          "valueLabels": [],
+          "units": [],
+          "polarities": [],
+          "conflictingValues": []
+        }
+      ],
+      "selectedAtomIds": [
+        "doc_1791799440107:5:8"
+      ],
+      "selectedTokens": 25,
+      "tokenBudget": 262,
+      "certifiedDemandCount": 1,
+      "ambiguousDemandCount": 1,
+      "missingDemandCount": 1,
+      "requiredCoverage": 0.6666666666666666
+    },
+    "answerContractAtoms": [
+      {
+        "id": "doc_1791799440107:5:8",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 5,
+        "sourceOrder": 8,
+        "sectionHeader": "2. Product Catalog > 2.2 SwarmKit Pro",
+        "text": "subscription-based: $1,200/month for up to 256 drones, $3,800/month for full 2,048-drone capacity.",
+        "terms": [
+          "2",
+          "product",
+          "catalog",
+          "swarmkit",
+          "pro",
+          "subscription",
+          "based",
+          "1",
+          "200",
+          "month",
+          "up",
+          "256",
+          "drones",
+          "3",
+          "800",
+          "full",
+          "048",
+          "drone",
+          "capacity"
+        ],
+        "entities": [
+          "product catalog",
+          "swarmkit pro"
+        ],
+        "attributes": [
+          "product",
+          "capacity",
+          "location",
+          "office",
+          "subscription",
+          "based"
+        ],
+        "numbers": [
+          "$1 200",
+          "256",
+          "$3 800",
+          "2 048"
+        ],
+        "units": [
+          "month"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "location",
+            "numbers": [
+              "$1 200",
+              "256",
+              "$3 800",
+              "2 048"
+            ],
+            "units": [
+              "month"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "office",
+            "numbers": [
+              "$1 200",
+              "256",
+              "$3 800",
+              "2 048"
+            ],
+            "units": [
+              "month"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "subscription",
+            "numbers": [
+              "$1 200",
+              "256",
+              "$3 800",
+              "2 048"
+            ],
+            "units": [
+              "month"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "based",
+            "numbers": [
+              "$1 200",
+              "256",
+              "$3 800",
+              "2 048"
+            ],
+            "units": [
+              "month"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "capacity",
+            "numbers": [],
+            "units": [],
+            "value": "capacity",
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "product catalog+swarmkit pro|product",
+          "product catalog+swarmkit pro|capacity",
+          "product catalog+swarmkit pro|location",
+          "product catalog+swarmkit pro|office",
+          "product catalog+swarmkit pro|subscription",
+          "product catalog+swarmkit pro|based"
+        ],
+        "estimatedTokens": 25
+      }
+    ],
+    "evidenceSelectionDiagnostics": [
+      {
+        "atomId": "doc_1791799440107:5:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:5:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:5:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 19
+      },
+      {
+        "atomId": "doc_1791799440107:5:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:5:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 16
+      },
+      {
+        "atomId": "doc_1791799440107:5:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      },
+      {
+        "atomId": "doc_1791799440107:5:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 18
+      },
+      {
+        "atomId": "doc_1791799440107:5:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:5:9",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 2
+      },
+      {
+        "atomId": "doc_1791799440107:5:10",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 24
+      },
+      {
+        "atomId": "doc_1791799440107:12:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:12:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:12:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 25
+      },
+      {
+        "atomId": "doc_1791799440107:12:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      },
+      {
+        "atomId": "doc_1791799440107:12:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 16
+      },
+      {
+        "atomId": "doc_1791799440107:12:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 5
+      },
+      {
+        "atomId": "doc_1791799440107:12:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:12:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:6:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:6:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:6:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 24
+      },
+      {
+        "atomId": "doc_1791799440107:6:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 18
+      },
+      {
+        "atomId": "doc_1791799440107:6:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 7
+      },
+      {
+        "atomId": "doc_1791799440107:6:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 21
+      },
+      {
+        "atomId": "doc_1791799440107:5:8",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-1",
+          "demand-2"
+        ],
+        "estimatedTokens": 25
+      }
+    ]
+  },
+  "rag_contract_audit": {
+    "status": "repaired",
+    "unsupportedProtectedTokens": [],
+    "citedSourceIds": [],
+    "requiredCitationCoverage": 0,
+    "demandStatuses": [
+      {
+        "demandId": "demand-1",
+        "label": "compare subscription pricing",
+        "status": "ambiguous",
+        "sourceIds": [
+          "doc_1791799440107:5:8"
+        ],
+        "matchedTerms": [
+          "swarmkit",
+          "pro",
+          "subscription"
+        ],
+        "values": [
+          "$1 200",
+          "256",
+          "$3 800",
+          "2 048"
+        ],
+        "valueLabels": [],
+        "units": [
+          "month"
+        ],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": [
+          "$1 200",
+          "256",
+          "$3 800",
+          "2 048"
+        ]
+      },
+      {
+        "demandId": "demand-2",
+        "label": "capacity",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:5:8"
+        ],
+        "matchedTerms": [
+          "swarmkit",
+          "pro",
+          "capacity",
+          "drone"
+        ],
+        "values": [],
+        "valueLabels": [
+          "capacity"
+        ],
+        "units": [],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      },
+      {
+        "demandId": "demand-3",
+        "label": "tiers",
+        "status": "missing",
+        "sourceIds": [],
+        "matchedTerms": [],
+        "values": [],
+        "valueLabels": [],
+        "units": [],
+        "polarities": [],
+        "conflictingValues": []
+      }
+    ]
+  },
+  "rag_evidence_selection_diagnostics": [
+    {
+      "atomId": "doc_1791799440107:5:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:5:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:5:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 19
+    },
+    {
+      "atomId": "doc_1791799440107:5:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:5:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 16
+    },
+    {
+      "atomId": "doc_1791799440107:5:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    },
+    {
+      "atomId": "doc_1791799440107:5:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 18
+    },
+    {
+      "atomId": "doc_1791799440107:5:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:5:9",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 2
+    },
+    {
+      "atomId": "doc_1791799440107:5:10",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 24
+    },
+    {
+      "atomId": "doc_1791799440107:12:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:12:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:12:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 25
+    },
+    {
+      "atomId": "doc_1791799440107:12:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    },
+    {
+      "atomId": "doc_1791799440107:12:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 16
+    },
+    {
+      "atomId": "doc_1791799440107:12:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 5
+    },
+    {
+      "atomId": "doc_1791799440107:12:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:12:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:6:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:6:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:6:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 24
+    },
+    {
+      "atomId": "doc_1791799440107:6:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 18
+    },
+    {
+      "atomId": "doc_1791799440107:6:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 7
+    },
+    {
+      "atomId": "doc_1791799440107:6:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 21
+    },
+    {
+      "atomId": "doc_1791799440107:5:8",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-1",
+        "demand-2"
+      ],
+      "estimatedTokens": 25
+    }
+  ],
+  "rag_quality": {
+    "recallAtK": null,
+    "precisionAtK": null,
+    "reciprocalRank": null,
+    "answerTokenF1": null,
+    "answerContextTokenOverlap": 0,
+    "groundedness": null,
+    "correctness": null
+  },
+  "input_prompt_tokens": 209,
+  "output_tokens_requested": 131,
+  "inference_skipped": false,
+  "direct_evidence_answer": false,
+  "native_timings_available": true,
+  "native_prompt_truncated": false,
+  "output_limit_reached": false,
+  "tokens_cached": 267,
+  "timestamp": "2026-10-17T16:11:19.940Z",
+  "query": "Compare the subscription pricing, drone capacity, and customers between the SwarmKit Pro tiers.",
+  "chat_mode": "document",
+  "profile_id": "p_1791008294421_84onr856",
+  "rag_retrieval_ms": 300.12843699753284,
+  "embedding_ms": 4.4036980047822,
+  "vector_search_ms": 4.890261001884937,
+  "context_construction_ms": 290.6449479982257,
+  "context_chars": 300,
+  "retrieved_chunk_count": 1,
+  "candidate_chunk_count": 3,
+  "rag_strategy": "mobcert-v1",
+  "rag_candidate_k": 3,
+  "rag_duplicate_chunks_removed": 0,
+  "rag_context_token_estimate": 75,
+  "rag_requested_context_budget": 262,
+  "rag_applied_context_budget": 262,
+  "rag_compression_ratio": 0.07216494845360824,
+  "retrieved_top_score": 0.03278688524590164,
+  "retrieved_score_margin": 0.0005288207297726097,
+  "rag_query_term_count": 10,
+  "rag_matched_query_term_count": 5,
+  "rag_query_term_coverage": 0.5,
+  "rag_lexical_hit": true,
+  "rag_exact_term_matches": 5,
+  "rag_selected_chunk_ids": [
+    "doc_1791799440107:5"
+  ],
+  "rag_failure_reason": "contract_ambiguous_demands",
+  "prompt_chars": 724,
+  "prompt_tokenization_ms": 14.496563002467155,
+  "prompt_tokens": 117,
+  "prefill_ms": 16208,
+  "prefill_tokens_per_second": 7.218616924102906,
+  "generated_tokens": 74,
+  "decode_ms": 21495,
+  "tokens_per_second": 3.4425249524908295,
+  "ttft_ms": 16533.932859003544,
+  "llm_ttft_ms": 16219.067441999912,
+  "total_inference_ms": 37868.45743300021,
+  "total_warm_latency_ms": 38183.32285000384,
+  "controller_mode": "baseline",
+  "evidence_demand": "multi_hop",
+  "controller_workload_bucket": "document:medium:multi_hop",
+  "controller_selection_reason": "historical fixed baseline",
+  "controller_state_read_ms": 0,
+  "device_thermal_status": "not-read",
+  "device_available_memory_mb": null,
+  "device_low_memory": false,
+  "device_battery_level": null,
+  "device_battery_temp_c": null,
+  "device_cpu_frequencies_khz": [],
+  "n_threads": 4,
+  "n_predict": 131,
+  "context_token_budget": null,
+  "primary_bottleneck": "token_decode",
+  "quality_evaluation": "not_measured",
+  "response_text": "I don't have enough information in the uploaded documents to answer that.",
+  "research_metrics": {
+    "policy": "mobcert-v1",
+    "queryId": "q4_multi_hop_pricing",
+    "expectedAction": "answer",
+    "modelAction": "refused",
+    "contextRecall": 0.5833,
+    "contextPrecision": 0.4667,
+    "retrievalEvidenceCoverage": 58.3,
+    "selectedChunkCount": 1,
+    "candidateChunkCount": 3,
+    "compressionRatio": 0.072,
+    "retrievalLatencyMs": 300.1,
+    "faithfulness": null,
+    "hallucinationRate": null,
+    "answerF1": null,
+    "answerPrecision": null,
+    "answerRecall": null,
+    "rougeL": null,
+    "hasGroundTruth": true,
+    "refusalCorrectness": 0,
+    "contractStatus": "repaired",
+    "demandsCount": 3,
+    "demandsSatisfied": 1,
+    "demandsMissing": 1,
+    "demandsAmbiguous": 1,
+    "conflictsDetected": [],
+    "avoidedInference": false,
+    "answerGenerated": false,
+    "qualityStatus": "not_applicable",
+    "totalLatencyMs": 38183.3,
+    "ttftMs": 16533.9,
+    "prefillMs": 16208,
+    "prefillTokPerSec": 7.2,
+    "decodeMs": 21495,
+    "decodeTokPerSec": 3.4,
+    "promptTokens": 117,
+    "generatedTokens": 74,
+    "primaryBottleneck": "token_decode",
+    "threads": 4,
+    "availableRamMb": null,
+    "batteryTempC": null,
+    "thermalStatus": "normal"
+  },
+  "hardware": {
+    "pre_test": {
+      "current_frequencies_khz": [
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        1344000,
+        1344000
+      ],
+      "max_frequencies_khz": [
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        1344000,
+        1344000
+      ],
+      "battery_temp_c": 41.0,
+      "battery_level_percent": 12,
+      "thermal_status": null,
+      "pss_mb": 2018.43
+    },
+    "post_test": {
+      "current_frequencies_khz": [
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        1190400,
+        1190400
+      ],
+      "max_frequencies_khz": [
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        1190400,
+        1190400
+      ],
+      "battery_temp_c": 41.0,
+      "battery_level_percent": 12,
+      "thermal_status": null,
+      "pss_mb": 2024.28
+    },
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "context_length": 512,
+    "batch_size": 512,
+    "ubatch_size": 512
+  },
+  "requested_rag_policy": "mobcert-v1",
+  "requested_inference_mode": "baseline",
+  "evidence_status": "PHYSICAL_DEVICE",
+  "benchmark_script": "run_device_inference.py",
+  "run_id": "batch_mobcert-v1_q4_multi_hop_pricing_1792253443",
+  "result_path": "/mnt/c/projects/portingllm/Porting-LLM-s-Model-Project/benchmark/results/physical_runs/batch_mobcert-v1_q4_multi_hop_pricing_1792253443_mobcert-v1_baseline.json"
+}

@@ -1,0 +1,31 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{The Storage vs. Computation Asymmetry on Mobile Platforms}
+A central finding of our empirical investigation is the dramatic asymmetry between mobile storage bandwidth and mobile CPU inference throughput:
+\begin{itemize}
+    \item \textbf{Dense CPU Prefill Throughput:} On the Snapdragon 4 Gen 2 SoC, evaluating a 395-token prompt using 4 threads requires approximately $54.2$~seconds, corresponding to an effective prompt-prefill throughput of only \textbf{7.29 tokens/second}. This compute bottleneck is exacerbated by thermal throttling during sustained high-intensity GEMM operations on the Cortex-A78 cores.
+    \item \textbf{Physical Flash I/O Bandwidth:} In contrast, reading a 40~MB serialized KV-cache binary from the handset's internal UFS 2.2 flash storage requires an average of \textbf{256.0~milliseconds} (and as low as 58~ms when warm).
+\end{itemize}
+
+This represents an operational asymmetry exceeding \textbf{150:1} in favor of storage restoration over online computation. While server-class deployments with high-end GPUs (e.g., NVIDIA H100) achieve prompt-prefill throughputs exceeding thousands of tokens per second—making disk I/O relatively less attractive—mobile platforms operate in a fundamentally inverted regime. On mobile CPUs, persistent flash storage serves as an ultra-fast, energy-efficient cache for expensive floating-point computations.
+
+\subsection{Mobile Memory Pressure and LMK Resilience}
+In commercial mobile operating systems, application lifecycle is governed by the Android Low Memory Killer daemon (LMKD). On budget and mid-range devices equipped with 4~GB of total physical RAM, the Android system, SurfaceFlinger compositor, and background services typically consume 1.8 to 2.2~GB.
+
+During our physical benchmark runs, the \texttt{com.chat} process exhibited a Total Proportional Set Size (PSS) of approximately $2.28$~GB ($2,280,940$~KB) while hosting the 1.6~GB Gemma 2 2B Q4\_K\_M weights and the allocated context buffer. Under these razor-thin margins, expanding $n_{\text{ctx}}$ to 4096 tokens would immediately trigger an out-of-memory SIGKILL from the LMK. 
+
+By enforcing strict JNI-level context budgeting ($n_{\text{ctx}} - 4 - N_{\text{prompt}} - N_{\text{predict}} \ge 0$), HACER-RAG enables mobile applications to operate safely with modest context sizes ($n_{\text{ctx}} \in \{512, 1024\}$) without risking silent truncation or process termination. Furthermore, because HACER-RAG persists KV state to flash and releases the context arena between user interactions, it prevents background RAM bloat, allowing the handset to maintain normal multitasking responsiveness.
+
+\subsection{Thermal and Energy Implications}
+Sustained CPU execution at peak clock frequencies (2.2~GHz on Cortex-A78) rapidly elevates device temperature. In continuous evaluation runs, device battery temperature rose from 29.5$^\circ$C to 38.2$^\circ$C, causing the SoC's dynamic voltage and frequency scaling (DVFS) governor to throttle clock rates down to 1.6~GHz.
+
+By eliminating up to \textbf{86.67\%} of prompt-prefill computation ($46.9$~seconds of heavy CPU execution per query in the $K=4$ configuration), HACER-RAG shortens the duration of high-power CPU residency. This dramatic reduction in active processor cycles not only preserves battery life but also prevents thermal throttling, ensuring that subsequent token decoding executes at maximum interactive responsiveness.
+
+\subsection{Architectural Implications for Mobile RAG Systems}
+The findings of this paper suggest that on-device RAG systems cannot simply port server-side caching techniques without adapting to mobile realities:
+\begin{enumerate}
+    \item \textbf{Evidence Binding is Mandatory:} In personal workspaces where local documents are continuously synced or edited, blind session caching is an unacceptable liability. Cryptographic chunk hashing provides an indispensable safety layer with microsecond overhead.
+    \item \textbf{Canonical Layout Eliminates Permutation Penalty:} Enforcing canonical evidence ordering overcomes the fragility of causal attention masks, ensuring high cache hit rates across varying retriever score distributions.
+    \item \textbf{Selective Downstream Repair Maximizes Efficiency:} By preserving valid prefix KV segments and re-prefilling only modified downstream chunks, runtimes can maintain freshness while preserving the bulk of compute savings.
+\end{enumerate}

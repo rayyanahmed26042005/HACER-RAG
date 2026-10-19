@@ -1,0 +1,83 @@
+{
+  "total_records": 6,
+  "unique_prompt_sha256_count": 1,
+  "unique_answer_count": 1,
+  "native_truncation_count": 0,
+  "configs": {
+    "smoke_C1_K1_512": {
+      "k_chunks": 1,
+      "n_ctx": 512,
+      "pairs_count": 1,
+      "prefill_baseline_ms_mean": 54586.0,
+      "prefill_reuse_ms_mean": 42555.0,
+      "prefill_reduction_pct_mean": 22.040449932217054,
+      "prefill_reduction_ci_95": [
+        0.0,
+        0.0
+      ],
+      "prefill_paired_delta_ms": 12031.0,
+      "prefill_paired_delta_ci_95": [
+        0.0,
+        0.0
+      ],
+      "wall_baseline_ms_mean": 66119.72180000157,
+      "wall_reuse_ms_mean": 53132.12840000051,
+      "wall_paired_delta_ms": 12987.59340000106,
+      "wall_paired_delta_ci_95": [
+        0.0,
+        0.0
+      ],
+      "wall_speedup": 1.244439547051929
+    },
+    "smoke_C5_K2_1024": {
+      "k_chunks": 2,
+      "n_ctx": 1024,
+      "pairs_count": 1,
+      "prefill_baseline_ms_mean": 51402.0,
+      "prefill_reuse_ms_mean": 31580.0,
+      "prefill_reduction_pct_mean": 38.56270184039532,
+      "prefill_reduction_ci_95": [
+        0.0,
+        0.0
+      ],
+      "prefill_paired_delta_ms": 19822.0,
+      "prefill_paired_delta_ci_95": [
+        0.0,
+        0.0
+      ],
+      "wall_baseline_ms_mean": 61169.65560000972,
+      "wall_reuse_ms_mean": 42368.87519998709,
+      "wall_paired_delta_ms": 18800.78040002263,
+      "wall_paired_delta_ci_95": [
+        0.0,
+        0.0
+      ],
+      "wall_speedup": 1.4437403709982926
+    },
+    "smoke_C9_K4_2048": {
+      "k_chunks": 4,
+      "n_ctx": 2048,
+      "pairs_count": 1,
+      "prefill_baseline_ms_mean": 53443.0,
+      "prefill_reuse_ms_mean": 8690.0,
+      "prefill_reduction_pct_mean": 83.73968527215912,
+      "prefill_reduction_ci_95": [
+        0.0,
+        0.0
+      ],
+      "prefill_paired_delta_ms": 44753.0,
+      "prefill_paired_delta_ci_95": [
+        0.0,
+        0.0
+      ],
+      "wall_baseline_ms_mean": 64701.35609997669,
+      "wall_reuse_ms_mean": 20143.76369997626,
+      "wall_paired_delta_ms": 44557.59240000043,
+      "wall_paired_delta_ci_95": [
+        0.0,
+        0.0
+      ],
+      "wall_speedup": 3.2119795021251636
+    }
+  }
+}

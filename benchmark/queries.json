@@ -1,0 +1,26 @@
+[
+  {
+    "id": "q1_simple_factual",
+    "type": "simple_factual",
+    "query": "What is the default chunk size used in document chunking?",
+    "expected_chunks": 1
+  },
+  {
+    "id": "q2_multi_sentence",
+    "type": "multi_sentence",
+    "query": "Explain how document ingestion, text extraction, and embedding generation work together in the RAG pipeline.",
+    "expected_chunks": 2
+  },
+  {
+    "id": "q3_single_chunk",
+    "type": "single_chunk",
+    "query": "How is cosine similarity calculated between query vectors and document vectors?",
+    "expected_chunks": 1
+  },
+  {
+    "id": "q4_multi_chunk",
+    "type": "multi_chunk",
+    "query": "What are the main memory consumption sources and performance bottlenecks identified in mobile RAG execution?",
+    "expected_chunks": 3
+  }
+]

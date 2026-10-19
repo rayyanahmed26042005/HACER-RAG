@@ -1,0 +1,18 @@
+{
+  "name": "hacer-rag",
+  "version": "1.0.0",
+  "description": "Evidence-Version-Aware KV-Cache Reuse and Selective Repair for On-Device Retrieval-Augmented Generation",
+  "main": "index.js",
+  "author": "Rayyan Ahmed",
+  "license": "Apache-2.0",
+  "scripts": {
+    "benchmark:scaling": "python benchmark/run_hacer_scaling_matrix.py",
+    "benchmark:multichunk": "python benchmark/run_hacer_multichunk_rag.py",
+    "benchmark:audit": "python benchmark/audit_scaling_records.py",
+    "benchmark:invariance": "python benchmark/analyze_context_invariance.py"
+  },
+  "dependencies": {
+    "react-native-document-picker": "^9.3.1",
+    "react-native-pdf-extractor": "^0.2.6"
+  }
+}

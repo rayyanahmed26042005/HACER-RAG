@@ -1,0 +1,538 @@
+{
+  "evaluator": "physical-rag-v1",
+  "claims": {
+    "physicalLatency": true,
+    "labeledAnswerQuality": true,
+    "syntheticTiming": false
+  },
+  "runDirectory": "C:\\projects\\portingllm\\Porting-LLM-s-Model-Project\\benchmark\\results\\physical_runs",
+  "labelsPath": "C:\\projects\\portingllm\\Porting-LLM-s-Model-Project\\benchmark\\zephyr_evaluation_queries.json",
+  "evaluatedTurnCount": 15,
+  "skippedReports": [
+    {
+      "path": "benchmark\\results\\physical_runs\\20261012_160349_mobcert-v1_baseline.json",
+      "reason": "no_matching_query_label"
+    }
+  ],
+  "byPolicy": {
+    "ebmrag-v2": {
+      "run_count": 8,
+      "median_ttft_ms": 48758.5359,
+      "median_total_ms": 66341.5612,
+      "mean_context_recall": 0.8438,
+      "mean_context_precision": 0.1538,
+      "mean_token_f1": 0.5175,
+      "mean_faithfulness": 0.6227,
+      "mean_refusal_accuracy": 0.0,
+      "contract_status_counts": {}
+    },
+    "mobcert-v1": {
+      "run_count": 7,
+      "median_ttft_ms": 32762.4906,
+      "median_total_ms": 54136.3442,
+      "mean_context_recall": 0.6149,
+      "mean_context_precision": 0.263,
+      "mean_token_f1": 0.2827,
+      "mean_faithfulness": 0.5898,
+      "mean_refusal_accuracy": 0.0,
+      "contract_status_counts": {
+        "repaired": 3,
+        "unverifiable": 2
+      }
+    }
+  },
+  "rows": [
+    {
+      "run_id": "batch_ebmrag-v2_q1_single_hop_battery_1791801271",
+      "query_id": "q1_single_hop_battery",
+      "query": "What is the battery life and weight of the AeroSense X7?",
+      "policy": "ebmrag-v2",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": null,
+      "benchmark": {
+        "query_id": "q1_single_hop_battery",
+        "query": "What is the battery life and weight of the AeroSense X7?",
+        "expected_action": "answer",
+        "model_action": "answered",
+        "context_recall": 1.0,
+        "context_precision": 0.1857,
+        "faithfulness": 0.9667,
+        "hallucination_rate": 0.0333,
+        "token_precision": 0.8261,
+        "token_recall": 0.95,
+        "token_f1": 0.8837,
+        "rouge_l": 0.8837,
+        "fluency": 0.75,
+        "telemetry": {
+          "decode_tok_per_sec": 2.5787317423375082,
+          "prefill_tok_per_sec": 4.671520810228569,
+          "ttft_ms": 41840.383942998946,
+          "total_ms": 57446.8133119978,
+          "prompt_tokens": 194,
+          "gen_tokens": 40,
+          "mode": "baseline",
+          "bottleneck": "prompt_prefill",
+          "rag_policy": "ebmrag-v2"
+        }
+      }
+    },
+    {
+      "run_id": "batch_ebmrag-v2_q2_single_hop_clo_1791801337",
+      "query_id": "q2_single_hop_clo",
+      "query": "Who is the Chief Legal Officer and which office are they based in?",
+      "policy": "ebmrag-v2",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": null,
+      "benchmark": {
+        "query_id": "q2_single_hop_clo",
+        "query": "Who is the Chief Legal Officer and which office are they based in?",
+        "expected_action": "answer",
+        "model_action": "answered",
+        "context_recall": 0.875,
+        "context_precision": 0.0778,
+        "faithfulness": 0.9286,
+        "hallucination_rate": 0.0714,
+        "token_precision": 0.8333,
+        "token_recall": 0.8333,
+        "token_f1": 0.8333,
+        "rouge_l": 0.8333,
+        "fluency": 0.75,
+        "telemetry": {
+          "decode_tok_per_sec": 2.867066548118774,
+          "prefill_tok_per_sec": 5.05340256244262,
+          "ttft_ms": 48284.93550200015,
+          "total_ms": 54602.26810400188,
+          "prompt_tokens": 242,
+          "gen_tokens": 18,
+          "mode": "baseline",
+          "bottleneck": "prompt_prefill",
+          "rag_policy": "ebmrag-v2"
+        }
+      }
+    },
+    {
+      "run_id": "batch_ebmrag-v2_q3_single_hop_bonus_1791801398",
+      "query_id": "q3_single_hop_bonus",
+      "query": "What is the annual learning budget and gym allowance for employees?",
+      "policy": "ebmrag-v2",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": null,
+      "benchmark": {
+        "query_id": "q3_single_hop_bonus",
+        "query": "What is the annual learning budget and gym allowance for employees?",
+        "expected_action": "answer",
+        "model_action": "answered",
+        "context_recall": 1.0,
+        "context_precision": 0.1684,
+        "faithfulness": 1.0,
+        "hallucination_rate": 0.0,
+        "token_precision": 0.9524,
+        "token_recall": 0.9524,
+        "token_f1": 0.9524,
+        "rouge_l": 0.9524,
+        "fluency": 1.0,
+        "telemetry": {
+          "decode_tok_per_sec": 2.8037569433714604,
+          "prefill_tok_per_sec": 5.6317774922258,
+          "ttft_ms": 49232.1363880001,
+          "total_ms": 62498.984143000096,
+          "prompt_tokens": 276,
+          "gen_tokens": 37,
+          "mode": "baseline",
+          "bottleneck": "prompt_prefill",
+          "rag_policy": "ebmrag-v2"
+        }
+      }
+    },
+    {
+      "run_id": "batch_ebmrag-v2_q5_multi_hop_remote_stipends_1791801591",
+      "query_id": "q4_multi_hop_pricing",
+      "query": "Compare the subscription pricing, drone capacity, and customers between the SwarmKit Pro tiers.",
+      "policy": "ebmrag-v2",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": null,
+      "benchmark": {
+        "query_id": "q4_multi_hop_pricing",
+        "query": "Compare the subscription pricing, drone capacity, and customers between the SwarmKit Pro tiers.",
+        "expected_action": "answer",
+        "model_action": "answered",
+        "context_recall": 0.875,
+        "context_precision": 0.3333,
+        "faithfulness": 0.76,
+        "hallucination_rate": 0.24,
+        "token_precision": 0.4328,
+        "token_recall": 0.9062,
+        "token_f1": 0.5859,
+        "rouge_l": 0.5859,
+        "fluency": 0.6667,
+        "telemetry": {
+          "decode_tok_per_sec": 1.050662727634671,
+          "prefill_tok_per_sec": 4.928141190172653,
+          "ttft_ms": 40306.820765998214,
+          "total_ms": 167390.0822799988,
+          "prompt_tokens": 193,
+          "gen_tokens": 133,
+          "mode": "baseline",
+          "bottleneck": "token_decode",
+          "rag_policy": "ebmrag-v2"
+        }
+      }
+    },
+    {
+      "run_id": "batch_ebmrag-v2_q6_negative_contractor_leave_1791801642",
+      "query_id": "q5_multi_hop_remote_stipends",
+      "query": "What are all the equipment stipends and monthly allowances available for remote-eligible employees?",
+      "policy": "ebmrag-v2",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": null,
+      "benchmark": {
+        "query_id": "q5_multi_hop_remote_stipends",
+        "query": "What are all the equipment stipends and monthly allowances available for remote-eligible employees?",
+        "expected_action": "answer",
+        "model_action": "answered",
+        "context_recall": 1.0,
+        "context_precision": 0.1579,
+        "faithfulness": 0.9259,
+        "hallucination_rate": 0.0741,
+        "token_precision": 0.5,
+        "token_recall": 0.6957,
+        "token_f1": 0.5818,
+        "rouge_l": 0.4,
+        "fluency": 0.75,
+        "telemetry": {
+          "decode_tok_per_sec": 1.8929956377585817,
+          "prefill_tok_per_sec": 3.279509326635928,
+          "ttft_ms": 76800.15611599758,
+          "total_ms": 112899.55907099694,
+          "prompt_tokens": 250,
+          "gen_tokens": 68,
+          "mode": "baseline",
+          "bottleneck": "prompt_prefill",
+          "rag_policy": "ebmrag-v2"
+        }
+      }
+    },
+    {
+      "run_id": "batch_ebmrag-v2_q7_negative_unlisted_executive_1791801757",
+      "query_id": "q6_negative_contractor_leave",
+      "query": "What is the paid sick leave allowance for part-time hourly contractors?",
+      "policy": "ebmrag-v2",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": null,
+      "benchmark": {
+        "query_id": "q6_negative_contractor_leave",
+        "query": "What is the paid sick leave allowance for part-time hourly contractors?",
+        "expected_action": "refuse",
+        "model_action": "answered",
+        "refusal_accuracy": 0.0,
+        "faithfulness": 0.2,
+        "token_f1": 0.0,
+        "rouge_l": 0.0,
+        "context_recall": 1.0,
+        "telemetry": {
+          "decode_tok_per_sec": 2.0983440963180087,
+          "prefill_tok_per_sec": 3.376866978603969,
+          "ttft_ms": 74643.5636169985,
+          "total_ms": 85687.17960199714,
+          "prompt_tokens": 251,
+          "gen_tokens": 23,
+          "mode": "baseline",
+          "bottleneck": "prompt_prefill",
+          "rag_policy": "ebmrag-v2"
+        }
+      }
+    },
+    {
+      "run_id": "batch_ebmrag-v2_q8_general_edge_computing_1791801842",
+      "query_id": "q7_negative_unlisted_executive",
+      "query": "Who is the Chief Marketing Officer (CMO) of Zephyr Dynamics?",
+      "policy": "ebmrag-v2",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": null,
+      "benchmark": {
+        "query_id": "q7_negative_unlisted_executive",
+        "query": "Who is the Chief Marketing Officer (CMO) of Zephyr Dynamics?",
+        "expected_action": "refuse",
+        "model_action": "answered",
+        "refusal_accuracy": 0.0,
+        "faithfulness": 0.2,
+        "token_f1": 0.0,
+        "rouge_l": 0.0,
+        "context_recall": 1.0,
+        "telemetry": {
+          "decode_tok_per_sec": 1.976611065357633,
+          "prefill_tok_per_sec": 3.492025615595175,
+          "ttft_ms": 56946.84711300209,
+          "total_ms": 70184.13820200041,
+          "prompt_tokens": 198,
+          "gen_tokens": 26,
+          "mode": "baseline",
+          "bottleneck": "prompt_prefill",
+          "rag_policy": "ebmrag-v2"
+        }
+      }
+    },
+    {
+      "run_id": "batch_ebmrag-v2_q9_general_iceland_capital_1791801912",
+      "query_id": "q8_general_edge_computing",
+      "query": "Explain what on-device edge AI inference is in two concise sentences.",
+      "policy": "ebmrag-v2",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": null,
+      "benchmark": {
+        "query_id": "q8_general_edge_computing",
+        "query": "Explain what on-device edge AI inference is in two concise sentences.",
+        "expected_action": "answer",
+        "model_action": "answered",
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "faithfulness": 0.0,
+        "hallucination_rate": 1.0,
+        "token_precision": 0.2273,
+        "token_recall": 0.4545,
+        "token_f1": 0.303,
+        "rouge_l": 0.303,
+        "fluency": 1.0,
+        "telemetry": {
+          "decode_tok_per_sec": 1.8292073892523644,
+          "prefill_tok_per_sec": 2.1763632692206154,
+          "ttft_ms": 31810.248895000666,
+          "total_ms": 60976.247841998935,
+          "prompt_tokens": 69,
+          "gen_tokens": 53,
+          "mode": "baseline",
+          "bottleneck": "prompt_prefill",
+          "rag_policy": "ebmrag-v2"
+        }
+      }
+    },
+    {
+      "run_id": "batch_mobcert-v1_q1_single_hop_battery_1791801976",
+      "query_id": "q9_general_iceland_capital",
+      "query": "What is the capital of Iceland and what language is spoken there?",
+      "policy": "mobcert-v1",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": null,
+      "benchmark": {
+        "query_id": "q9_general_iceland_capital",
+        "query": "What is the capital of Iceland and what language is spoken there?",
+        "expected_action": "answer",
+        "model_action": "answered",
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "faithfulness": 0.0,
+        "hallucination_rate": 1.0,
+        "token_precision": 0.1009,
+        "token_recall": 0.9167,
+        "token_f1": 0.1818,
+        "rouge_l": 0.1653,
+        "fluency": 0.9491,
+        "telemetry": {
+          "decode_tok_per_sec": 1.7355519718576775,
+          "prefill_tok_per_sec": 3.0281150387632367,
+          "ttft_ms": 5999.2998409979045,
+          "total_ms": 98762.90360799804,
+          "prompt_tokens": 18,
+          "gen_tokens": 160,
+          "mode": "baseline",
+          "bottleneck": "token_decode",
+          "rag_policy": "mobcert-v1"
+        }
+      }
+    },
+    {
+      "run_id": "batch_mobcert-v1_q2_single_hop_clo_1791802074",
+      "query_id": "q1_single_hop_battery",
+      "query": "What is the battery life and weight of the AeroSense X7?",
+      "policy": "mobcert-v1",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": "repaired",
+      "benchmark": {
+        "query_id": "q1_single_hop_battery",
+        "query": "What is the battery life and weight of the AeroSense X7?",
+        "expected_action": "answer",
+        "model_action": "false_refusal",
+        "context_recall": 0.8462,
+        "context_precision": 0.3667,
+        "faithfulness": 1.0,
+        "token_f1": 0.0,
+        "rouge_l": 0.0,
+        "fluency": 1.0,
+        "telemetry": {
+          "decode_tok_per_sec": 0.5895320208778463,
+          "prefill_tok_per_sec": 3.686136671303112,
+          "ttft_ms": 54273.906646002084,
+          "total_ms": 117260.8364130035,
+          "prompt_tokens": 196,
+          "gen_tokens": 37,
+          "mode": "baseline",
+          "bottleneck": "token_decode",
+          "rag_policy": "mobcert-v1"
+        }
+      }
+    },
+    {
+      "run_id": "batch_mobcert-v1_q3_single_hop_bonus_1791802195",
+      "query_id": "q2_single_hop_clo",
+      "query": "Who is the Chief Legal Officer and which office are they based in?",
+      "policy": "mobcert-v1",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": "unverifiable",
+      "benchmark": {
+        "query_id": "q2_single_hop_clo",
+        "query": "Who is the Chief Legal Officer and which office are they based in?",
+        "expected_action": "answer",
+        "model_action": "answered",
+        "context_recall": 0.875,
+        "context_precision": 0.2188,
+        "faithfulness": 0.9286,
+        "hallucination_rate": 0.0714,
+        "token_precision": 0.8333,
+        "token_recall": 0.8333,
+        "token_f1": 0.8333,
+        "rouge_l": 0.8333,
+        "fluency": 0.75,
+        "telemetry": {
+          "decode_tok_per_sec": 1.7095223338170964,
+          "prefill_tok_per_sec": 3.5424880422383898,
+          "ttft_ms": 43548.733472999185,
+          "total_ms": 54136.344198998064,
+          "prompt_tokens": 152,
+          "gen_tokens": 18,
+          "mode": "baseline",
+          "bottleneck": "prompt_prefill",
+          "rag_policy": "mobcert-v1"
+        }
+      }
+    },
+    {
+      "run_id": "batch_mobcert-v1_q4_multi_hop_pricing_1791802247",
+      "query_id": "q3_single_hop_bonus",
+      "query": "What is the annual learning budget and gym allowance for employees?",
+      "policy": "mobcert-v1",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": "repaired",
+      "benchmark": {
+        "query_id": "q3_single_hop_bonus",
+        "query": "What is the annual learning budget and gym allowance for employees?",
+        "expected_action": "answer",
+        "model_action": "answered",
+        "context_recall": 1.0,
+        "context_precision": 0.5926,
+        "faithfulness": 1.0,
+        "hallucination_rate": 0.0,
+        "token_precision": 1.0,
+        "token_recall": 0.4762,
+        "token_f1": 0.6452,
+        "rouge_l": 0.6452,
+        "fluency": 1.0,
+        "telemetry": {
+          "decode_tok_per_sec": 2.0115049384077186,
+          "prefill_tok_per_sec": 3.4165647494115965,
+          "ttft_ms": 32762.49061300233,
+          "total_ms": 51258.64013700187,
+          "prompt_tokens": 111,
+          "gen_tokens": 37,
+          "mode": "baseline",
+          "bottleneck": "prompt_prefill",
+          "rag_policy": "mobcert-v1"
+        }
+      }
+    },
+    {
+      "run_id": "batch_mobcert-v1_q7_negative_unlisted_executive_1791802554",
+      "query_id": "q4_multi_hop_pricing",
+      "query": "Compare the subscription pricing, drone capacity, and customers between the SwarmKit Pro tiers.",
+      "policy": "mobcert-v1",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": "repaired",
+      "benchmark": {
+        "query_id": "q4_multi_hop_pricing",
+        "query": "Compare the subscription pricing, drone capacity, and customers between the SwarmKit Pro tiers.",
+        "expected_action": "answer",
+        "model_action": "false_refusal",
+        "context_recall": 0.5833,
+        "context_precision": 0.4,
+        "faithfulness": 1.0,
+        "token_f1": 0.0,
+        "rouge_l": 0.0,
+        "fluency": 1.0,
+        "telemetry": {
+          "decode_tok_per_sec": 0.7239450620844944,
+          "prefill_tok_per_sec": 3.4225093853857644,
+          "ttft_ms": 82044.69897899777,
+          "total_ms": 266637.9531270005,
+          "prompt_tokens": 273,
+          "gen_tokens": 133,
+          "mode": "baseline",
+          "bottleneck": "token_decode",
+          "rag_policy": "mobcert-v1"
+        }
+      }
+    },
+    {
+      "run_id": "batch_mobcert-v1_q8_general_edge_computing_1791802569",
+      "query_id": "q7_negative_unlisted_executive",
+      "query": "Who is the Chief Marketing Officer (CMO) of Zephyr Dynamics?",
+      "policy": "mobcert-v1",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": "unverifiable",
+      "benchmark": {
+        "query_id": "q7_negative_unlisted_executive",
+        "query": "Who is the Chief Marketing Officer (CMO) of Zephyr Dynamics?",
+        "expected_action": "refuse",
+        "model_action": "answered",
+        "refusal_accuracy": 0.0,
+        "faithfulness": 0.2,
+        "token_f1": 0.0,
+        "rouge_l": 0.0,
+        "context_recall": 1.0,
+        "telemetry": {
+          "decode_tok_per_sec": 2.103249450292387,
+          "prefill_tok_per_sec": 3.6472576132373704,
+          "ttft_ms": 14820.128432001919,
+          "total_ms": 23420.709991000593,
+          "prompt_tokens": 53,
+          "gen_tokens": 18,
+          "mode": "baseline",
+          "bottleneck": "prompt_prefill",
+          "rag_policy": "mobcert-v1"
+        }
+      }
+    },
+    {
+      "run_id": "batch_mobcert-v1_q9_general_iceland_capital_1791802594",
+      "query_id": "q8_general_edge_computing",
+      "query": "Explain what on-device edge AI inference is in two concise sentences.",
+      "policy": "mobcert-v1",
+      "evidence_status": "PHYSICAL_DEVICE",
+      "answer_contract_status": null,
+      "benchmark": {
+        "query_id": "q8_general_edge_computing",
+        "query": "Explain what on-device edge AI inference is in two concise sentences.",
+        "expected_action": "answer",
+        "model_action": "answered",
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "faithfulness": 0.0,
+        "hallucination_rate": 1.0,
+        "token_precision": 0.234,
+        "token_recall": 0.5,
+        "token_f1": 0.3188,
+        "rouge_l": 0.2899,
+        "fluency": 1.0,
+        "telemetry": {
+          "decode_tok_per_sec": 1.9070743184889078,
+          "prefill_tok_per_sec": 3.7737405195707825,
+          "ttft_ms": 18312.128795001656,
+          "total_ms": 48911.53810600191,
+          "prompt_tokens": 69,
+          "gen_tokens": 58,
+          "mode": "baseline",
+          "bottleneck": "token_decode",
+          "rag_policy": "mobcert-v1"
+        }
+      }
+    }
+  ]
+}

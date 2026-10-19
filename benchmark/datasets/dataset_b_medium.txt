@@ -1,0 +1,19 @@
+Sundae Offline AI Assistant Research Project Document B (Medium).
+
+1. Introduction to Mobile RAG Performance
+Retrieval-Augmented Generation (RAG) on resource-constrained mobile devices presents significant technical challenges regarding latency, memory consumption, and thermal throttling. Traditional AI workflows rely on high-performance cloud GPUs, but edge computing requires executing local quantization models (such as TinyLlama 1.1B and Llama 3.2 1B/3B in Q4_K_M or Q8_0 GGUF format) directly on mobile CPU architectures.
+
+2. Document Ingestion and Text Extraction Pipeline
+The ingestion pipeline processes raw files including plain text (.txt) and Portable Document Format (.pdf). For PDF files, the system utilizes `react-native-pdf-extractor` powered by PDFBox-Android to parse page streams, extract text lines, and assemble contiguous string content. Once text is extracted, it undergoes normalization (whitespace collapsing) and sliding-window chunking. Each chunk is configured with a default size of 100 words and an overlap of 20 words to maintain semantic continuity across boundaries.
+
+3. Embedding Generation and Vector Indexing
+After chunking, text segments are passed to the embedding model (MiniLM L6 v2 quantized GGUF) via `llama.rn` with `embedding: true`. The embedder computes high-dimensional vector representations (e.g. 384 dimensions). These vectors are collected into batches and added to an in-memory vector index, which is subsequently serialized and persisted as a JSON file (`rag_index.json`) in the application's isolated sandbox storage directory.
+
+4. Retrieval and Context Construction
+When a user submits a query, the query string is embedded into a query vector. The system computes Cosine Similarity between the query vector and all indexed document chunk vectors. The scoring algorithm computes dot products and vector norms, sorting results in descending order. A similarity threshold filter (default 0.01) discards irrelevant matches, and the top-k (default 3) relevant chunks are formatted into an injection context string for the local LLM prompt.
+
+5. Local LLM Inference Engine
+Generation is driven by `llama.rn` wrapping `llama.cpp`. The engine loads quantized GGUF weights into memory, allocating a fixed context window (typically 512 tokens). During inference, time to first token (TTFT), tokenization latency, prompt processing (prefill) time, and token generation speed (tokens/second) are measured.
+
+6. Conclusion
+Comprehensive profiling across AVD configurations is essential to identify whether ingestion, embedding, retrieval, or LLM inference serves as the primary system bottleneck.

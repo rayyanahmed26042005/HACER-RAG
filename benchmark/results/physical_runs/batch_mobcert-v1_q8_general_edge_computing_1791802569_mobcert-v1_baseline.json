@@ -1,0 +1,337 @@
+{
+  "rag": {
+    "context": "Evidence status:\n- cmo zephyr dynamics: certified supported by [1]\n\nExcerpts:\n[1] offlineRag.pdf\nZEPHYR DYNAMICS INC.",
+    "sources": [
+      {
+        "id": "doc_1791799440107:0",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 0,
+        "excerpts": [
+          "ZEPHYR DYNAMICS INC."
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      }
+    ],
+    "strategy": "mobcert-v1",
+    "embeddingMs": 5.81937500089407,
+    "indexLoadMs": 0.08526100218296051,
+    "vectorSearchMs": 4.230677001178265,
+    "contextConstructionMs": 180.4916660003364,
+    "candidateK": 3,
+    "candidateChunkCount": 3,
+    "selectedChunkCount": 1,
+    "duplicateChunksRemoved": 0,
+    "contextChars": 117,
+    "contextTokenEstimate": 30,
+    "contextTokens": 36,
+    "tokenCountMethod": "native",
+    "requestedContextTokenBudget": 270,
+    "appliedContextTokenBudget": 270,
+    "compressionRatio": 0.02244668911335578,
+    "topScore": 0.032266458495966696,
+    "scoreMargin": 0.0002644103648863083,
+    "queryTermCount": 6,
+    "matchedQueryTermCount": 2,
+    "queryTermCoverage": 0.3333333333333333,
+    "uncoveredQueryTerms": [
+      "chief",
+      "marketing",
+      "officer",
+      "cmo"
+    ],
+    "lexicalHit": true,
+    "exactTermMatches": 2,
+    "selectedChunkIds": [
+      "doc_1791799440107:0"
+    ],
+    "candidateChunkIds": [
+      "doc_1791799440107:1",
+      "doc_1791799440107:0",
+      "doc_1791799440107:2"
+    ],
+    "failureReason": null,
+    "queryEmbeddingCacheHit": true,
+    "indexChunks": 14,
+    "vectorBytes": 21504,
+    "legacyChunks": 0,
+    "embeddingIdentityVerified": true,
+    "budgetLimited": false,
+    "rejectedByBudget": 0,
+    "tokenChecks": 1,
+    "answerContract": {
+      "query": "Who is the Chief Marketing Officer (CMO) of Zephyr Dynamics?",
+      "demands": [
+        {
+          "demandId": "demand-1",
+          "label": "cmo zephyr dynamics",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:0:0"
+          ],
+          "matchedTerms": [
+            "zephyr",
+            "dynamics"
+          ],
+          "values": [],
+          "valueLabels": [],
+          "units": [],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        }
+      ],
+      "selectedAtomIds": [
+        "doc_1791799440107:0:0"
+      ],
+      "selectedTokens": 5,
+      "tokenBudget": 270,
+      "certifiedDemandCount": 1,
+      "ambiguousDemandCount": 0,
+      "missingDemandCount": 0,
+      "requiredCoverage": 1
+    },
+    "answerContractAtoms": [
+      {
+        "id": "doc_1791799440107:0:0",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 0,
+        "sourceOrder": 0,
+        "text": "ZEPHYR DYNAMICS INC.",
+        "terms": [
+          "zephyr",
+          "dynamics",
+          "inc"
+        ],
+        "entities": [
+          "zephyr dynamics"
+        ],
+        "attributes": [],
+        "numbers": [],
+        "units": [],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [],
+        "factKeys": [
+          "zephyr dynamics|*"
+        ],
+        "estimatedTokens": 5
+      }
+    ]
+  },
+  "rag_contract_audit": {
+    "status": "unverifiable",
+    "unsupportedProtectedTokens": [
+      "citation:missing"
+    ],
+    "citedSourceIds": [],
+    "requiredCitationCoverage": 0,
+    "demandStatuses": [
+      {
+        "demandId": "demand-1",
+        "label": "cmo zephyr dynamics",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:0:0"
+        ],
+        "matchedTerms": [
+          "zephyr",
+          "dynamics"
+        ],
+        "values": [],
+        "valueLabels": [],
+        "units": [],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      }
+    ]
+  },
+  "rag_quality": {
+    "recallAtK": null,
+    "precisionAtK": null,
+    "reciprocalRank": null,
+    "answerTokenF1": null,
+    "answerContextTokenOverlap": 0.5,
+    "groundedness": null,
+    "correctness": null
+  },
+  "input_prompt_tokens": 136,
+  "output_tokens_requested": 512,
+  "inference_skipped": false,
+  "native_timings_available": true,
+  "native_prompt_truncated": false,
+  "output_limit_reached": false,
+  "tokens_cached": 138,
+  "timestamp": "2026-10-12T10:56:28.584Z",
+  "query": "Who is the Chief Marketing Officer (CMO) of Zephyr Dynamics?",
+  "chat_mode": "document",
+  "profile_id": "p_1791008294421_84onr856",
+  "rag_retrieval_ms": 191.14989599958062,
+  "embedding_ms": 5.81937500089407,
+  "vector_search_ms": 4.230677001178265,
+  "context_construction_ms": 180.4916660003364,
+  "context_chars": 117,
+  "retrieved_chunk_count": 1,
+  "candidate_chunk_count": 3,
+  "rag_strategy": "mobcert-v1",
+  "rag_candidate_k": 3,
+  "rag_duplicate_chunks_removed": 0,
+  "rag_context_token_estimate": 30,
+  "rag_requested_context_budget": 270,
+  "rag_applied_context_budget": 270,
+  "rag_compression_ratio": 0.02244668911335578,
+  "retrieved_top_score": 0.032266458495966696,
+  "retrieved_score_margin": 0.0002644103648863083,
+  "rag_query_term_count": 6,
+  "rag_matched_query_term_count": 2,
+  "rag_query_term_coverage": 0.3333333333333333,
+  "rag_lexical_hit": true,
+  "rag_exact_term_matches": 2,
+  "rag_selected_chunk_ids": [
+    "doc_1791799440107:0"
+  ],
+  "rag_failure_reason": null,
+  "prompt_chars": 468,
+  "prompt_tokenization_ms": 85.63526000082493,
+  "prompt_tokens": 53,
+  "prefill_ms": 14531,
+  "prefill_tokens_per_second": 3.6472576132373704,
+  "generated_tokens": 18,
+  "decode_ms": 8558,
+  "tokens_per_second": 2.103249450292387,
+  "ttft_ms": 14820.128432001919,
+  "llm_ttft_ms": 14542.908119000494,
+  "total_inference_ms": 23143.48967799917,
+  "total_warm_latency_ms": 23420.709991000593,
+  "controller_mode": "baseline",
+  "evidence_demand": "broad",
+  "controller_workload_bucket": "document:short:broad",
+  "controller_selection_reason": "historical fixed baseline",
+  "controller_state_read_ms": 0,
+  "device_thermal_status": "not-read",
+  "device_available_memory_mb": null,
+  "device_low_memory": false,
+  "device_battery_level": null,
+  "device_battery_temp_c": null,
+  "device_cpu_frequencies_khz": [],
+  "n_threads": 4,
+  "n_predict": 135,
+  "context_token_budget": null,
+  "primary_bottleneck": "prompt_prefill",
+  "quality_evaluation": "not_measured",
+  "response_text": "The CMO of Zephyr Dynamics is not mentioned in the provided excerpts. [n]",
+  "research_metrics": {
+    "policy": "mobcert-v1",
+    "queryId": "q7_negative_unlisted_executive",
+    "expectedAction": "refuse",
+    "modelAction": "answered",
+    "contextRecall": 1,
+    "contextPrecision": 1,
+    "retrievalEvidenceCoverage": 33.3,
+    "selectedChunkCount": 1,
+    "candidateChunkCount": 3,
+    "compressionRatio": 0.022,
+    "retrievalLatencyMs": 191.1,
+    "faithfulness": 0.5357,
+    "hallucinationRate": 0.4643,
+    "answerF1": 0,
+    "answerPrecision": 0,
+    "answerRecall": 0,
+    "rougeL": 0,
+    "hasGroundTruth": true,
+    "refusalCorrectness": 0,
+    "contractStatus": "unverifiable",
+    "demandsCount": 1,
+    "demandsSatisfied": 1,
+    "demandsMissing": 0,
+    "demandsAmbiguous": 0,
+    "conflictsDetected": [
+      "citation:missing"
+    ],
+    "avoidedInference": false,
+    "totalLatencyMs": 23420.7,
+    "ttftMs": 14820.1,
+    "prefillMs": 14531,
+    "prefillTokPerSec": 3.6,
+    "decodeMs": 8558,
+    "decodeTokPerSec": 2.1,
+    "promptTokens": 53,
+    "generatedTokens": 18,
+    "primaryBottleneck": "prompt_prefill",
+    "threads": 4,
+    "availableRamMb": null,
+    "batteryTempC": null,
+    "thermalStatus": "normal"
+  },
+  "hardware": {
+    "pre_test": {
+      "current_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "max_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "battery_temp_c": 49.0,
+      "battery_level_percent": 23,
+      "thermal_status": null,
+      "pss_mb": 1984.66
+    },
+    "post_test": {
+      "current_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "max_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "battery_temp_c": 49.0,
+      "battery_level_percent": 23,
+      "thermal_status": null,
+      "pss_mb": 1984.88
+    },
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "context_length": 512,
+    "batch_size": 512,
+    "ubatch_size": 512
+  },
+  "requested_rag_policy": "mobcert-v1",
+  "requested_inference_mode": "baseline",
+  "evidence_status": "PHYSICAL_DEVICE",
+  "benchmark_script": "run_device_inference.py",
+  "run_id": "batch_mobcert-v1_q8_general_edge_computing_1791802569",
+  "result_path": "C:\\projects\\portingllm\\Porting-LLM-s-Model-Project\\benchmark\\results\\physical_runs\\batch_mobcert-v1_q8_general_edge_computing_1791802569_mobcert-v1_baseline.json"
+}

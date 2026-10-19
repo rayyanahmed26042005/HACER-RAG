@@ -1,0 +1,76 @@
+\section{Evidence Versioning, Cache Validation, and Selective Repair}
+\label{sec:versioning_repair}
+
+\subsection{Vulnerability of Blind Session Reuse}
+In standard mobile implementations of \texttt{llama.cpp} and \texttt{llama.rn}, session caching is exposed via simple file persistence:
+\begin{verbatim}
+llama_save_session_file(ctx, "session.bin", tokens, n_tokens);
+llama_load_session_file(ctx, "session.bin", tokens, n_max, &n_out);
+\end{verbatim}
+When used blindly in RAG applications, this interface is dangerous. The runtime assumes that any session stored at \texttt{session.bin} is authoritative. It does not inspect whether the documents referenced during the initial prefill still exist, whether their contents have changed, or whether their ordering has been altered. If a cached session is restored after a document modification, the Transformer attention layers attend directly to stale Key-Value vectors. The model will confidently generate outdated facts—a failure mode undetectable by downstream text decoders.
+
+\subsection{The HACER Selective Repair Policy}
+HACER-RAG replaces blind persistence with a stateful, hash-verified cache lifecycle:
+
+\begin{algorithm}[H]
+\caption{HACER Adaptive Cache Validation and Repair}
+\label{alg:hacer_repair}
+\begin{algorithmic}[1]
+\REQUIRE Retrieved chunks $\mathcal{C} = [C_1, C_2, \dots, C_k]$, User query $Q$, Cache registry $\mathcal{R}$
+\ENSURE Validated KV state in LLM context arena
+\STATE $\mathcal{C}_{\text{canon}} \gets \text{CanonicalSort}(\mathcal{C})$
+\STATE $P \gets \text{FormatPrefix}(\mathcal{C}_{\text{canon}})$
+\STATE $\mathcal{K}_{\text{session}} \gets \text{SHA-256}(P)$
+\IF{$\mathcal{K}_{\text{session}} \in \mathcal{R}$ \AND $\text{VerifyHashes}(\mathcal{C}_{\text{canon}}, \mathcal{R}[\mathcal{K}_{\text{session}}])$}
+    \STATE \COMMENT{Case 1: Full Exact Prefix Hit}
+    \STATE $\text{Status} \gets \text{LoadSessionFromFlash}(\mathcal{R}[\mathcal{K}_{\text{session}}].\text{path})$
+    \IF{$\text{Status} = \text{SUCCESS}$}
+        \STATE $\text{PrefillOnline}(Q)$
+        \RETURN
+    \ENDIF
+\ENDIF
+\STATE \COMMENT{Case 2: Find Longest Valid Prefix}
+\STATE $j^* \gets \max \{ j \in [0, k-1] \mid \text{SHA-256}(\text{FormatPrefix}(\mathcal{C}_{\text{canon}}[1:j])) \in \mathcal{R} \}$
+\IF{$j^* > 0$}
+    \STATE $\mathcal{K}_{\text{prefix}} \gets \text{SHA-256}(\text{FormatPrefix}(\mathcal{C}_{\text{canon}}[1:j^*]))$
+    \STATE $\text{Status} \gets \text{LoadSessionFromFlash}(\mathcal{R}[\mathcal{K}_{\text{prefix}}].\text{path})$
+    \IF{$\text{Status} = \text{SUCCESS}$}
+        \STATE $\text{TokensToEvaluate} \gets \text{Tokenize}(\mathcal{C}_{\text{canon}}[j^*+1:k] \mathbin{\Vert} Q)$
+        \STATE $\text{PrefillOnline}(\text{TokensToEvaluate})$
+        \STATE $\text{SaveSessionToFlash}(\mathcal{K}_{\text{session}}, \mathcal{C}_{\text{canon}})$
+        \RETURN
+    \ENDIF
+\ENDIF
+\STATE \COMMENT{Case 3: Invalidation, Cleanup, and Scratch Fallback}
+\STATE $\text{PurgeInvalidSessions}(\mathcal{R})$
+\STATE $\text{ResetContextArena}()$
+\STATE $\text{TokensAll} \gets \text{Tokenize}(P \mathbin{\Vert} Q)$
+\STATE $\text{PrefillOnline}(\text{TokensAll})$
+\STATE $\text{SaveSessionToFlash}(\mathcal{K}_{\text{session}}, \mathcal{C}_{\text{canon}})$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Architectural Comparison: Ordinary Session Reuse vs. HACER}
+Table~\ref{tab:baseline_comparison} presents a systematic comparison between the Ordinary Session Reuse baseline (as naively exposed by \texttt{llama.rn}) and the HACER Adaptive Policy across five critical systems dimensions.
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{Systematic Comparison: Ordinary Blind Session Reuse vs. HACER Adaptive Policy.}}
+\label{tab:baseline_comparison}
+\small
+\begin{tabular}{p{3.2cm}p{4.2cm}p{4.5cm}p{4.2cm}}
+\toprule
+\textbf{Dimension} & \textbf{Ordinary Session Reuse (Baseline)} & \textbf{HACER Adaptive Policy (Proposed)} & \textbf{Systems Consequence} \\
+\midrule
+\textbf{Evidence Chunk Ordering} & Static / monolithic: expects historical conversational prompt prefix in sequential order. & Dynamic Canonical Layout: enforces deterministic prefix ordering via persistent IDs. & Ordinary reuse misses cache completely (0\% reuse) when retriever reorders chunks. HACER guarantees prefix hits. \\
+\addlinespace
+\textbf{Document Staleness Handling} & \textbf{Blind / Naive:} Loads session by path or ID without checking if document content changed. & \textbf{Cryptographic Chunk Hashing:} Validates SHA-256 hash of retrieved chunks against cached metadata. & Ordinary reuse produces \textbf{silent stale hallucinations}. HACER detects staleness, invalidates cache, and repairs online. \\
+\addlinespace
+\textbf{Context Safety \& Budgeting} & Unchecked: relies on native engine default, risking silent truncation or OOM crashes. & \textbf{JNI-Level Enforced Headroom:} $(n_{\text{ctx}} - 4 - N_{\text{prompt}} - N_{\text{predict}} \ge 0)$ strictly validated before execution. & Ordinary reuse risks silent truncation ($truncated=1$) or LMK process kills. HACER guarantees context safety. \\
+\addlinespace
+\textbf{Boundary Token Alignment} & Uncontrolled: concatenation across chunks causes tokenizer boundary merging errors. & \textbf{Boundary-Preserving Token Accounting:} Explicitly models and accounts for the $+1$ continuation boundary token. & Ordinary reuse produces token mismatch errors or prefill misalignment. HACER achieves 100\% deterministic prefill parity. \\
+\addlinespace
+\textbf{Storage / Memory Profiling} & Static file overwrite: writes monolithic sessions without tracking device I/O overhead. & \textbf{Storage-Aware Tiering \& Attribution:} Instruments \texttt{/proc/\{PID\}/io} to separate cold flash reads from OS page cache hits. & Allows precise thermal, flash wear, and mobile memory profiling on low-RAM handsets. \\
+\bottomrule
+\end{tabular}
+\end{table*}

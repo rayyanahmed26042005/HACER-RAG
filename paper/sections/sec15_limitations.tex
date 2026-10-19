@@ -1,0 +1,16 @@
+\section{Limitations and Threats to Validity}
+\label{sec:limitations}
+
+\subsection{Threats to Internal Validity}
+\begin{itemize}
+    \item \textbf{Operating System and Background Activity:} Commercial Android devices host non-deterministic background daemons (e.g., Google Play Services, carrier telemetry, and memory compactors). As demonstrated in our analysis of the preliminary Case~3 result, an uncoordinated kernel compaction event can temporarily throttle memory bandwidth. We mitigated this threat by enforcing matched-pair execution, randomizing trial order within pairs, incorporating explicit context-flushing intervals, recording Linux kernel I/O counters, and reporting non-parametric bootstrap confidence intervals across repeated trials.
+    \item \textbf{Thermal Throttling Dynamics:} Mobile SoCs adjust clock frequencies dynamically based on junction temperatures. To prevent thermal bias, baseline and reuse trials were interleaved, and thermal states were tracked via \texttt{dumpsys battery}.
+    \item \textbf{Quarantined Incomplete Trials:} Two incomplete trials out of 182 were quarantined due to external carrier dialog focus events. Because both quarantined trials were documented with full telemetry and excluded prior to paired analysis, they introduce zero statistical bias into the reported results.
+\end{itemize}
+
+\subsection{Threats to External Validity}
+\begin{itemize}
+    \item \textbf{Hardware Platform Generalizability:} All physical evaluations in this study were conducted on a single commercial handset (Xiaomi Redmi 12 5G featuring the Qualcomm Snapdragon 4 Gen 2 SoC). While this platform represents the massive market of budget and mid-range Android devices, performance characteristics may vary on SoCs featuring dedicated NPU accelerators (e.g., Qualcomm Hexagon, MediaTek APU) or different flash storage tiers (e.g., eMMC 5.1 vs. UFS 4.0).
+    \item \textbf{Model Architecture and Quantization:} We evaluated Gemma 2 2B Instruct quantized to 4-bit integers (\texttt{Q4\_K\_M}). While Gemma 2 employs modern architectural techniques (interleaved local and global attention, Grouped-Query Attention, and Rotary Position Embeddings), models with fundamentally different context mechanisms (such as pure sliding-window attention or state-space models like Mamba) may exhibit distinct prefix caching trade-offs.
+    \item \textbf{Scope of Dynamic Evidence Scenarios:} While the five dynamic corpus scenarios rigorously demonstrate that blind session reuse suffers from silent stale hallucinations and crashes, they represent targeted proof-of-concept stress tests rather than an exhaustive survey of all possible document mutation patterns.
+\end{itemize}

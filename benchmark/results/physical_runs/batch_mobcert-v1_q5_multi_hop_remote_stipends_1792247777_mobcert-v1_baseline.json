@@ -1,0 +1,1504 @@
+{
+  "rag": {
+    "context": "Evidence status:\n- all equipment stipends: certified supported by [1], [2], [3]\n- remote eligible employees: ambiguous supported by [1], [2], [3], [4]\n\nExcerpts:\n[1] offlineRag.pdf \u2014 3. HR Policies > 3.2 Remote Work Policy\nequipment stipend of $800 USD for new hires.\n\n[2] offlineRag.pdf \u2014 3. HR Policies > 3.3 Compensation & Benefits\nInternet Stipend $50/month for remote-eligible employees\n\n[3] offlineRag.pdf \u2014 3. HR Policies > 3.1 Leave Policy\nAll full-time employees receive 28 days of paid annual leave per year, accrued monthly.\n\n[4] offlineRag.pdf \u2014 3. HR Policies > 3.2 Remote Work Policy\nEmployees are required to be in-office a minimum of 2",
+    "sources": [
+      {
+        "id": "doc_1791799440107:9",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 9,
+        "sectionHeader": "3. HR Policies > 3.2 Remote Work Policy",
+        "excerpts": [
+          "equipment stipend of $800 USD for new hires.",
+          "Employees are required to be in-office a minimum of 2"
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      },
+      {
+        "id": "doc_1791799440107:10",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 10,
+        "sectionHeader": "3. HR Policies > 3.3 Compensation & Benefits",
+        "excerpts": [
+          "Internet Stipend $50/month for remote-eligible employees"
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      },
+      {
+        "id": "doc_1791799440107:8",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 8,
+        "sectionHeader": "3. HR Policies > 3.1 Leave Policy",
+        "excerpts": [
+          "All full-time employees receive 28 days of paid annual leave per year, accrued monthly."
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      }
+    ],
+    "strategy": "mobcert-v1",
+    "embeddingMs": 6.043176997452974,
+    "indexLoadMs": 0.045207999646663666,
+    "vectorSearchMs": 5.760572999715805,
+    "contextConstructionMs": 3575.793175999075,
+    "candidateK": 8,
+    "candidateChunkCount": 8,
+    "selectedChunkCount": 3,
+    "duplicateChunksRemoved": 0,
+    "contextChars": 651,
+    "contextTokenEstimate": 163,
+    "contextTokens": 195,
+    "tokenCountMethod": "native",
+    "requestedContextTokenBudget": 214,
+    "appliedContextTokenBudget": 214,
+    "compressionRatio": 0.08911994058670628,
+    "topScore": 0.03252247488101534,
+    "scoreMargin": 0,
+    "queryTermCount": 9,
+    "matchedQueryTermCount": 7,
+    "queryTermCoverage": 0.7777777777777778,
+    "uncoveredQueryTerms": [
+      "allowances",
+      "available"
+    ],
+    "lexicalHit": true,
+    "exactTermMatches": 4,
+    "selectedChunkIds": [
+      "doc_1791799440107:9",
+      "doc_1791799440107:10",
+      "doc_1791799440107:8"
+    ],
+    "candidateChunkIds": [
+      "doc_1791799440107:10",
+      "doc_1791799440107:9",
+      "doc_1791799440107:8",
+      "doc_1791799440107:12",
+      "doc_1791799440107:7",
+      "doc_1791799440107:5",
+      "doc_1791799440107:13",
+      "doc_1791799440107:0"
+    ],
+    "failureReason": "contract_ambiguous_demands",
+    "queryEmbeddingCacheHit": true,
+    "indexChunks": 14,
+    "vectorBytes": 21504,
+    "legacyChunks": 0,
+    "embeddingIdentityVerified": true,
+    "budgetLimited": true,
+    "rejectedByBudget": 1,
+    "tokenChecks": 12,
+    "answerContract": {
+      "query": "What are all the equipment stipends and monthly allowances available for remote-eligible employees?",
+      "demands": [
+        {
+          "demandId": "demand-1",
+          "label": "all equipment stipends",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:9:8",
+            "doc_1791799440107:10:6",
+            "doc_1791799440107:8:0"
+          ],
+          "matchedTerms": [
+            "equipment",
+            "stipends",
+            "all"
+          ],
+          "values": [],
+          "valueLabels": [],
+          "units": [],
+          "polarities": [],
+          "conflictingValues": []
+        },
+        {
+          "demandId": "demand-2",
+          "label": "remote eligible employees",
+          "status": "ambiguous",
+          "sourceIds": [
+            "doc_1791799440107:9:8",
+            "doc_1791799440107:10:6",
+            "doc_1791799440107:8:0",
+            "doc_1791799440107:9:1"
+          ],
+          "matchedTerms": [
+            "remote",
+            "eligible",
+            "employees",
+            "monthly"
+          ],
+          "values": [
+            "$800",
+            "$50",
+            "28",
+            "2"
+          ],
+          "valueLabels": [
+            "employees"
+          ],
+          "units": [
+            "usd",
+            "month",
+            "days",
+            "year"
+          ],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": [
+            "$800",
+            "$50",
+            "28",
+            "2"
+          ]
+        }
+      ],
+      "selectedAtomIds": [
+        "doc_1791799440107:9:8",
+        "doc_1791799440107:10:6",
+        "doc_1791799440107:8:0",
+        "doc_1791799440107:9:1"
+      ],
+      "selectedTokens": 61,
+      "tokenBudget": 214,
+      "certifiedDemandCount": 1,
+      "ambiguousDemandCount": 1,
+      "missingDemandCount": 0,
+      "requiredCoverage": 1
+    },
+    "answerContractAtoms": [
+      {
+        "id": "doc_1791799440107:9:8",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 9,
+        "sourceOrder": 8,
+        "sectionHeader": "3. HR Policies > 3.2 Remote Work Policy",
+        "text": "equipment stipend of $800 USD for new hires.",
+        "terms": [
+          "3",
+          "hr",
+          "policies",
+          "2",
+          "remote",
+          "work",
+          "policy",
+          "equipment",
+          "stipend",
+          "800",
+          "usd",
+          "new",
+          "hires"
+        ],
+        "entities": [
+          "hr policies",
+          "remote work policy"
+        ],
+        "attributes": [],
+        "numbers": [
+          "$800"
+        ],
+        "units": [
+          "usd"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [],
+        "factKeys": [
+          "hr policies+remote work policy|*"
+        ],
+        "estimatedTokens": 11
+      },
+      {
+        "id": "doc_1791799440107:10:6",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 10,
+        "sourceOrder": 6,
+        "sectionHeader": "3. HR Policies > 3.3 Compensation & Benefits",
+        "text": "Internet Stipend $50/month for remote-eligible employees",
+        "terms": [
+          "3",
+          "hr",
+          "policies",
+          "compensation",
+          "benefits",
+          "internet",
+          "stipend",
+          "50",
+          "month",
+          "remote",
+          "eligible",
+          "employees"
+        ],
+        "entities": [
+          "hr policies",
+          "internet stipend"
+        ],
+        "attributes": [
+          "employees"
+        ],
+        "numbers": [
+          "$50"
+        ],
+        "units": [
+          "month"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "employees",
+            "numbers": [],
+            "units": [],
+            "value": "employees",
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "hr policies+internet stipend|employees"
+        ],
+        "estimatedTokens": 14
+      },
+      {
+        "id": "doc_1791799440107:8:0",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 8,
+        "sourceOrder": 0,
+        "sectionHeader": "3. HR Policies > 3.1 Leave Policy",
+        "text": "All full-time employees receive 28 days of paid annual leave per year, accrued monthly.",
+        "terms": [
+          "3",
+          "hr",
+          "policies",
+          "1",
+          "leave",
+          "policy",
+          "all",
+          "full",
+          "time",
+          "employees",
+          "receive",
+          "28",
+          "days",
+          "paid",
+          "annual",
+          "per",
+          "year",
+          "accrued",
+          "monthly"
+        ],
+        "entities": [
+          "hr policies",
+          "leave policy"
+        ],
+        "attributes": [
+          "employees",
+          "year"
+        ],
+        "numbers": [
+          "28"
+        ],
+        "units": [
+          "days",
+          "year"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "employees",
+            "numbers": [
+              "28"
+            ],
+            "units": [
+              "days",
+              "year"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "year",
+            "numbers": [],
+            "units": [
+              "year"
+            ],
+            "value": "year accrued monthly",
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "hr policies+leave policy|employees",
+          "hr policies+leave policy|year"
+        ],
+        "estimatedTokens": 22
+      },
+      {
+        "id": "doc_1791799440107:9:1",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 9,
+        "sourceOrder": 1,
+        "sectionHeader": "3. HR Policies > 3.2 Remote Work Policy",
+        "text": "Employees are required to be in-office a minimum of 2",
+        "terms": [
+          "3",
+          "hr",
+          "policies",
+          "2",
+          "remote",
+          "work",
+          "policy",
+          "employees",
+          "required",
+          "office",
+          "minimum"
+        ],
+        "entities": [
+          "hr policies",
+          "remote work policy"
+        ],
+        "attributes": [
+          "employees",
+          "office"
+        ],
+        "numbers": [
+          "2"
+        ],
+        "units": [],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "employees",
+            "numbers": [
+              "2"
+            ],
+            "units": [],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "office",
+            "numbers": [
+              "2"
+            ],
+            "units": [],
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "hr policies+remote work policy|employees",
+          "hr policies+remote work policy|office"
+        ],
+        "estimatedTokens": 14
+      }
+    ],
+    "evidenceSelectionDiagnostics": [
+      {
+        "atomId": "doc_1791799440107:10:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:10:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 16
+      },
+      {
+        "atomId": "doc_1791799440107:10:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 13
+      },
+      {
+        "atomId": "doc_1791799440107:10:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:8:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:8:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:8:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:8:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:8:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 22
+      },
+      {
+        "atomId": "doc_1791799440107:8:8",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 23
+      },
+      {
+        "atomId": "doc_1791799440107:12:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:12:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:12:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 25
+      },
+      {
+        "atomId": "doc_1791799440107:12:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      },
+      {
+        "atomId": "doc_1791799440107:12:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 16
+      },
+      {
+        "atomId": "doc_1791799440107:12:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 5
+      },
+      {
+        "atomId": "doc_1791799440107:12:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:12:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:7:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 1
+      },
+      {
+        "atomId": "doc_1791799440107:7:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:5:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:5:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:5:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 19
+      },
+      {
+        "atomId": "doc_1791799440107:5:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:5:4",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 16
+      },
+      {
+        "atomId": "doc_1791799440107:5:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      },
+      {
+        "atomId": "doc_1791799440107:5:6",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 18
+      },
+      {
+        "atomId": "doc_1791799440107:5:7",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:5:8",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 25
+      },
+      {
+        "atomId": "doc_1791799440107:5:9",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 2
+      },
+      {
+        "atomId": "doc_1791799440107:5:10",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 24
+      },
+      {
+        "atomId": "doc_1791799440107:13:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 23
+      },
+      {
+        "atomId": "doc_1791799440107:13:1",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 7
+      },
+      {
+        "atomId": "doc_1791799440107:13:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 18
+      },
+      {
+        "atomId": "doc_1791799440107:13:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 9
+      },
+      {
+        "atomId": "doc_1791799440107:13:5",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 13
+      },
+      {
+        "atomId": "doc_1791799440107:0:0",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 5
+      },
+      {
+        "atomId": "doc_1791799440107:0:2",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:0:3",
+        "status": "rejected",
+        "reason": "no_demand_match",
+        "matchedDemandIds": [],
+        "estimatedTokens": 5
+      },
+      {
+        "atomId": "doc_1791799440107:9:8",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-1",
+          "demand-2"
+        ],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:10:6",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-1",
+          "demand-2"
+        ],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:8:0",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-1",
+          "demand-2"
+        ],
+        "estimatedTokens": 22
+      },
+      {
+        "atomId": "doc_1791799440107:9:1",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:9:5",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 19
+      },
+      {
+        "atomId": "doc_1791799440107:13:4",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-1"
+        ],
+        "estimatedTokens": 14
+      },
+      {
+        "atomId": "doc_1791799440107:8:7",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 3
+      },
+      {
+        "atomId": "doc_1791799440107:9:2",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 4
+      },
+      {
+        "atomId": "doc_1791799440107:9:4",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 6
+      },
+      {
+        "atomId": "doc_1791799440107:9:0",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:0:1",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:10:4",
+        "status": "selected",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:10:1",
+        "status": "rejected",
+        "reason": "not_selected_after_cover",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 19
+      },
+      {
+        "atomId": "doc_1791799440107:9:3",
+        "status": "rejected",
+        "reason": "not_selected_after_cover",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 20
+      },
+      {
+        "atomId": "doc_1791799440107:9:6",
+        "status": "rejected",
+        "reason": "not_selected_after_cover",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 12
+      },
+      {
+        "atomId": "doc_1791799440107:9:7",
+        "status": "rejected",
+        "reason": "not_selected_after_cover",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 11
+      },
+      {
+        "atomId": "doc_1791799440107:8:4",
+        "status": "rejected",
+        "reason": "not_selected_after_cover",
+        "matchedDemandIds": [
+          "demand-2"
+        ],
+        "estimatedTokens": 18
+      }
+    ]
+  },
+  "rag_contract_audit": {
+    "status": "unverifiable",
+    "unsupportedProtectedTokens": [
+      "citation:missing"
+    ],
+    "citedSourceIds": [
+      "doc_1791799440107:10:6",
+      "doc_1791799440107:9:8"
+    ],
+    "requiredCitationCoverage": 1,
+    "demandStatuses": [
+      {
+        "demandId": "demand-1",
+        "label": "all equipment stipends",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:9:8",
+          "doc_1791799440107:10:6",
+          "doc_1791799440107:8:0"
+        ],
+        "matchedTerms": [
+          "equipment",
+          "stipends",
+          "all"
+        ],
+        "values": [],
+        "valueLabels": [],
+        "units": [],
+        "polarities": [],
+        "conflictingValues": []
+      },
+      {
+        "demandId": "demand-2",
+        "label": "remote eligible employees",
+        "status": "ambiguous",
+        "sourceIds": [
+          "doc_1791799440107:9:8",
+          "doc_1791799440107:10:6",
+          "doc_1791799440107:8:0",
+          "doc_1791799440107:9:1"
+        ],
+        "matchedTerms": [
+          "remote",
+          "eligible",
+          "employees",
+          "monthly"
+        ],
+        "values": [
+          "$800",
+          "$50",
+          "28",
+          "2"
+        ],
+        "valueLabels": [
+          "employees"
+        ],
+        "units": [
+          "usd",
+          "month",
+          "days",
+          "year"
+        ],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": [
+          "$800",
+          "$50",
+          "28",
+          "2"
+        ]
+      }
+    ]
+  },
+  "rag_evidence_selection_diagnostics": [
+    {
+      "atomId": "doc_1791799440107:10:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:10:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 16
+    },
+    {
+      "atomId": "doc_1791799440107:10:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 13
+    },
+    {
+      "atomId": "doc_1791799440107:10:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:8:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:8:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:8:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:8:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:8:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 22
+    },
+    {
+      "atomId": "doc_1791799440107:8:8",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 23
+    },
+    {
+      "atomId": "doc_1791799440107:12:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:12:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:12:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 25
+    },
+    {
+      "atomId": "doc_1791799440107:12:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    },
+    {
+      "atomId": "doc_1791799440107:12:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 16
+    },
+    {
+      "atomId": "doc_1791799440107:12:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 5
+    },
+    {
+      "atomId": "doc_1791799440107:12:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:12:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:7:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 1
+    },
+    {
+      "atomId": "doc_1791799440107:7:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:5:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:5:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:5:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 19
+    },
+    {
+      "atomId": "doc_1791799440107:5:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:5:4",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 16
+    },
+    {
+      "atomId": "doc_1791799440107:5:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    },
+    {
+      "atomId": "doc_1791799440107:5:6",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 18
+    },
+    {
+      "atomId": "doc_1791799440107:5:7",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:5:8",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 25
+    },
+    {
+      "atomId": "doc_1791799440107:5:9",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 2
+    },
+    {
+      "atomId": "doc_1791799440107:5:10",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 24
+    },
+    {
+      "atomId": "doc_1791799440107:13:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 23
+    },
+    {
+      "atomId": "doc_1791799440107:13:1",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 7
+    },
+    {
+      "atomId": "doc_1791799440107:13:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 18
+    },
+    {
+      "atomId": "doc_1791799440107:13:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 9
+    },
+    {
+      "atomId": "doc_1791799440107:13:5",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 13
+    },
+    {
+      "atomId": "doc_1791799440107:0:0",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 5
+    },
+    {
+      "atomId": "doc_1791799440107:0:2",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:0:3",
+      "status": "rejected",
+      "reason": "no_demand_match",
+      "matchedDemandIds": [],
+      "estimatedTokens": 5
+    },
+    {
+      "atomId": "doc_1791799440107:9:8",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-1",
+        "demand-2"
+      ],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:10:6",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-1",
+        "demand-2"
+      ],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:8:0",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-1",
+        "demand-2"
+      ],
+      "estimatedTokens": 22
+    },
+    {
+      "atomId": "doc_1791799440107:9:1",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:9:5",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 19
+    },
+    {
+      "atomId": "doc_1791799440107:13:4",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-1"
+      ],
+      "estimatedTokens": 14
+    },
+    {
+      "atomId": "doc_1791799440107:8:7",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 3
+    },
+    {
+      "atomId": "doc_1791799440107:9:2",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 4
+    },
+    {
+      "atomId": "doc_1791799440107:9:4",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 6
+    },
+    {
+      "atomId": "doc_1791799440107:9:0",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:0:1",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:10:4",
+      "status": "selected",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:10:1",
+      "status": "rejected",
+      "reason": "not_selected_after_cover",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 19
+    },
+    {
+      "atomId": "doc_1791799440107:9:3",
+      "status": "rejected",
+      "reason": "not_selected_after_cover",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 20
+    },
+    {
+      "atomId": "doc_1791799440107:9:6",
+      "status": "rejected",
+      "reason": "not_selected_after_cover",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 12
+    },
+    {
+      "atomId": "doc_1791799440107:9:7",
+      "status": "rejected",
+      "reason": "not_selected_after_cover",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 11
+    },
+    {
+      "atomId": "doc_1791799440107:8:4",
+      "status": "rejected",
+      "reason": "not_selected_after_cover",
+      "matchedDemandIds": [
+        "demand-2"
+      ],
+      "estimatedTokens": 18
+    }
+  ],
+  "rag_quality": {
+    "recallAtK": null,
+    "precisionAtK": null,
+    "reciprocalRank": null,
+    "answerTokenF1": null,
+    "answerContextTokenOverlap": 0.9375,
+    "groundedness": null,
+    "correctness": null
+  },
+  "input_prompt_tokens": 380,
+  "output_tokens_requested": 106,
+  "inference_skipped": false,
+  "direct_evidence_answer": false,
+  "native_timings_available": true,
+  "native_prompt_truncated": false,
+  "output_limit_reached": false,
+  "tokens_cached": 402,
+  "timestamp": "2026-10-17T14:37:17.811Z",
+  "query": "What are all the equipment stipends and monthly allowances available for remote-eligible employees?",
+  "chat_mode": "document",
+  "profile_id": "p_1791008294421_84onr856",
+  "rag_retrieval_ms": 3588.062185999006,
+  "embedding_ms": 6.043176997452974,
+  "vector_search_ms": 5.760572999715805,
+  "context_construction_ms": 3575.793175999075,
+  "context_chars": 651,
+  "retrieved_chunk_count": 3,
+  "candidate_chunk_count": 8,
+  "rag_strategy": "mobcert-v1",
+  "rag_candidate_k": 8,
+  "rag_duplicate_chunks_removed": 0,
+  "rag_context_token_estimate": 163,
+  "rag_requested_context_budget": 214,
+  "rag_applied_context_budget": 214,
+  "rag_compression_ratio": 0.08911994058670628,
+  "retrieved_top_score": 0.03252247488101534,
+  "retrieved_score_margin": 0,
+  "rag_query_term_count": 9,
+  "rag_matched_query_term_count": 7,
+  "rag_query_term_coverage": 0.7777777777777778,
+  "rag_lexical_hit": true,
+  "rag_exact_term_matches": 4,
+  "rag_selected_chunk_ids": [
+    "doc_1791799440107:9",
+    "doc_1791799440107:10",
+    "doc_1791799440107:8"
+  ],
+  "rag_failure_reason": "contract_ambiguous_demands",
+  "prompt_chars": 1482,
+  "prompt_tokenization_ms": 74.22760400176048,
+  "prompt_tokens": 322,
+  "prefill_ms": 47840,
+  "prefill_tokens_per_second": 6.7306638531098235,
+  "generated_tokens": 38,
+  "decode_ms": 9687,
+  "tokens_per_second": 3.9227073865715614,
+  "ttft_ms": 51519.84211599827,
+  "llm_ttft_ms": 47856.61732599884,
+  "total_inference_ms": 57612.64966600016,
+  "total_warm_latency_ms": 61275.87445599958,
+  "controller_mode": "baseline",
+  "evidence_demand": "broad",
+  "controller_workload_bucket": "document:medium:broad",
+  "controller_selection_reason": "historical fixed baseline",
+  "controller_state_read_ms": 0,
+  "device_thermal_status": "not-read",
+  "device_available_memory_mb": null,
+  "device_low_memory": false,
+  "device_battery_level": null,
+  "device_battery_temp_c": null,
+  "device_cpu_frequencies_khz": [],
+  "n_threads": 4,
+  "n_predict": 106,
+  "context_token_budget": null,
+  "primary_bottleneck": "prompt_prefill",
+  "quality_evaluation": "not_measured",
+  "response_text": "Employees are eligible for a $50/month Internet Stipend.  Additionally, new hires receive an equipment stipend of $800 USD. [2, 1]",
+  "research_metrics": {
+    "policy": "mobcert-v1",
+    "queryId": "q5_multi_hop_remote_stipends",
+    "expectedAction": "answer",
+    "modelAction": "answered",
+    "contextRecall": 0.9333,
+    "contextPrecision": 0.3111,
+    "retrievalEvidenceCoverage": 93.3,
+    "selectedChunkCount": 3,
+    "candidateChunkCount": 8,
+    "compressionRatio": 0.089,
+    "retrievalLatencyMs": 3588.1,
+    "faithfulness": 0.9688,
+    "hallucinationRate": 0.0312,
+    "answerF1": 0.6818,
+    "answerPrecision": 0.7143,
+    "answerRecall": 0.6522,
+    "rougeL": 0.2727,
+    "hasGroundTruth": true,
+    "refusalCorrectness": 1,
+    "contractStatus": "unverifiable",
+    "demandsCount": 2,
+    "demandsSatisfied": 1,
+    "demandsMissing": 0,
+    "demandsAmbiguous": 1,
+    "conflictsDetected": [
+      "citation:missing"
+    ],
+    "avoidedInference": false,
+    "answerGenerated": true,
+    "qualityStatus": "measured",
+    "totalLatencyMs": 61275.9,
+    "ttftMs": 51519.8,
+    "prefillMs": 47840,
+    "prefillTokPerSec": 6.7,
+    "decodeMs": 9687,
+    "decodeTokPerSec": 3.9,
+    "promptTokens": 322,
+    "generatedTokens": 38,
+    "primaryBottleneck": "prompt_prefill",
+    "threads": 4,
+    "availableRamMb": null,
+    "batteryTempC": null,
+    "thermalStatus": "normal"
+  },
+  "hardware": {
+    "pre_test": {
+      "current_frequencies_khz": [
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        1190400,
+        1190400
+      ],
+      "max_frequencies_khz": [
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        806400,
+        1190400,
+        1190400
+      ],
+      "battery_temp_c": 42.0,
+      "battery_level_percent": 14,
+      "thermal_status": null,
+      "pss_mb": 2026.36
+    },
+    "post_test": {
+      "current_frequencies_khz": [
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        1344000,
+        1344000
+      ],
+      "max_frequencies_khz": [
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        921600,
+        1344000,
+        1344000
+      ],
+      "battery_temp_c": 42.0,
+      "battery_level_percent": 14,
+      "thermal_status": null,
+      "pss_mb": 2021.25
+    },
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "context_length": 512,
+    "batch_size": 512,
+    "ubatch_size": 512
+  },
+  "requested_rag_policy": "mobcert-v1",
+  "requested_inference_mode": "baseline",
+  "evidence_status": "PHYSICAL_DEVICE",
+  "benchmark_script": "run_device_inference.py",
+  "run_id": "batch_mobcert-v1_q5_multi_hop_remote_stipends_1792247777",
+  "result_path": "/mnt/c/projects/portingllm/Porting-LLM-s-Model-Project/benchmark/results/physical_runs/batch_mobcert-v1_q5_multi_hop_remote_stipends_1792247777_mobcert-v1_baseline.json"
+}

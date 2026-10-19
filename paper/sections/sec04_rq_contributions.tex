@@ -1,0 +1,29 @@
+\section{Research Questions and Contributions}
+\label{sec:rq_contributions}
+
+\subsection{Research Questions}
+This investigation is guided by four concrete, falsifiable research questions:
+\begin{itemize}
+    \item \textbf{RQ1 (Scaling and Context Independence):} How does physical prompt-prefill compute reduction scale with the number of cached prefix tokens on a mobile CPU, and does the allocated context capacity ($n_{\text{ctx}}$) exert a statistically significant effect on prefill latency reduction?
+    \item \textbf{RQ2 (Freshness and Staleness Invalidation):} Can a lightweight, cryptographic evidence-versioning policy eliminate the silent stale-KV hallucination vulnerability when underlying documents undergo updates, revocations, and reorderings, without requiring full scratch prefill?
+    \item \textbf{RQ3 (Multi-Hop Factual Integrity):} Does partial KV-cache prefix reuse preserve complete factual accuracy in multi-chunk RAG workloads where answer formulation requires cross-attention synthesis across multiple distinct retrieved passages?
+    \item \textbf{RQ4 (Systems Trade-Off and I/O Overhead):} What is the empirical latency and storage trade-off between reading serialized KV caches from physical mobile flash storage (UFS 2.2) and executing native CPU prefill computation?
+\end{itemize}
+
+\subsection{Primary Contributions}
+The primary contributions of this paper are:
+\begin{enumerate}
+    \item \textbf{The HACER-RAG Architecture:} We design and implement an evidence-version-aware mobile RAG runtime that couples canonical chunk layout with cryptographic hashing, context-budget safety enforcement, and selective downstream cache repair.
+    \item \textbf{Empirical Scaling Benchmark (90 Matched Pairs):} We conduct a rigorous, matched-workload evaluation across 9 configurations ($K \in \{1, 2, 4\}$ chunks, $n_{\text{ctx}} \in \{512, 1024, 2048\}$) on a commercial Android smartphone. We demonstrate prompt-prefill compute reductions of 19.3--21.2\% for $K=1$, 38.5--40.4\% for $K=2$, and 86.1--86.7\% for $K=4$, delivering up to 3.65$\times$ wall speedup.
+    \item \textbf{Statistical Analysis of Context Allocation:} Using a balanced Two-Way ANOVA and multiple linear regression ($R^2 = 0.9788$), we demonstrate that compute reduction is strictly driven by the cached token count ($F = 1920.56, p < 10^{-68}, \eta_p^2 = 0.979$), with no statistically significant main effect ($p = 0.9808$) or interaction ($p = 0.7287$) from context capacity on the tested platform.
+    \item \textbf{Multi-Chunk Factual Integrity with Latency Isolation:} Across repeated paired trials on multi-hop QA cases (9 matched pairs, 18 executions), we isolate native CPU prefill latency from UFS 2.2 flash load overhead, demonstrating an average prefill compute reduction of 44.13\% and wall speedup of 1.63$\times$ while preserving 100\% multi-hop factual recall. We resolve prior latency anomalies by measuring and attributing transient OS page-cache reclamation.
+    \item \textbf{Dynamic Staleness Suite (5 Scenarios):} We evaluate 5 controlled dynamic evidence scenarios, proving that ordinary naive session reuse produces silent stale hallucinations or runtime crashes, whereas HACER-RAG reliably detects changes, invalidates affected segments, repairs downstream tokens, or safely abstains.
+\end{enumerate}
+
+\subsection{Explicit Non-Claims and Evidence Boundaries}
+To maintain rigorous scientific standards, we delineate what this study does \emph{not} claim:
+\begin{itemize}
+    \item We do \emph{not} claim that serializing and restoring KV caches is inherently novel; our contribution lies in the evidence-version-aware binding, selective repair policy, context-budget safety, and empirical mobile systems characterization.
+    \item We do \emph{not} claim a universal invariance law across all possible transformer architectures or mobile SoCs. All empirical claims are strictly bounded to the evaluated hardware (Qualcomm Snapdragon 4 Gen 2), runtime (\texttt{llama.rn} v0.5.8 / \texttt{llama.cpp}), and model (Gemma 2 2B Instruct Q4\_K\_M).
+    \item We do \emph{not} claim that the five dynamic test scenarios constitute mathematical proof of universal correctness across arbitrary document modifications. They represent empirical proof-of-concept demonstrations of failure modes that ordinary session reuse cannot survive.
+\end{itemize}

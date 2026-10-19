@@ -1,0 +1,733 @@
+{
+  "rag": {
+    "context": "Evidence status:\n- compare subscription pricing: ambiguous supported by [1]\n- capacity: certified supported by [1]\n- swarmkit pro tiers: certified supported by [1], [2], [3], [4], [5], [6]\n\nExcerpts:\n[1] offlineRag.pdf \u00e2\u20ac\u201d 2. Product Catalog > 2.2 SwarmKit Pro\nsubscription-based: $1,200/month for up to 256 drones, $3,800/month for full 2,048-drone capacity.\n\n[2] offlineRag.pdf \u00e2\u20ac\u201d 2. Product Catalog > 2.2 SwarmKit Pro\nIt is\n\n[3] offlineRag.pdf \u00e2\u20ac\u201d 2. Product Catalog > 2.2 SwarmKit Pro\nIt supports\n\n[4] offlineRag.pdf \u00e2\u20ac\u201d 2. Product Catalog > 2.2 SwarmKit Pro\nLicensing is\n\n[5] offlineRag.pdf \u00e2\u20ac\u201d 2. Product Catalog > 2.2 SwarmKit Pro\nThe system includes a\n\n[6] offlineRag.pdf \u00e2\u20ac\u201d 2. Product Catalog > 2.2 SwarmKit Pro\nSwarmKit Pro requires a minimum of",
+    "sources": [
+      {
+        "id": "doc_1791799440107:5",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 5,
+        "sectionHeader": "2. Product Catalog > 2.2 SwarmKit Pro",
+        "excerpts": [
+          "subscription-based: $1,200/month for up to 256 drones, $3,800/month for full 2,048-drone capacity.",
+          "It is",
+          "It supports",
+          "Licensing is",
+          "The system includes a",
+          "SwarmKit Pro requires a minimum of"
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      }
+    ],
+    "strategy": "mobcert-v1",
+    "embeddingMs": 3.489478997886181,
+    "indexLoadMs": 0.13817699998617172,
+    "vectorSearchMs": 5.058490000665188,
+    "contextConstructionMs": 2242.4592700004578,
+    "candidateK": 3,
+    "candidateChunkCount": 3,
+    "selectedChunkCount": 1,
+    "duplicateChunksRemoved": 0,
+    "contextChars": 745,
+    "contextTokenEstimate": 187,
+    "contextTokens": 253,
+    "tokenCountMethod": "native",
+    "requestedContextTokenBudget": 268,
+    "appliedContextTokenBudget": 268,
+    "compressionRatio": 0.1332842415316642,
+    "topScore": 0.03278688524590164,
+    "scoreMargin": 0.0005288207297726097,
+    "queryTermCount": 10,
+    "matchedQueryTermCount": 5,
+    "queryTermCoverage": 0.5,
+    "uncoveredQueryTerms": [
+      "compare",
+      "pricing",
+      "customers",
+      "between",
+      "tiers"
+    ],
+    "lexicalHit": true,
+    "exactTermMatches": 5,
+    "selectedChunkIds": [
+      "doc_1791799440107:5"
+    ],
+    "candidateChunkIds": [
+      "doc_1791799440107:5",
+      "doc_1791799440107:12",
+      "doc_1791799440107:6"
+    ],
+    "failureReason": "contract_ambiguous_demands",
+    "queryEmbeddingCacheHit": true,
+    "indexChunks": 14,
+    "vectorBytes": 21504,
+    "legacyChunks": 0,
+    "embeddingIdentityVerified": true,
+    "budgetLimited": true,
+    "rejectedByBudget": 1,
+    "tokenChecks": 10,
+    "answerContract": {
+      "query": "Compare the subscription pricing, drone capacity, and customers between the SwarmKit Pro tiers.",
+      "demands": [
+        {
+          "demandId": "demand-1",
+          "label": "compare subscription pricing",
+          "status": "ambiguous",
+          "sourceIds": [
+            "doc_1791799440107:5:8"
+          ],
+          "matchedTerms": [
+            "swarmkit",
+            "pro",
+            "subscription"
+          ],
+          "values": [
+            "$1 200",
+            "256",
+            "$3 800",
+            "2 048"
+          ],
+          "valueLabels": [],
+          "units": [
+            "month"
+          ],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": [
+            "$1 200",
+            "256",
+            "$3 800",
+            "2 048"
+          ]
+        },
+        {
+          "demandId": "demand-2",
+          "label": "capacity",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:5:8"
+          ],
+          "matchedTerms": [
+            "swarmkit",
+            "pro",
+            "capacity",
+            "drone"
+          ],
+          "values": [],
+          "valueLabels": [
+            "capacity"
+          ],
+          "units": [],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        },
+        {
+          "demandId": "demand-3",
+          "label": "swarmkit pro tiers",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:5:8",
+            "doc_1791799440107:5:9",
+            "doc_1791799440107:5:1",
+            "doc_1791799440107:5:7",
+            "doc_1791799440107:5:3",
+            "doc_1791799440107:5:5"
+          ],
+          "matchedTerms": [
+            "swarmkit",
+            "pro"
+          ],
+          "values": [],
+          "valueLabels": [],
+          "units": [],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        }
+      ],
+      "selectedAtomIds": [
+        "doc_1791799440107:5:8",
+        "doc_1791799440107:5:9",
+        "doc_1791799440107:5:1",
+        "doc_1791799440107:5:7",
+        "doc_1791799440107:5:3",
+        "doc_1791799440107:5:5"
+      ],
+      "selectedTokens": 48,
+      "tokenBudget": 268,
+      "certifiedDemandCount": 2,
+      "ambiguousDemandCount": 1,
+      "missingDemandCount": 0,
+      "requiredCoverage": 1
+    },
+    "answerContractAtoms": [
+      {
+        "id": "doc_1791799440107:5:8",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 5,
+        "sourceOrder": 8,
+        "sectionHeader": "2. Product Catalog > 2.2 SwarmKit Pro",
+        "text": "subscription-based: $1,200/month for up to 256 drones, $3,800/month for full 2,048-drone capacity.",
+        "terms": [
+          "2",
+          "product",
+          "catalog",
+          "swarmkit",
+          "pro",
+          "subscription",
+          "based",
+          "1",
+          "200",
+          "month",
+          "up",
+          "256",
+          "drones",
+          "3",
+          "800",
+          "full",
+          "048",
+          "drone",
+          "capacity"
+        ],
+        "entities": [
+          "product catalog",
+          "swarmkit pro"
+        ],
+        "attributes": [
+          "product",
+          "capacity",
+          "location",
+          "office",
+          "subscription",
+          "based"
+        ],
+        "numbers": [
+          "$1 200",
+          "256",
+          "$3 800",
+          "2 048"
+        ],
+        "units": [
+          "month"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "location",
+            "numbers": [
+              "$1 200",
+              "256",
+              "$3 800",
+              "2 048"
+            ],
+            "units": [
+              "month"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "office",
+            "numbers": [
+              "$1 200",
+              "256",
+              "$3 800",
+              "2 048"
+            ],
+            "units": [
+              "month"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "subscription",
+            "numbers": [
+              "$1 200",
+              "256",
+              "$3 800",
+              "2 048"
+            ],
+            "units": [
+              "month"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "based",
+            "numbers": [
+              "$1 200",
+              "256",
+              "$3 800",
+              "2 048"
+            ],
+            "units": [
+              "month"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "capacity",
+            "numbers": [],
+            "units": [],
+            "value": "capacity",
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "product catalog+swarmkit pro|product",
+          "product catalog+swarmkit pro|capacity",
+          "product catalog+swarmkit pro|location",
+          "product catalog+swarmkit pro|office",
+          "product catalog+swarmkit pro|subscription",
+          "product catalog+swarmkit pro|based"
+        ],
+        "estimatedTokens": 25
+      },
+      {
+        "id": "doc_1791799440107:5:9",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 5,
+        "sourceOrder": 9,
+        "sectionHeader": "2. Product Catalog > 2.2 SwarmKit Pro",
+        "text": "It is",
+        "terms": [
+          "2",
+          "product",
+          "catalog",
+          "swarmkit",
+          "pro"
+        ],
+        "entities": [
+          "product catalog",
+          "swarmkit pro"
+        ],
+        "attributes": [
+          "product"
+        ],
+        "numbers": [],
+        "units": [],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [],
+        "factKeys": [
+          "product catalog+swarmkit pro|product"
+        ],
+        "estimatedTokens": 2
+      },
+      {
+        "id": "doc_1791799440107:5:1",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 5,
+        "sourceOrder": 1,
+        "sectionHeader": "2. Product Catalog > 2.2 SwarmKit Pro",
+        "text": "It supports",
+        "terms": [
+          "2",
+          "product",
+          "catalog",
+          "swarmkit",
+          "pro",
+          "supports"
+        ],
+        "entities": [
+          "product catalog",
+          "swarmkit pro"
+        ],
+        "attributes": [
+          "product"
+        ],
+        "numbers": [],
+        "units": [],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [],
+        "factKeys": [
+          "product catalog+swarmkit pro|product"
+        ],
+        "estimatedTokens": 3
+      },
+      {
+        "id": "doc_1791799440107:5:7",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 5,
+        "sourceOrder": 7,
+        "sectionHeader": "2. Product Catalog > 2.2 SwarmKit Pro",
+        "text": "Licensing is",
+        "terms": [
+          "2",
+          "product",
+          "catalog",
+          "swarmkit",
+          "pro",
+          "licensing"
+        ],
+        "entities": [
+          "product catalog",
+          "swarmkit pro"
+        ],
+        "attributes": [
+          "product"
+        ],
+        "numbers": [],
+        "units": [],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [],
+        "factKeys": [
+          "product catalog+swarmkit pro|product"
+        ],
+        "estimatedTokens": 3
+      },
+      {
+        "id": "doc_1791799440107:5:3",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 5,
+        "sourceOrder": 3,
+        "sectionHeader": "2. Product Catalog > 2.2 SwarmKit Pro",
+        "text": "The system includes a",
+        "terms": [
+          "2",
+          "product",
+          "catalog",
+          "swarmkit",
+          "pro",
+          "system",
+          "includes"
+        ],
+        "entities": [
+          "product catalog",
+          "swarmkit pro"
+        ],
+        "attributes": [
+          "product"
+        ],
+        "numbers": [],
+        "units": [],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [],
+        "factKeys": [
+          "product catalog+swarmkit pro|product"
+        ],
+        "estimatedTokens": 6
+      },
+      {
+        "id": "doc_1791799440107:5:5",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 5,
+        "sourceOrder": 5,
+        "sectionHeader": "2. Product Catalog > 2.2 SwarmKit Pro",
+        "text": "SwarmKit Pro requires a minimum of",
+        "terms": [
+          "2",
+          "product",
+          "catalog",
+          "swarmkit",
+          "pro",
+          "requires",
+          "minimum"
+        ],
+        "entities": [
+          "product catalog",
+          "swarmkit pro"
+        ],
+        "attributes": [
+          "product"
+        ],
+        "numbers": [],
+        "units": [],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [],
+        "factKeys": [
+          "product catalog+swarmkit pro|product"
+        ],
+        "estimatedTokens": 9
+      }
+    ]
+  },
+  "rag_contract_audit": {
+    "status": "repaired",
+    "unsupportedProtectedTokens": [],
+    "citedSourceIds": [],
+    "requiredCitationCoverage": 0,
+    "demandStatuses": [
+      {
+        "demandId": "demand-1",
+        "label": "compare subscription pricing",
+        "status": "ambiguous",
+        "sourceIds": [
+          "doc_1791799440107:5:8"
+        ],
+        "matchedTerms": [
+          "swarmkit",
+          "pro",
+          "subscription"
+        ],
+        "values": [
+          "$1 200",
+          "256",
+          "$3 800",
+          "2 048"
+        ],
+        "valueLabels": [],
+        "units": [
+          "month"
+        ],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": [
+          "$1 200",
+          "256",
+          "$3 800",
+          "2 048"
+        ]
+      },
+      {
+        "demandId": "demand-2",
+        "label": "capacity",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:5:8"
+        ],
+        "matchedTerms": [
+          "swarmkit",
+          "pro",
+          "capacity",
+          "drone"
+        ],
+        "values": [],
+        "valueLabels": [
+          "capacity"
+        ],
+        "units": [],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      },
+      {
+        "demandId": "demand-3",
+        "label": "swarmkit pro tiers",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:5:8",
+          "doc_1791799440107:5:9",
+          "doc_1791799440107:5:1",
+          "doc_1791799440107:5:7",
+          "doc_1791799440107:5:3",
+          "doc_1791799440107:5:5"
+        ],
+        "matchedTerms": [
+          "swarmkit",
+          "pro"
+        ],
+        "values": [],
+        "valueLabels": [],
+        "units": [],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      }
+    ]
+  },
+  "rag_quality": {
+    "recallAtK": null,
+    "precisionAtK": null,
+    "reciprocalRank": null,
+    "answerTokenF1": null,
+    "answerContextTokenOverlap": 0,
+    "groundedness": null,
+    "correctness": null
+  },
+  "input_prompt_tokens": 356,
+  "output_tokens_requested": 512,
+  "inference_skipped": false,
+  "native_timings_available": true,
+  "native_prompt_truncated": false,
+  "output_limit_reached": true,
+  "tokens_cached": 473,
+  "timestamp": "2026-10-12T10:56:03.475Z",
+  "query": "Compare the subscription pricing, drone capacity, and customers between the SwarmKit Pro tiers.",
+  "chat_mode": "document",
+  "profile_id": "p_1791008294421_84onr856",
+  "rag_retrieval_ms": 2251.4578630030155,
+  "embedding_ms": 3.489478997886181,
+  "vector_search_ms": 5.058490000665188,
+  "context_construction_ms": 2242.4592700004578,
+  "context_chars": 745,
+  "retrieved_chunk_count": 1,
+  "candidate_chunk_count": 3,
+  "rag_strategy": "mobcert-v1",
+  "rag_candidate_k": 3,
+  "rag_duplicate_chunks_removed": 0,
+  "rag_context_token_estimate": 187,
+  "rag_requested_context_budget": 268,
+  "rag_applied_context_budget": 268,
+  "rag_compression_ratio": 0.1332842415316642,
+  "retrieved_top_score": 0.03278688524590164,
+  "retrieved_score_margin": 0.0005288207297726097,
+  "rag_query_term_count": 10,
+  "rag_matched_query_term_count": 5,
+  "rag_query_term_coverage": 0.5,
+  "rag_lexical_hit": true,
+  "rag_exact_term_matches": 5,
+  "rag_selected_chunk_ids": [
+    "doc_1791799440107:5"
+  ],
+  "rag_failure_reason": "contract_ambiguous_demands",
+  "prompt_chars": 1131,
+  "prompt_tokenization_ms": 18.255313996225595,
+  "prompt_tokens": 273,
+  "prefill_ms": 79766,
+  "prefill_tokens_per_second": 3.4225093853857644,
+  "generated_tokens": 133,
+  "decode_ms": 183715,
+  "tokens_per_second": 0.7239450620844944,
+  "ttft_ms": 82044.69897899777,
+  "llm_ttft_ms": 79774.79168799892,
+  "total_inference_ms": 264368.04583600163,
+  "total_warm_latency_ms": 266637.9531270005,
+  "controller_mode": "baseline",
+  "evidence_demand": "multi_hop",
+  "controller_workload_bucket": "document:medium:multi_hop",
+  "controller_selection_reason": "historical fixed baseline",
+  "controller_state_read_ms": 0,
+  "device_thermal_status": "not-read",
+  "device_available_memory_mb": null,
+  "device_low_memory": false,
+  "device_battery_level": null,
+  "device_battery_temp_c": null,
+  "device_cpu_frequencies_khz": [],
+  "n_threads": 4,
+  "n_predict": 134,
+  "context_token_budget": null,
+  "primary_bottleneck": "token_decode",
+  "quality_evaluation": "not_measured",
+  "response_text": "I don't have enough information in the uploaded documents to answer that.",
+  "research_metrics": {
+    "policy": "mobcert-v1",
+    "queryId": "q4_multi_hop_pricing",
+    "expectedAction": "answer",
+    "modelAction": "refused",
+    "contextRecall": 0.5833,
+    "contextPrecision": 0.4,
+    "retrievalEvidenceCoverage": 50,
+    "selectedChunkCount": 1,
+    "candidateChunkCount": 3,
+    "compressionRatio": 0.133,
+    "retrievalLatencyMs": 2251.5,
+    "faithfulness": 1,
+    "hallucinationRate": 0,
+    "answerF1": 0.0889,
+    "answerPrecision": 0.1538,
+    "answerRecall": 0.0625,
+    "rougeL": 0.0444,
+    "hasGroundTruth": true,
+    "refusalCorrectness": 0,
+    "contractStatus": "repaired",
+    "demandsCount": 3,
+    "demandsSatisfied": 2,
+    "demandsMissing": 0,
+    "demandsAmbiguous": 1,
+    "conflictsDetected": [],
+    "avoidedInference": false,
+    "totalLatencyMs": 266638,
+    "ttftMs": 82044.7,
+    "prefillMs": 79766,
+    "prefillTokPerSec": 3.4,
+    "decodeMs": 183715,
+    "decodeTokPerSec": 0.7,
+    "promptTokens": 273,
+    "generatedTokens": 133,
+    "primaryBottleneck": "token_decode",
+    "threads": 4,
+    "availableRamMb": null,
+    "batteryTempC": null,
+    "thermalStatus": "normal"
+  },
+  "hardware": {
+    "pre_test": {
+      "current_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "max_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "battery_temp_c": 49.0,
+      "battery_level_percent": 23,
+      "thermal_status": null,
+      "pss_mb": 1973.04
+    },
+    "post_test": {
+      "current_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "max_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "battery_temp_c": 49.0,
+      "battery_level_percent": 23,
+      "thermal_status": null,
+      "pss_mb": 1985.65
+    },
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "context_length": 512,
+    "batch_size": 512,
+    "ubatch_size": 512
+  },
+  "requested_rag_policy": "mobcert-v1",
+  "requested_inference_mode": "baseline",
+  "evidence_status": "PHYSICAL_DEVICE",
+  "benchmark_script": "run_device_inference.py",
+  "run_id": "batch_mobcert-v1_q7_negative_unlisted_executive_1791802554",
+  "result_path": "C:\\projects\\portingllm\\Porting-LLM-s-Model-Project\\benchmark\\results\\physical_runs\\batch_mobcert-v1_q7_negative_unlisted_executive_1791802554_mobcert-v1_baseline.json"
+}

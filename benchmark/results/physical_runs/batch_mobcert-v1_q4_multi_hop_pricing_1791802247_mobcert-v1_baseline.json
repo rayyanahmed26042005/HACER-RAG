@@ -1,0 +1,490 @@
+{
+  "rag": {
+    "context": "Evidence status:\n- budget: certified supported by [1]\n- allowance: certified supported by [2]\n\nExcerpts:\n[1] offlineRag.pdf \u00e2\u20ac\u201d 3. HR Policies > 3.3 Compensation & Benefits\nLearning Budget $1,500 USD/year per employee\n\n[2] offlineRag.pdf \u00e2\u20ac\u201d 3. HR Policies > 3.3 Compensation & Benefits\nGym Allowance $60/month reimbursed via expense report",
+    "sources": [
+      {
+        "id": "doc_1791799440107:10",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 10,
+        "sectionHeader": "3. HR Policies > 3.3 Compensation & Benefits",
+        "excerpts": [
+          "Learning Budget $1,500 USD/year per employee",
+          "Gym Allowance $60/month reimbursed via expense report"
+        ],
+        "denseScore": 0,
+        "lexicalScore": 0
+      }
+    ],
+    "strategy": "mobcert-v1",
+    "embeddingMs": 4.823334001004696,
+    "indexLoadMs": 0.14937499910593033,
+    "vectorSearchMs": 13.067291997373104,
+    "contextConstructionMs": 232.3926040008664,
+    "candidateK": 3,
+    "candidateChunkCount": 3,
+    "selectedChunkCount": 1,
+    "duplicateChunksRemoved": 0,
+    "contextChars": 336,
+    "contextTokenEstimate": 84,
+    "contextTokens": 96,
+    "tokenCountMethod": "native",
+    "requestedContextTokenBudget": 272,
+    "appliedContextTokenBudget": 272,
+    "compressionRatio": 0.1118800461361015,
+    "topScore": 0.03278688524590164,
+    "scoreMargin": 0.016657852987837125,
+    "queryTermCount": 6,
+    "matchedQueryTermCount": 4,
+    "queryTermCoverage": 0.6666666666666666,
+    "uncoveredQueryTerms": [
+      "annual",
+      "employees"
+    ],
+    "lexicalHit": true,
+    "exactTermMatches": 6,
+    "selectedChunkIds": [
+      "doc_1791799440107:10"
+    ],
+    "candidateChunkIds": [
+      "doc_1791799440107:10",
+      "doc_1791799440107:8",
+      "doc_1791799440107:7"
+    ],
+    "failureReason": null,
+    "queryEmbeddingCacheHit": true,
+    "indexChunks": 14,
+    "vectorBytes": 21504,
+    "legacyChunks": 0,
+    "embeddingIdentityVerified": true,
+    "budgetLimited": false,
+    "rejectedByBudget": 0,
+    "tokenChecks": 2,
+    "answerContract": {
+      "query": "What is the annual learning budget and gym allowance for employees?",
+      "demands": [
+        {
+          "demandId": "demand-1",
+          "label": "budget",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:10:4"
+          ],
+          "matchedTerms": [
+            "budget",
+            "learning"
+          ],
+          "values": [
+            "$1 500"
+          ],
+          "valueLabels": [],
+          "units": [
+            "usd",
+            "year"
+          ],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        },
+        {
+          "demandId": "demand-2",
+          "label": "allowance",
+          "status": "certified",
+          "sourceIds": [
+            "doc_1791799440107:10:5"
+          ],
+          "matchedTerms": [
+            "allowance",
+            "gym"
+          ],
+          "values": [
+            "$60"
+          ],
+          "valueLabels": [],
+          "units": [
+            "month"
+          ],
+          "polarities": [
+            "positive"
+          ],
+          "conflictingValues": []
+        }
+      ],
+      "selectedAtomIds": [
+        "doc_1791799440107:10:4",
+        "doc_1791799440107:10:5"
+      ],
+      "selectedTokens": 25,
+      "tokenBudget": 272,
+      "certifiedDemandCount": 2,
+      "ambiguousDemandCount": 0,
+      "missingDemandCount": 0,
+      "requiredCoverage": 1
+    },
+    "answerContractAtoms": [
+      {
+        "id": "doc_1791799440107:10:4",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 10,
+        "sourceOrder": 4,
+        "sectionHeader": "3. HR Policies > 3.3 Compensation & Benefits",
+        "text": "Learning Budget $1,500 USD/year per employee",
+        "terms": [
+          "3",
+          "hr",
+          "policies",
+          "compensation",
+          "benefits",
+          "learning",
+          "budget",
+          "1",
+          "500",
+          "usd",
+          "year",
+          "per",
+          "employee"
+        ],
+        "entities": [
+          "hr policies",
+          "learning budget"
+        ],
+        "attributes": [
+          "budget",
+          "year"
+        ],
+        "numbers": [
+          "$1 500"
+        ],
+        "units": [
+          "usd",
+          "year"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "budget",
+            "numbers": [
+              "$1 500"
+            ],
+            "units": [
+              "usd",
+              "year"
+            ],
+            "polarity": "positive"
+          },
+          {
+            "attribute": "year",
+            "numbers": [],
+            "units": [
+              "year"
+            ],
+            "value": "year per employee",
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "hr policies+learning budget|budget",
+          "hr policies+learning budget|year"
+        ],
+        "estimatedTokens": 11
+      },
+      {
+        "id": "doc_1791799440107:10:5",
+        "docId": "doc_1791799440107",
+        "docName": "offlineRag.pdf",
+        "chunkIndex": 10,
+        "sourceOrder": 5,
+        "sectionHeader": "3. HR Policies > 3.3 Compensation & Benefits",
+        "text": "Gym Allowance $60/month reimbursed via expense report",
+        "terms": [
+          "3",
+          "hr",
+          "policies",
+          "compensation",
+          "benefits",
+          "gym",
+          "allowance",
+          "60",
+          "month",
+          "reimbursed",
+          "via",
+          "expense",
+          "report"
+        ],
+        "entities": [
+          "gym allowance",
+          "hr policies"
+        ],
+        "attributes": [
+          "allowance"
+        ],
+        "numbers": [
+          "$60"
+        ],
+        "units": [
+          "month"
+        ],
+        "temporalMarkers": [],
+        "polarity": "positive",
+        "structural": false,
+        "facts": [
+          {
+            "attribute": "allowance",
+            "numbers": [
+              "$60"
+            ],
+            "units": [
+              "month"
+            ],
+            "polarity": "positive"
+          }
+        ],
+        "factKeys": [
+          "gym allowance+hr policies|allowance"
+        ],
+        "estimatedTokens": 14
+      }
+    ]
+  },
+  "rag_contract_audit": {
+    "status": "repaired",
+    "unsupportedProtectedTokens": [],
+    "citedSourceIds": [
+      "doc_1791799440107:10:5"
+    ],
+    "requiredCitationCoverage": 0.5,
+    "demandStatuses": [
+      {
+        "demandId": "demand-1",
+        "label": "budget",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:10:4"
+        ],
+        "matchedTerms": [
+          "budget",
+          "learning"
+        ],
+        "values": [
+          "$1 500"
+        ],
+        "valueLabels": [],
+        "units": [
+          "usd",
+          "year"
+        ],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      },
+      {
+        "demandId": "demand-2",
+        "label": "allowance",
+        "status": "certified",
+        "sourceIds": [
+          "doc_1791799440107:10:5"
+        ],
+        "matchedTerms": [
+          "allowance",
+          "gym"
+        ],
+        "values": [
+          "$60"
+        ],
+        "valueLabels": [],
+        "units": [
+          "month"
+        ],
+        "polarities": [
+          "positive"
+        ],
+        "conflictingValues": []
+      }
+    ]
+  },
+  "rag_quality": {
+    "recallAtK": null,
+    "precisionAtK": null,
+    "reciprocalRank": null,
+    "answerTokenF1": null,
+    "answerContextTokenOverlap": 1,
+    "groundedness": null,
+    "correctness": null
+  },
+  "input_prompt_tokens": 194,
+  "output_tokens_requested": 512,
+  "inference_skipped": false,
+  "native_timings_available": true,
+  "native_prompt_truncated": false,
+  "output_limit_reached": false,
+  "tokens_cached": 215,
+  "timestamp": "2026-10-12T10:51:35.115Z",
+  "query": "What is the annual learning budget and gym allowance for employees?",
+  "chat_mode": "document",
+  "profile_id": "p_1791008294421_84onr856",
+  "rag_retrieval_ms": 250.77416699752212,
+  "embedding_ms": 4.823334001004696,
+  "vector_search_ms": 13.067291997373104,
+  "context_construction_ms": 232.3926040008664,
+  "context_chars": 336,
+  "retrieved_chunk_count": 1,
+  "candidate_chunk_count": 3,
+  "rag_strategy": "mobcert-v1",
+  "rag_candidate_k": 3,
+  "rag_duplicate_chunks_removed": 0,
+  "rag_context_token_estimate": 84,
+  "rag_requested_context_budget": 272,
+  "rag_applied_context_budget": 272,
+  "rag_compression_ratio": 0.1118800461361015,
+  "retrieved_top_score": 0.03278688524590164,
+  "retrieved_score_margin": 0.016657852987837125,
+  "rag_query_term_count": 6,
+  "rag_matched_query_term_count": 4,
+  "rag_query_term_coverage": 0.6666666666666666,
+  "rag_lexical_hit": true,
+  "rag_exact_term_matches": 6,
+  "rag_selected_chunk_ids": [
+    "doc_1791799440107:10"
+  ],
+  "rag_failure_reason": null,
+  "prompt_chars": 694,
+  "prompt_tokenization_ms": 14.780781004577875,
+  "prompt_tokens": 111,
+  "prefill_ms": 32488,
+  "prefill_tokens_per_second": 3.4165647494115965,
+  "generated_tokens": 37,
+  "decode_ms": 18394,
+  "tokens_per_second": 2.0115049384077186,
+  "ttft_ms": 32762.49061300233,
+  "llm_ttft_ms": 32496.734936002642,
+  "total_inference_ms": 50992.884460002184,
+  "total_warm_latency_ms": 51258.64013700187,
+  "controller_mode": "baseline",
+  "evidence_demand": "multi_hop",
+  "controller_workload_bucket": "document:medium:multi_hop",
+  "controller_selection_reason": "historical fixed baseline",
+  "controller_state_read_ms": 0,
+  "device_thermal_status": "not-read",
+  "device_available_memory_mb": null,
+  "device_low_memory": false,
+  "device_battery_level": null,
+  "device_battery_temp_c": null,
+  "device_cpu_frequencies_khz": [],
+  "n_threads": 4,
+  "n_predict": 135,
+  "context_token_budget": null,
+  "primary_bottleneck": "prompt_prefill",
+  "quality_evaluation": "not_measured",
+  "response_text": "The gym allowance is $60/month reimbursed via expense report [2].",
+  "research_metrics": {
+    "policy": "mobcert-v1",
+    "queryId": "q3_single_hop_bonus",
+    "expectedAction": "answer",
+    "modelAction": "answered",
+    "contextRecall": 1,
+    "contextPrecision": 0.5926,
+    "retrievalEvidenceCoverage": 66.7,
+    "selectedChunkCount": 1,
+    "candidateChunkCount": 3,
+    "compressionRatio": 0.112,
+    "retrievalLatencyMs": 250.8,
+    "faithfulness": 1,
+    "hallucinationRate": 0,
+    "answerF1": 0.6452,
+    "answerPrecision": 1,
+    "answerRecall": 0.4762,
+    "rougeL": 0.6452,
+    "hasGroundTruth": true,
+    "refusalCorrectness": 1,
+    "contractStatus": "repaired",
+    "demandsCount": 2,
+    "demandsSatisfied": 2,
+    "demandsMissing": 0,
+    "demandsAmbiguous": 0,
+    "conflictsDetected": [],
+    "avoidedInference": false,
+    "totalLatencyMs": 51258.6,
+    "ttftMs": 32762.5,
+    "prefillMs": 32488,
+    "prefillTokPerSec": 3.4,
+    "decodeMs": 18394,
+    "decodeTokPerSec": 2,
+    "promptTokens": 111,
+    "generatedTokens": 37,
+    "primaryBottleneck": "prompt_prefill",
+    "threads": 4,
+    "availableRamMb": null,
+    "batteryTempC": null,
+    "thermalStatus": "normal"
+  },
+  "hardware": {
+    "pre_test": {
+      "current_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "max_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "battery_temp_c": 48.0,
+      "battery_level_percent": 23,
+      "thermal_status": null,
+      "pss_mb": 1984.0
+    },
+    "post_test": {
+      "current_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "max_frequencies_khz": [
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        672000,
+        960000,
+        960000
+      ],
+      "battery_temp_c": 48.0,
+      "battery_level_percent": 23,
+      "thermal_status": null,
+      "pss_mb": 1984.83
+    },
+    "n_threads": 4,
+    "n_gpu_layers": 0,
+    "context_length": 512,
+    "batch_size": 512,
+    "ubatch_size": 512
+  },
+  "requested_rag_policy": "mobcert-v1",
+  "requested_inference_mode": "baseline",
+  "evidence_status": "PHYSICAL_DEVICE",
+  "benchmark_script": "run_device_inference.py",
+  "run_id": "batch_mobcert-v1_q4_multi_hop_pricing_1791802247",
+  "result_path": "C:\\projects\\portingllm\\Porting-LLM-s-Model-Project\\benchmark\\results\\physical_runs\\batch_mobcert-v1_q4_multi_hop_pricing_1791802247_mobcert-v1_baseline.json"
+}
