@@ -35,10 +35,10 @@
 \setcounter{bottomnumber}{2}
 \setcounter{totalnumber}{6}
 \setcounter{dbltopnumber}{4}
-\setlength{\textfloatsep}{7pt plus 2pt minus 2pt}
-\setlength{\floatsep}{5pt plus 2pt minus 2pt}
-\setlength{\intextsep}{5pt plus 2pt minus 2pt}
-\setlength{\abovecaptionskip}{3pt}
+\setlength{\textfloatsep}{5pt plus 2pt minus 2pt}
+\setlength{\floatsep}{4pt plus 2pt minus 2pt}
+\setlength{\intextsep}{4pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{2pt}
 \setlength{\belowcaptionskip}{0pt}
 
 % ==============================================================================
@@ -123,8 +123,8 @@ On 4~GB phones, caches must be persisted to flash between interactions, which ma
 \begin{figure*}[!t]
 \centering
 \begin{tikzpicture}[font=\scriptsize,
-  box/.style={draw, rounded corners=2pt, align=center, minimum height=1.1cm, text width=3.0cm, fill=blue!6},
-  case/.style={draw, rounded corners=2pt, align=center, minimum height=0.85cm, text width=4.9cm, fill=green!9},
+  box/.style={draw, rounded corners=2pt, align=center, minimum height=0.92cm, text width=3.0cm, fill=blue!6},
+  case/.style={draw, rounded corners=2pt, align=center, minimum height=0.70cm, text width=4.9cm, fill=green!9},
   arr/.style={-{Stealth[length=4pt]}, thick}]
 \node[box] (ev) {\textbf{1. Evidence Ingestion}\\SHA-256 per chunk, SQLite\\metadata (ID, time, tokens)};
 \node[box, right=0.4cm of ev] (ret) {\textbf{2. Canonical Retrieval}\\Hybrid retrieval, ID-sorted\\layout $\pi_{\text{canon}}$};
@@ -202,7 +202,7 @@ and $N_{\text{eval}}=N_{\text{prompt}}=395$ for a cold start. Applying Eq.~\eqre
 \label{tab:hardware_specs}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{1.1}
+\renewcommand{\arraystretch}{1.02}
 \begin{tabularx}{\columnwidth}{L{1.2cm}YY}
 \toprule
 \textbf{Attribute} & \textbf{Device A (mid-range)} & \textbf{Device B (flagship)} \\
@@ -243,7 +243,7 @@ with 95\% CIs from 2,000-iteration non-parametric bootstrap; flash cache-load ov
 \label{tab:scaling_matrix}
 \scriptsize
 \setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.08}
+\renewcommand{\arraystretch}{1.02}
 \begin{tabular}{ccccccccc}
 \toprule
 \textbf{ID} & $K$ & $n_{\text{ctx}}$ & \textbf{Baseline prefill (s)} & \textbf{Reuse prefill (s)} & \textbf{Reduction (\%)} & \textbf{95\% CI (\%)} & \textbf{Time saved (s)} & \textbf{Wall speedup} \\
@@ -280,7 +280,7 @@ C9 & 4 & 2048 & $54.20\pm1.64$ & $7.55\pm0.61$  & \textbf{86.06} & [85.25, 86.76
 \label{tab:cross_device_scaling}
 \scriptsize
 \setlength{\tabcolsep}{2.4pt}
-\renewcommand{\arraystretch}{1.02}
+\renewcommand{\arraystretch}{0.98}
 \begin{tabular}{ccccccccc}
 \toprule
  & \multicolumn{2}{c}{\textbf{Baseline}} & & \multicolumn{2}{c}{\textbf{Reuse}} & \multicolumn{2}{c}{\textbf{Red.\ (\%)}} & \\
@@ -313,7 +313,7 @@ Multi-hop questions~\cite{yang2018hotpotqa} need joint extraction from several p
 \label{tab:multichunk_results}
 \scriptsize
 \setlength{\tabcolsep}{1.9pt}
-\renewcommand{\arraystretch}{1.08}
+\renewcommand{\arraystretch}{1.02}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
@@ -342,7 +342,7 @@ Personal knowledge bases change constantly. We ran five controlled failure scena
 \caption{Dynamic evidence suite: ordinary blind session reuse vs.\ HACER adaptive policy.}
 \label{tab:staleness_suite}
 \scriptsize
-\renewcommand{\arraystretch}{1.1}
+\renewcommand{\arraystretch}{1.02}
 \begin{tabularx}{\textwidth}{L{1.6cm}L{2.8cm}YYL{2.4cm}}
 \toprule
 \textbf{Scenario} & \textbf{Corpus condition} & \textbf{Blind session reuse} & \textbf{HACER} & \textbf{Consequence} \\
@@ -369,7 +369,7 @@ To test whether context capacity matters, we fit balanced $3\times3$ two-way ANO
 \label{tab:anova}
 \scriptsize
 \setlength{\tabcolsep}{2.5pt}
-\renewcommand{\arraystretch}{1.1}
+\renewcommand{\arraystretch}{1.02}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
@@ -415,7 +415,7 @@ Table~\ref{tab:claim_matrix} maps each major claim to its dataset and artifacts 
 \caption{Claim-to-evidence verification matrix (artifact names are listed in Sec.~\ref{sec:reproducibility}).}
 \label{tab:claim_matrix}
 \scriptsize
-\renewcommand{\arraystretch}{1.02}
+\renewcommand{\arraystretch}{0.98}
 \begin{tabularx}{\columnwidth}{L{2.1cm}L{2.1cm}Y}
 \toprule
 \textbf{Claim} & \textbf{Dataset} & \textbf{Quantitative evidence} \\
@@ -441,6 +441,7 @@ On-device RAG is bottlenecked by prompt prefill on low-power CPUs, and existing 
 \scriptsize
 \setlength{\itemsep}{0pt}
 \setlength{\parskip}{0pt}
+\def\IEEEbibitemsep{0.5pt plus 0.5pt}
 \begin{thebibliography}{00}
 \bibitem{lewis2020retrieval}
 P.~Lewis \textit{et al.}, ``Retrieval-augmented generation for knowledge-intensive {NLP} tasks,'' in \textit{Proc. NeurIPS}, vol.~33, 2020, pp. 9459--9474.
