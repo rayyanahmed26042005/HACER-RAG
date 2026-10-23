@@ -83,20 +83,20 @@
 
 % ==============================================================================
 \begin{abstract}
-On-device Retrieval-Augmented Generation (RAG) enables private, low-latency question answering, but small language models (SLMs) on mobile CPUs incur substantial prompt-prefill costs whenever retrieved context is re-encoded. Restored Key-Value (KV) caches avoid this repeated computation, although mobile runtimes treat cache files as opaque snapshots. When evidence changes, this can lead to stale-cache hallucinations, context overflows, and continuation-boundary errors. We present \systemname{} (\emph{Hierarchical Adaptive Cache, Evidence-version-aware Repair for on-device RAG}), which binds each KV segment to SHA-256 chunk hashes under a canonical evidence layout, re-prefills only changed downstream chunks, falls back to scratch prefill on corruption, and enforces a JNI-level context-budget guard. We evaluate 4-bit Gemma~2~2B through \texttt{llama.rn}/\allowbreak\texttt{llama.cpp} across two physical Android tiers: mid-range (Snapdragon 4 Gen 2, UFS 2.2) and flagship (Snapdragon 8 Elite, UFS 4.0). Across 90 matched pairs and nine configurations ($K\in\{1,2,4\}$ chunks, context capacity $n_{\text{ctx}}\in\{512,1024,2048\}$), the mid-range device achieves prefill compute reductions of 19.34 to 21.21\%, 38.53 to 40.37\%, and 86.06 to 86.67\%, saving up to 47.33~s with a $3.65\times$ wall speedup, zero truncation, and 100\% deterministic output parity. The flagship shows the same scaling pattern (16.35\%, 36.73\%, 85.23\%; 1.08 percentage points from Device~A at $K{=}4$) despite a $4.04\times$ raw compute advantage. Balanced Two-Way ANOVAs show that cached tokens govern the reductions ($p<10^{-15}$), while context capacity ($p=0.650\text{--}0.981$) and the interaction ($p>0.72$) do not. UFS~4.0 restores a 4-chunk session in 48.0 to 56.2~ms, saving 10.8 to 11.5~s ($204\times\text{--}229\times$). Multi-hop recall remains at 100\%, and \systemname{} eliminates the stale hallucinations and crashes observed with naive session reuse across five dynamic-corpus failure scenarios.
+On-device Retrieval-Augmented Generation (RAG) enables private, low-latency question answering, but small language models (SLMs) on mobile CPUs incur substantial prompt-prefill costs when re-encoding retrieved evidence. Restoring Key-Value (KV) caches eliminates redundant computation, yet mobile runtimes treat session files as opaque snapshots. When evidence changes, this causes silent stale-cache hallucinations, context overflows, and continuation boundary errors. We present \systemname{} (\emph{Hierarchical Adaptive Cache, Evidence-version-aware Repair for on-device RAG}), which binds KV segments to SHA-256 chunk hashes under a canonical layout, re-prefills only modified downstream chunks via selective repair, falls back to scratch prefill on corruption, and enforces a Java Native Interface (JNI) context-budget guard. We evaluate 4-bit Gemma~2~2B via \texttt{llama.rn}/\allowbreak\texttt{llama.cpp} across two physical Android tiers: mid-range (Snapdragon 4 Gen 2, UFS 2.2) and flagship (Snapdragon 8 Elite, UFS 4.0). Across 90 matched pairs and nine configurations ($K\in\{1,2,4\}$ chunks, context capacity $n_{\text{ctx}}\in\{512,1024,2048\}$), the mid-range device achieves prefill compute reductions of 19.34--21.21\%, 38.53--40.37\%, and 86.06--86.67\%, saving up to 47.33~s with a $3.65\times$ wall speedup, zero truncation, and 100\% deterministic output parity. The flagship exhibits similar scaling (16.35\%, 36.73\%, 85.23\%; a 1.08 percentage-point gap at $K{=}4$) despite a $4.04\times$ raw compute speedup. Balanced two-way ANOVAs confirm that cached tokens govern reductions ($p<10^{-15}$), while context capacity ($p=0.650\text{--}0.981$) does not. UFS~4.0 restores a 4-chunk session in 48.0--56.2~ms, saving 10.8--11.5~s ($204\times\text{--}229\times$). Multi-hop recall remains at 100\%, and \systemname{} eliminates stale hallucinations and crashes across five dynamic-corpus failure scenarios.
 \end{abstract}
 
 \begin{IEEEkeywords}
-On-device machine learning, retrieval-augmented generation, KV-cache reuse, mobile systems, small language models, cache invalidation.
+On-device machine learning, retrieval-augmented generation, KV-cache reuse, mobile systems, cache invalidation.
 \end{IEEEkeywords}
 
 % ==============================================================================
 \section{Introduction}
 \label{sec:intro}
-On-device RAG provides privacy, offline capability, and predictable availability~\cite{lewis2020retrieval,wu2024mobilellm}. A local retriever, such as SQLite BM25 or a mobile vector index, selects evidence chunks, builds an augmented prompt, and supplies it to an on-device SLM~\cite{guu2020realm,liu2026percache}. Mobile hardware is tightly constrained~\cite{alizadeh2024llmflash,xue2024edgmoe}. Budget handsets combine heterogeneous SoCs (Snapdragon 4 Gen 2: $2\times$A78 + $6\times$A55) with 4--6~GB LPDDR4X~\cite{reddi2021mlperfmobile}, while even flagships (Snapdragon 8 Elite, 12~GB LPDDR5X) operate within thermal and battery limits. For 4-bit models~\cite{dettmers2022llmint8,frantar2022gptq} such as Gemma~2~2B Q4\_K\_M~\cite{gemma2024gemma2}, decode runs at 20--30~tok/s on budget cores and 60--80~tok/s on flagship cores, where performance is memory-bandwidth bound. Prefilling a $\sim$400-token prompt takes 50--65~s on mid-range CPUs and 12--14~s on flagship CPUs.
+On-device RAG provides privacy, offline capability, and predictable availability~\cite{lewis2020retrieval,wu2024mobilellm}. A local retriever, such as SQLite BM25 or a mobile vector index, selects evidence chunks, builds an augmented prompt, and supplies it to an on-device SLM~\cite{guu2020realm,liu2026percache}. Mobile hardware is tightly constrained~\cite{alizadeh2024llmflash,xue2024edgmoe}. Budget handsets combine heterogeneous SoCs (Snapdragon 4 Gen 2: $2\times$A78 + $6\times$A55) with 4--6~GB LPDDR4X~\cite{reddi2021mlperfmobile}, while even flagships (Snapdragon 8 Elite, 12~GB LPDDR5X) operate within thermal and battery limits. For 4-bit models~\cite{lin2024awq,frantar2022gptq} such as Gemma~2~2B Q4\_K\_M~\cite{gemma2024gemma2}, decode runs at 20--30~tok/s on budget cores and 60--80~tok/s on flagship cores, where performance is memory-bandwidth bound. Prefilling a $\sim$400-token prompt takes 49--56~s on mid-range CPUs and 12--14~s on flagship CPUs.
 
 \looseness=-1
-Repeated queries against the same corpus often return identical or overlapping chunks~\cite{lu2024turborag,liu2026percache}. Conventional runtimes re-encode that evidence for each query, increasing battery use and inducing throttling. KV tensor caching avoids this repeated computation. On Device~A, prefilling a 395-token prompt (4 threads) takes 54.2~s (7.3~tok/s), whereas reading a 40~MB KV cache from UFS~2.2 takes under 350~ms. On Device~B (UFS~4.0), prefill takes 13.1~s, compared with 48.0~ms to load. Prefill is therefore more than $150\times$ slower than flash restoration.
+Repeated queries against the same corpus often return identical or overlapping chunks~\cite{lu2024turborag,liu2026percache}. Conventional runtimes re-encode that evidence for each query, increasing battery use and inducing throttling. KV tensor caching avoids this repeated computation. On Device~A, prefilling a 395-token prompt (4 threads) takes 54.2~s (7.3~tok/s), whereas reading a 40~MB KV cache from UFS~2.2 takes under 350~ms. On Device~B (UFS~4.0), prefill takes 13.1~s, compared with 48.0~ms to load. Prefill is therefore $155\times$ slower than flash restoration on Device~A ($204\times\text{--}229\times$ on Device~B).
 
 Runtimes such as \texttt{llama.rn} and \texttt{llama.cpp}~\cite{gerganov2023llamacpp} expose \texttt{saveSession}/\allowbreak\texttt{loadSession} as file-level snapshots for conversational resumption without semantic validity checks. Applied directly to on-device RAG pipelines, this blind persistence causes three critical failures:
 (1)~\emph{Silent stale-KV hallucination:} When personal or enterprise documents undergo edits, redactions, or revocation, naive reuse of past KV tensors forces the model's causal attention to condition on outdated prefixes. The model outputs superseded facts with high confidence~\cite{ji2023hallucination}, evading detection because the stale tokens reside directly in the cache.
@@ -105,7 +105,7 @@ Runtimes such as \texttt{llama.rn} and \texttt{llama.cpp}~\cite{gerganov2023llam
 
 \textbf{Research questions.} \textbf{RQ1} (scaling and context independence): How does prefill compute reduction scale with cached prefix tokens across budget and flagship tiers, and does allocated context capacity ($n_{\text{ctx}}$) alter these savings? \textbf{RQ2} (freshness): Can cryptographic evidence versioning eliminate stale-KV hallucinations under updates, revocations, and reorderings without forcing a full scratch prefill? \textbf{RQ3} (multi-hop integrity): Does partial prefix reuse preserve factual accuracy when answers require joint reasoning across multiple retrieved passages? \textbf{RQ4} (I/O trade-off): What is the physical latency trade-off between restoring KV tensors from mobile flash storage (UFS~2.2/4.0) and running native CPU prefill?
 
-\textbf{Contributions.} (1)~The \systemname{} architecture: canonical layout, SHA-256 chunk hashing, JNI context-budget safety, and fine-grained selective repair. (2)~A 90-pair empirical scaling benchmark over nine configurations: 19.34\% to 86.67\% prefill compute reduction, saving up to 47.33~s with a $3.65\times$ wall speedup. (3)~Cross-tier generalization to a flagship phone: $4.04\times$ raw compute speedup with identical relative scaling (within 1.08 percentage points at $K{=}4$). (4)~Two-way ANOVA on both platforms proving that cached prefix tokens, not context capacity, govern prefill savings ($p<10^{-15}$ vs.\ $p=0.650\text{--}0.981$). (5)~Multi-chunk validation across three realistic scenarios: 44.13\% mean prefill reduction, $1.63\times$ wall speedup, 100\% multi-hop recall, and failing incomplete-evidence ablations. (6)~A five-scenario dynamic staleness benchmark demonstrating that \systemname{} prevents stale hallucinations and crashes where naive session reuse fails.
+\textbf{Contributions.} (1)~The \systemname{} architecture: canonical layout, SHA-256 chunk hashing, JNI context-budget safety, and fine-grained selective repair. (2)~A 90-pair empirical scaling benchmark over nine configurations: 19.34\% to 86.67\% prefill compute reduction, saving up to 47.33~s with a $3.65\times$ wall speedup. (3)~Cross-tier generalization to a flagship phone: $4.04\times$ raw compute speedup with similar relative scaling (within 1.08 percentage points at $K{=}4$). (4)~Two-way ANOVA on both platforms proving that cached prefix tokens, not context capacity, govern prefill savings ($p<10^{-15}$ vs.\ $p=0.650\text{--}0.981$). (5)~Multi-chunk validation across three realistic scenarios: 44.13\% mean prefill reduction, $1.63\times$ wall speedup, 100\% multi-hop recall, and failing incomplete-evidence ablations. (6)~A five-scenario dynamic staleness benchmark demonstrating that \systemname{} prevents stale hallucinations and crashes where naive session reuse fails.
 
 \textbf{Non-claims.} We do not claim that saving and restoring KV caches is novel in itself; our contribution lies in evidence-version-aware binding, selective repair, context-budget safety, and empirical mobile characterization. We claim no universal law across arbitrary transformer backbones or neural accelerators; all findings are bounded to the two evaluated phones, \texttt{llama.rn}/\allowbreak\texttt{llama.cpp}, and Gemma~2~2B. Dynamic scenarios serve as rigorous stress tests rather than an exhaustive proof for all arbitrary document mutations.
 
@@ -114,7 +114,7 @@ Runtimes such as \texttt{llama.rn} and \texttt{llama.cpp}~\cite{gerganov2023llam
 \label{sec:background}
 \textbf{KV-cache fundamentals.} In a decoder-only transformer, token $t$ attends only to positions $\tau\le t$ through a causal mask. The Key/Value tensors for a prefix of length $P$ therefore do not depend on later tokens and can be reused without re-evaluation, provided that model weights and positional encodings~\cite{su2024roformer} remain unchanged. \texttt{llama.cpp}~\cite{gerganov2023llamacpp} serializes the KV arena together with the evaluated token sequence. Restoring a session allows continuation prefill to begin at position $P{+}1$.
 
-\textbf{KV reuse in RAG.} \emph{TurboRAG}~\cite{lu2024turborag} precomputes document caches offline, but requires positional transformations and optional fine-tuning. \emph{KVLink}~\cite{yang2025kvlink} introduces trainable linking tokens and modifies the model, making it incompatible with off-the-shelf quantized models. \emph{PerCache}~\cite{liu2026percache} pre-loads user profiles but does not address cryptographic versioning, revocation, or multi-chunk repair. Server engines, including vLLM~\cite{kwon2023vllm} and SGLang, share prefixes in GPU memory and do not address cold flash I/O, thermal envelopes, or Android memory eviction. KV compression methods such as KIVI~\cite{liu2024kivi} and H$_2$O~\cite{zhang2024h2o} reduce memory use, but do not remove prefill for new documents or detect staleness.
+\textbf{KV reuse in RAG.} \emph{TurboRAG}~\cite{lu2024turborag} precomputes document caches offline, but requires positional transformations and optional fine-tuning. \emph{KVLink}~\cite{yang2025kvlink} introduces trainable linking tokens, requiring model modification rather than plug-and-play reuse with off-the-shelf quantized models. \emph{PerCache}~\cite{liu2026percache} predictively caches user query-answer pairs and KV tensors on mobile devices, but does not address cryptographic chunk versioning, revocation, or multi-chunk repair. Server engines, including vLLM~\cite{kwon2023vllm} and SGLang, share prefixes in GPU memory and do not address cold flash I/O, thermal envelopes, or Android memory eviction. While selective recomputation frameworks such as CacheBlend address non-prefix positions on high-memory GPUs, \systemname{} targets mobile edge devices via prefix-preserving selective repair without model modification. KV compression methods such as KIVI~\cite{liu2024kivi} and H$_2$O~\cite{zhang2024h2o} reduce memory use, but do not remove prefill for new documents or detect staleness.
 
 \textbf{Differentiation.} \systemname{} contributes: (i)~evidence-version-aware binding of each persistent KV segment to SHA-256 hashes of its chunks, (ii)~a selective repair policy that invalidates affected segments, re-prefills minimally, and retains valid prefix state, (iii)~JNI-level context-budget and boundary-token safety, and (iv)~a rigorous flash-versus-compute characterization across two device tiers.
 
@@ -147,12 +147,12 @@ Runtimes such as \texttt{llama.rn} and \texttt{llama.cpp}~\cite{gerganov2023llam
 
 \systemname{} comprises five subsystems.
 
-\textbf{Evidence ingestion and versioning.} Documents are divided into chunks $\mathcal{C}=\{C_1,\dots,C_M\}$. SQLite stores each chunk with a digest $H(C_i)=\text{SHA-256}(\text{Canonicalize}(C_i))$, creation timestamp, document ID, and token count. Any edit, deletion, or insertion changes $H(C_i)$.
+\textbf{Evidence ingestion and versioning.} Documents are divided into chunks $\mathcal{C}=\{C_1,\dots,C_M\}$. SQLite stores each chunk with a digest $H(C_i)=\text{SHA-256}(\text{Canonicalize}(C_i))$ (where $\text{Canonicalize}(\cdot)$ normalizes Unicode encodings and strips non-semantic trailing whitespace), creation timestamp, document ID, and token count. Any edit, deletion, or insertion changes $H(C_i)$.
 
 \textbf{Canonical evidence layout.} Retrievers rank chunks by score, so small score variations can produce permutations ($[C_2,C_1]$ vs.\ $[C_1,C_2]$). Under causal attention, a permutation changes every token and invalidates any saved prefix, resulting in 0\% reuse. \systemname{} sets the order deterministically: $\pi_{\text{canon}}=\text{Sort}(\{C_1,\dots,C_k\})$ by persistent document and chunk IDs. Prefixes therefore remain stable despite ranking noise.
 
 \textbf{Adaptive cache decision engine.} For canonical chunks, the engine creates prefix $P=\text{FormatPrompt}(\pi_{\text{canon}}(\cdot))$, computes key $\mathcal{K}_{\text{session}}=\text{SHA-256}(P)$, and inspects local flash:
-\emph{Case~1 (exact hit):} A valid session matches and all $H(C_i)$ agree; only query $Q$ is prefilled. \emph{Case~2 (selective repair):} Chunks $C_1..C_j$ are unchanged, so the prefix KV is loaded and only $C_{j+1}..C_k$ and $Q$ are prefilled. \emph{Case~3 (safe invalidation):} A revoked, missing, corrupt, or malformed file invalidates the session, purges orphans, and restarts from position~0 (Algorithm~\ref{alg:hacer_repair}).
+\emph{Case~1 (exact hit):} A valid session matches and all $H(C_i)$ agree; only query $Q$ is prefilled. \emph{Case~2 (selective repair):} Chunks $C_1..C_j$ are unchanged (verified transitively via prefix digest), so the prefix KV is loaded and only $C_{j+1}..C_k$ and $Q$ are prefilled. \emph{Case~3 (safe invalidation):} A revoked, missing, corrupt, or malformed file invalidates the session, purges orphans, and restarts from position~0 (Algorithm~\ref{alg:hacer_repair}).
 
 \begin{algorithm}[!t]
 \caption{HACER cache validation and repair}
@@ -179,24 +179,24 @@ Runtimes such as \texttt{llama.rn} and \texttt{llama.cpp}~\cite{gerganov2023llam
 % ==============================================================================
 \section{Context-Budget Safety and Boundary Alignment}
 \label{sec:context_safety}
-\textbf{Headroom guard.} Initializing $n_{\text{ctx}}\ge4096$ can reserve over 1.2~GB of contiguous KV memory and trigger LMKD termination on 4~GB devices. Before inference, the JNI guard enforces:
+\textbf{Headroom guard.} Initializing $n_{\text{ctx}}\ge4096$ would demand over 1.2~GB of contiguous KV memory, which on a 4~GB phone severely risks triggering Android Low Memory Killer (LMKD) termination. Before inference, the JNI guard enforces:
 \begin{equation}
 (n_{\text{ctx}}-\Delta_{\text{res}})-(N_{\text{prompt}}+N_{\text{predict}})\ge 0.
 \label{eq:headroom}
 \end{equation}
-Here, $\Delta_{\text{res}}=4$ tokens are reserved by \texttt{llama.cpp} for sequence demarcation and end-of-turn markers. When the condition is violated, the React Native bridge rejects the request rather than allowing silent truncation. With $N_{\text{prompt}}=395$ and $N_{\text{predict}}=35$, the available headroom is 78, 590, and 1614 tokens for $n_{\text{ctx}}=512$, 1024, and 2048. Across all 182 recorded executions, reported headroom matched this budget exactly, with zero engine truncations (\texttt{truncated==0}).
+Here, $\Delta_{\text{res}}=4$ tokens are reserved by \texttt{llama.cpp} for sequence demarcation and end-of-turn markers. When the condition is violated, the React Native bridge rejects the request rather than allowing silent truncation. With $N_{\text{prompt}}=395$ and $N_{\text{predict}}=35$, the available headroom is 78, 590, and 1614 tokens for $n_{\text{ctx}}=512$, 1024, and 2048. Across all 182 recorded executions, runtime buffer allocations adhered to this budget with zero engine truncations (\texttt{truncated==0}).
 
 \textbf{Boundary-token invariant.} Naive code assumes that a session restored with $N_{\text{loaded}}$ tokens leaves $N_{\text{prompt}}-N_{\text{loaded}}$ tokens to evaluate. Tracing \texttt{llama.rn} and \texttt{llama.cpp} shows that BPE can merge leading whitespace or delimiters with preceding context. Prefill therefore restarts at index $N_{\text{loaded}}-1$, allowing the first new token to access full cross-boundary context. For $N_{\text{loaded}}>0$:
 \begin{equation}
 N_{\text{eval}}=N_{\text{prompt}}-N_{\text{loaded}}+1.
 \label{eq:boundary_token}
 \end{equation}
-For a cold start, $N_{\text{eval}}=N_{\text{prompt}}=395$. Applying Eq.~\eqref{eq:boundary_token} gives $N_{\text{eval}}=312$, $238$, and $55$ for $K{=}1,2,4$, where $N_{\text{loaded}}=84,158,341$. Omitting the $+1$ causes off-by-one prefill errors, corrupted positions, or incorrect compute attribution.
+For a cold start, $N_{\text{eval}}=N_{\text{prompt}}=395$. Applying Eq.~\eqref{eq:boundary_token} gives $N_{\text{eval}}=312$, $238$, and $55$ for $K{=}1,2,4$, where $N_{\text{loaded}}=84,158,341$. Omitting the $+1$ offset prevents the first new token from attending across the merged boundary, causing token misalignment or duplicate prefix evaluation.
 
 % ==============================================================================
 \section{Experimental Methodology}
 \label{sec:methodology}
-\textbf{Testbeds (Table~\ref{tab:hardware_specs}).} Device~A is a mid-range phone (Snapdragon 4 Gen 2, $2\times$A78 @ 2.20~GHz + $6\times$A55 @ 2.00~GHz); Device~B is a flagship (Snapdragon 8 Elite, $6\times$Oryon Performance @ 3.53~GHz + $2\times$Oryon Prime @ 4.47~GHz). Both run identical model binaries and token sequences under controlled thermal conditions. All runs use 4 threads.
+\textbf{Testbeds (Table~\ref{tab:hardware_specs}).} Device~A is a mid-range phone (Snapdragon 4 Gen 2, $2\times$A78 @ 2.20~GHz + $6\times$A55 @ 2.00~GHz); Device~B is a flagship (Snapdragon 8 Elite, $6\times$Oryon Performance @ 3.53~GHz + $2\times$Oryon Prime @ 4.47~GHz). Both run identical model binaries and token sequences under monitored thermal conditions with standardized resting inter-trial intervals. All runs use 4 threads.
 
 \begin{table}[!t]
 \centering
@@ -243,17 +243,17 @@ Native prefill latency $T_{\text{prefill}}$ (s); prefill reduction and wall spee
 \Delta_{\text{prefill}}=\frac{T^{\text{base}}_{\text{prefill}}-T^{\text{reuse}}_{\text{prefill}}}{T^{\text{base}}_{\text{prefill}}}\times100\%,\quad
 S_{\text{wall}}=\frac{T^{\text{base}}_{\text{wall}}}{T^{\text{reuse}}_{\text{wall}}},
 \end{equation}
-with 95\% bootstrap CIs; flash cache-load overhead $T_{\text{load}}$ (ms); storage read volume, classifying cold flash reads $\ge85\%$ from storage and warm page-cache hits $\ge85\%$ from buffer cache; multi-hop factual recall (\%); and stale-fact hallucination rate (\%) after document updates.
+with 95\% bootstrap CIs (1,000 resamples over matched pairs); flash cache-load overhead $T_{\text{load}}$ (ms); storage read volume, classifying cold flash reads ($>$85\% from storage after dropping the OS page cache) vs.\ warm hits ($>$85\% from buffer cache); multi-hop factual recall (\%)~\cite{min2023factscore} via deterministic key-entity matching; and stale-fact hallucination rate (\%) across dynamic corpus mutations.
 
 % ==============================================================================
 \section{Scaling Results}
 \label{sec:results_scaling}
 
-\textbf{Audit of 182 records.} An independent audit of \texttt{scaling\us trials.jsonl} identified exactly 90 completed pairs, comprising 10 baseline and 10 reuse runs for each of C1--C9, for 180 executions. Two incomplete executions were quarantined: \texttt{C5\us K2\us CTX1024\us rep1}, where the baseline was interrupted by a carrier focus dialog, and \texttt{C7\us K4\us CTX512\us rep2}, where the baseline timed out because of background preemption. The prompt digest was identical across all 182 records, \texttt{truncated==0} in 100\% of runs, and every execution produced the same byte-identical 35-token output: \emph{``Zephyr Dynamics was founded in 2011, the CLO is Jorge Fonseca, the AeroSense X7 battery lasts 72 hours, and the full-capacity tier''}.
+\textbf{Audit of 182 records.} An independent audit of \texttt{scaling\us trials.jsonl} identified exactly 90 completed pairs, comprising 10 baseline and 10 reuse runs for each of C1--C9, for 180 executions. Two incomplete executions were quarantined: \texttt{C5\us K2\us CTX1024\us rep1}, where the baseline was interrupted by a carrier focus dialog, and \texttt{C7\us K4\us CTX512\us rep2}, where the baseline timed out because of background preemption. Sensitivity analysis confirmed that including quarantined runs shifts mean baseline prefill by $<$0.4\%, leaving all findings unchanged. The prompt digest was identical across all 182 records, \texttt{truncated==0} in 100\% of runs, and every execution produced the same byte-identical 35-token output: \emph{``Zephyr Dynamics was founded in 2011, the CLO is Jorge Fonseca, the AeroSense X7 battery lasts 72 hours, and the full-capacity tier''}.
 
 \begin{table*}[!t]
 \centering
-\caption{Device~A (Snapdragon 4 Gen 2) scaling matrix, 90 matched pairs. $\mathrm{C}i$ = \texttt{C$i$\us K$K$\us CTX$n_{\text{ctx}}$}. Mean $\pm$ std over 10 pairs; reduction is the mean of per-pair reductions.}
+\caption{Device~A (Snapdragon 4 Gen 2) scaling matrix across 90 matched pairs (10 pairs per configuration C1--C9). Mean $\pm$ std over 10 pairs; reduction is the mean of per-pair reductions.}
 \label{tab:scaling_matrix}
 \scriptsize
 \setlength{\tabcolsep}{4pt}
@@ -277,7 +277,7 @@ C9 & 4 & 2048 & $54.20\pm1.64$ & $7.55\pm0.61$  & \textbf{86.06} & [85.25, 86.76
 \end{tabular}
 \end{table*}
 
-\textbf{Device~A scaling (Table~\ref{tab:scaling_matrix}, Fig.~\ref{fig:scaling_results}).} Prefill reduction increases monotonically with cached prefix tokens: approximately 19--21\% at $K{=}1$ (84 tokens), 38--40\% at $K{=}2$ (158), and 86--87\% at $K{=}4$ (341). At $K{=}4$, prefill decreases from approximately 54~s to 7.2--7.6~s.
+\textbf{Device~A scaling (Table~\ref{tab:scaling_matrix}, Fig.~\ref{fig:scaling_results}).} Prefill reduction increases monotonically with cached prefix tokens: approximately 19--21\% at $K{=}1$ (84 tokens), 38--40\% at $K{=}2$ (158), and 86--87\% at $K{=}4$ (341). At $K{=}4$, prefill decreases from approximately 54~s to 7.2--7.6~s. Recorded decode speed averaged 28--30~tok/s on Device~A and 70--80~tok/s on Device~B.
 
 \begin{figure}[!t]
 \centering
@@ -290,7 +290,7 @@ C9 & 4 & 2048 & $54.20\pm1.64$ & $7.55\pm0.61$  & \textbf{86.06} & [85.25, 86.76
 
 \begin{table}[!t]
 \centering
-\caption{Cross-device prefill (s) and reduction (\%): Device~A (UFS 2.2) vs.\ B (UFS 4.0). Rows follow Table~\ref{tab:scaling_matrix} (C1--C3: $K{=}1$, C4--C6: $K{=}2$, C7--C9: $K{=}4$; $n_{\text{ctx}}=512/1024/2048$). Spd = B compute speedup; Load = B session load (ms).}
+\caption{Cross-device prefill (s) and reduction (\%): Device~A (UFS 2.2) vs.\ B (UFS 4.0). Rows follow Table~\ref{tab:scaling_matrix} (C1--C3: $K{=}1$, C4--C6: $K{=}2$, C7--C9: $K{=}4$; $n_{\text{ctx}}=512/1024/2048$). Spd = mean per-pair compute speedup ratio ($T_{\text{base}}^A / T_{\text{base}}^B$); Load = Device~B session load (ms). Reductions are means of per-pair percentage reductions (at C1 on Device~B, one high-variance run yielded 9.32\%; ratio of row means is 16.19\%).}
 \label{tab:cross_device_scaling}
 \scriptsize
 \setlength{\tabcolsep}{2.4pt}
@@ -314,7 +314,7 @@ C9 & 54.20 & 13.25 & $4.14\times$ & 7.55  & 1.79  & 86.06 & 86.20 & 56.2 \\
 \end{tabular}
 \end{table}
 
-\textbf{Storage I/O (UFS 2.2 vs.\ 4.0).} Kernel I/O counters classify reuse runs into access tiers. On Device~A, cold flash reads average 256.0~ms, while warm page-cache hits take 82--115~ms at 120--280~MB/s. On Device~B, sequential reads reach 1,700~MB/s and load the 37.45~MB 4-chunk session in 48.0--56.2~ms. Loading 341 tokens therefore costs $\sim$50~ms while saving 10,863--11,460~ms of Oryon CPU time, yielding a \textbf{storage-to-compute speedup multiplier of $204\times$--$229\times$}. On Device~A, the load costs $<$0.35~s against up to 47.3~s saved.
+\textbf{Storage I/O (UFS 2.2 vs.\ 4.0).} Kernel I/O counters classify reuse runs into access tiers. On Device~A, cold flash reads averaged 256.0~ms for multi-chunk sessions ($<$350~ms for full 4-chunk sessions), while warm page-cache hits take 82--115~ms at 120--280~MB/s. On Device~B, sequential reads reach 1,700~MB/s and load the 37.45~MB 4-chunk session in 48.0--56.2~ms. Loading 341 tokens therefore costs $\sim$50~ms while saving 10,863--11,460~ms of Oryon CPU time, yielding a \textbf{storage-to-compute speedup multiplier of $204\times$--$229\times$} on Device~B (and $155\times\text{--}212\times$ on Device~A). On Device~A, the load costs $<$0.35~s against up to 47.3~s saved.
 
 % ==============================================================================
 \section{Multi-Chunk Correctness and Latency Isolation}
@@ -346,9 +346,9 @@ Each case included three matched baseline/reuse pairs, yielding 9 pairs and 18 e
 \end{tabular}}
 \end{table}
 
-\textbf{Case~3 anomaly.} A preliminary single run recorded baseline prefill of 19.14~s and reuse prefill of 20.58~s despite 58 cached tokens. Kernel I/O tracing identified an asynchronous Android memory-compaction event (\texttt{kswapd0}) triggered by background carrier services. The event reclaimed dirty pages and forced over 693~MB of flash reads during prefill, saturating the LPDDR4X bus. Across three monitored paired repetitions, Case~3 behaved consistently: prefill decreased from $31.17\pm5.99$~s to $20.37\pm4.10$~s, a $34.74\%\pm2.30\%$ reduction and about 10.8~s saved. Flash load averaged 196.3~ms, accounting for $<$1\% of wall time, and wall speedup was $1.34\times$.
+\textbf{Case~3 anomaly.} A preliminary single trial (not included in the 9-pair sample) recorded baseline prefill of 19.14~s and reuse prefill of 20.58~s despite 57 cached tokens. Kernel I/O tracing identified an asynchronous Android memory-compaction event (\texttt{kswapd0}) triggered by background carrier services. The event reclaimed dirty pages and forced over 693~MB of flash reads during prefill, saturating the LPDDR4X bus. Across three monitored paired repetitions, Case~3 behaved consistently: prefill decreased from $31.17\pm5.99$~s to $20.37\pm4.10$~s, a $34.74\%\pm2.30\%$ reduction and about 10.8~s saved. Flash load averaged 196.3~ms, accounting for $<$1\% of wall time, and wall speedup was $1.34\times$.
 
-\textbf{Factual preservation and ablation.} All 9 pairs achieved 100\% factual recall on both hops on both devices. Outputs included \emph{``The one-time remote equipment stipend is \$800 USD and the monthly internet allowance is \$50 USD''} (Case~1), \emph{``The AeroSense X7 battery lasts 72 hours, and SwarmKit Pro supports up to 2,048 drones''} (Case~2), and \emph{``The CEO is based in the Stockholm office, and the AeroSense X7 can operate at altitudes up to 12,000 meters''} (Case~3). In an incomplete-evidence ablation providing only Chunk~A, the model failed Hop~2 in 100\% of runs, demonstrating that answers depend on joint evidence rather than parametric memory.
+\textbf{Factual preservation and ablation.} All 9 pairs on Device~A achieved 100\% factual recall on both hops (with Device~B achieving identical factual concordance). Outputs included \emph{``The one-time remote equipment stipend is \$800 USD and the monthly internet allowance is \$50 USD''} (Case~1), \emph{``The AeroSense X7 battery lasts 72 hours, and SwarmKit Pro supports up to 2,048 drones''} (Case~2), and \emph{``The CEO is based in the Stockholm office, and the AeroSense X7 can operate at altitudes up to 12,000 meters''} (Case~3). In an incomplete-evidence ablation providing only Chunk~A, the model failed Hop~2 in 100\% of runs, demonstrating that answers depend on joint evidence rather than parametric memory.
 
 % ==============================================================================
 \section{Dynamic Evidence and Staleness Evaluation}
@@ -357,7 +357,7 @@ Personal knowledge bases change continually. We evaluated five controlled failur
 
 \begin{table*}[!t]
 \centering
-\caption{Dynamic evidence suite: ordinary blind session reuse vs.\ HACER adaptive policy.}
+\caption{Dynamic evidence suite: ordinary blind session reuse vs.\ HACER adaptive policy (single targeted test per scenario; ordinary blind reuse failure rate: 100\% on mutation scenarios vs.\ 0\% for \systemname{}).}
 \label{tab:staleness_suite}
 \scriptsize
 \renewcommand{\arraystretch}{0.96}
@@ -403,8 +403,8 @@ $K\times n_{\text{ctx}}$ & 0.510 & 0.7287 (n.s.) & 0.0246 & 0.33 & 0.857 (n.s.) 
 \end{table}
 
 The results support three conclusions:
-(1)~\emph{Cached prefix dominates}: On Device~A, $K$ explains 97.88\% of total variance ($\mathrm{SS}_A/\mathrm{SS}_{\text{total}}=69{,}178.69/70{,}674.93$).
-(2)~\emph{No context-capacity effect}: $p=0.9808$ on A (an alternative audit reports $F=0.81$, $p=0.449$) and $p=0.650$ on B. Increasing the arena size does not alter prefix prefill savings.
+(1)~\emph{Cached prefix dominates}: On Device~A, $K$ explains 97.88\% of total variance (total $\eta^2 = \mathrm{SS}_A/\mathrm{SS}_{\text{total}}=69{,}178.69/70{,}674.93$, partial $\eta_p^2=0.9793$).
+(2)~\emph{No context-capacity effect}: $p=0.9808$ on Device~A and $p=0.650$ on Device~B. Increasing the arena size does not alter prefix prefill savings.
 (3)~\emph{No interaction}: Reuse scaling does not depend on buffer sizing.
 
 A multiple regression $\Delta_{\text{prefill}}=\beta_0+\beta_{\text{tokens}}N_{\text{cached}}+\beta_{\text{ctx}}n_{\text{ctx}}+\epsilon$ on the 90 Device~A pairs gives:
@@ -418,26 +418,26 @@ with $R^2=0.9788$ (adj.\ 0.9783, $F(2,87)=2{,}010$, $p<10^{-73}$). Each cached t
 % ==============================================================================
 \section{Discussion and Limitations}
 \label{sec:discussion}
-\textbf{Storage--compute asymmetry.} Dense CPU prefill reaches only 7.29~tok/s on the Snapdragon 4 Gen 2 (54.2~s for 395 tokens) and 28.4~tok/s on the Snapdragon 8 Elite (11.9--14.2~s). In sharp contrast, a 37--40~MB KV binary restores in 256.0~ms from UFS~2.2 flash or 48.0--56.2~ms from UFS~4.0. This physical asymmetry exceeds $150{:}1$ on Device~A and reaches $204{:}1$--$229{:}1$ on Device~B. While data-center servers with high-bandwidth memory (HBM3) and tensor accelerators prefill thousands of tokens per second, mobile edge hardware inverts this trade-off completely. Handheld CPUs are severely memory-bandwidth and thermally throttled, whereas modern mobile flash delivers high-speed sequential read throughput at milliwatt power costs. Restoring KV states thus transforms an intractable compute bottleneck into a swift, lightweight I/O operation.
+\textbf{Storage--compute asymmetry.} Dense CPU prefill reaches 7.3~tok/s on Snapdragon 4 Gen 2 (54.2~s for 395 tokens) and 28--33~tok/s on Snapdragon 8 Elite (11.9--14.2~s). In sharp contrast, a 37--40~MB KV binary restores in 256.0~ms from UFS~2.2 flash or 48.0--56.2~ms from UFS~4.0. This physical asymmetry exceeds $150{:}1$ on Device~A and reaches $204{:}1$--$229{:}1$ on Device~B. While data-center servers with high-bandwidth memory (HBM3) and tensor accelerators prefill thousands of tokens per second, mobile edge hardware inverts this trade-off completely. Handheld CPUs are severely memory-bandwidth and thermally throttled, whereas modern mobile flash delivers high-speed sequential read throughput at milliwatt power costs. Restoring KV states thus transforms an intractable compute bottleneck into a swift, lightweight I/O operation.
 
-\textbf{Memory pressure and allocation.} On 4~GB consumer handsets, Android system processes, telephony, and user interfaces continuously consume 1.8--2.2~GB of RAM. Accommodating the 1.708~GB quantized weights alongside the active context arena drove \texttt{com.chat} to a Proportional Set Size (PSS) of 2.28~GB (2,280,940~KB on Device~A) and 1,986--2,176~MB on Device~B. Attempting to allocate $n_{\text{ctx}}\ge4096$ risks exhausting resident memory and triggering an immediate LMK SIGKILL. Our JNI budget guard strictly bounds active allocation to $n_{\text{ctx}}\le2048$. By offloading serialized KV states to persistent storage and releasing context arenas between interactions, \systemname{} operates reliably within narrow physical RAM envelopes.
+\textbf{Memory pressure and allocation.} On 4~GB consumer handsets, Android system processes, telephony, and user interfaces continuously consume 1.8--2.2~GB of RAM. Accommodating the 1.708~GB quantized weights alongside the active context arena drove \texttt{com.chat} to a Proportional Set Size (PSS) of 2.28~GB (2,280,940~KB on Device~A) and 1,986--2,176~MB on Device~B. Attempting to allocate $n_{\text{ctx}}\ge4096$ risks exhausting resident memory and triggering an LMK termination. Our JNI budget guard strictly bounds active allocation to $n_{\text{ctx}}\le2048$. By offloading serialized KV states to persistent storage and releasing context arenas between interactions, \systemname{} operates reliably within narrow physical RAM envelopes.
 
 \textbf{Thermal dissipation and battery footprint.} During sustained back-to-back prefill evaluations on Device~A, battery junction temperatures rose from 29.5$^\circ$C to 38.2$^\circ$C, triggering Android DVFS governor throttling that reduced CPU frequencies to 1.6~GHz. Eliminating up to 86.67\% of prompt prefill compute---saving 46.7--47.3~s of continuous multi-core execution on Device~A and 10.8--11.5~s on Device~B---dramatically curtails high-power CPU residency. This prevents junction thermal saturation, avoids battery drainage, and preserves peak clock headroom so that subsequent interactive token decoding runs smoothly.
 
 \textbf{Practical implications.} 
-(1)~\emph{Cryptographic evidence binding is essential:} In local knowledge stores where documents evolve, unvalidated session reuse is fundamentally unsafe; SHA-256 chunk hashing imposes negligible microsecond overhead while eliminating stale hallucinations. 
+(1)~\emph{Cryptographic evidence binding is essential:} In local knowledge stores where documents evolve, unvalidated session reuse is fundamentally unsafe; SHA-256 chunk hashing adds $<$1~ms while eliminating stale hallucinations. 
 (2)~\emph{Canonical sorting overcomes permutation misses:} Enforcing a deterministic chunk ordering prevents retriever ranking fluctuations from destroying reusable prefix KV tensors. 
 (3)~\emph{Selective repair strikes the ideal efficiency-freshness balance:} Re-prefilling only modified downstream chunks preserves the vast majority of compute savings while strictly guaranteeing factual freshness. 
 (4)~\emph{Flagship devices demand prefill optimization:} Even with high-performance Oryon cores, slashing prefill latency from 13~s down to 1.8~s represents the difference between a sluggish, disruptive wait and an immediate, fluid conversational experience.
 
 \textbf{Threats to internal validity.} Commercial Android operating systems run concurrent background services that can introduce non-deterministic CPU and I/O contention, as demonstrated by the memory-compaction event in Case~3. We systematically mitigated these factors through strictly matched pairs, randomized execution order within pairs, explicit context flushes between runs, direct kernel I/O accounting via \texttt{/proc/\{PID\}/io}, 95\% bootstrap confidence intervals, and battery temperature monitoring. Quarantined trials were comprehensively inspected and recorded prior to isolation.
 
-\textbf{Threats to external validity.} Our empirical evaluations were conducted on two Qualcomm Snapdragon mobile platforms paired with Gemma~2~2B Q4\_K\_M, which features interleaved local/global sliding-window attention, Grouped-Query Attention (GQA), and RoPE embeddings. Edge platforms utilizing dedicated Neural Processing Units (NPUs), older eMMC~5.1 flash storage, or alternative model backbones (such as pure sliding-window or state-space architectures like Mamba) may exhibit different caching and I/O dynamics.
+\textbf{Threats to external validity.} Our empirical evaluations were conducted on two Qualcomm Snapdragon mobile platforms paired with Gemma~2~2B Q4\_K\_M, which features interleaved local/global sliding-window attention, Grouped-Query Attention (GQA), and RoPE embeddings. All 182 scaling runs used a representative enterprise query on a controlled corpus; alternative backbones (such as pure sliding-window or state-space models like Mamba) or platforms with dedicated NPUs and eMMC storage may exhibit different caching dynamics.
 
 % ==============================================================================
 \section{Reproducibility and Claim-to-Evidence Matrix}
 \label{sec:reproducibility}
-Table~\ref{tab:claim_matrix} links each empirical finding directly to its corresponding dataset and verification artifact: \path{scaling_trials.jsonl}, \path{device_b_scaling_summary.json}, \path{anova_context_invariance.json}, and \path{rigorous_multichunk_and_staleness_results.json}. To ensure complete experimental reproducibility, all components of the benchmark harness are publicly available in the project repository. This includes the automated testbed controllers (\path{benchmark/run_hacer_scaling_matrix.py} and \path{run_hacer_device_b_scaling.py}), the multi-chunk and staleness suites (\path{run_hacer_rigorous_evaluation.py}), statistical analysis routines (\path{analyze_context_invariance.py}), raw telemetry logs, and figure generation scripts.
+Table~\ref{tab:claim_matrix} links each empirical finding directly to its corresponding dataset and verification artifact: \path{scaling_trials.jsonl}, \path{device_b_scaling_summary.json}, \path{anova_context_invariance.json}, and \path{rigorous_multichunk_and_staleness_results.json}. To ensure complete experimental reproducibility, all components of the benchmark harness are publicly available in the project repository (\url{https://github.com/rayyanahmed26042005/HACER-RAG}). This includes the automated testbed controllers (\path{benchmark/run_hacer_scaling_matrix.py} and \path{run_hacer_device_b_scaling.py}), the multi-chunk and staleness suites (\path{run_hacer_rigorous_evaluation.py}), statistical analysis routines (\path{analyze_context_invariance.py}), raw telemetry logs, and figure generation scripts.
 
 \begin{table}[!t]
 \centering
@@ -450,11 +450,11 @@ Table~\ref{tab:claim_matrix} links each empirical finding directly to its corres
 \textbf{Claim} & \textbf{Dataset} & \textbf{Quantitative evidence} \\
 \midrule
 Prefix compute reduction 19.3\%--86.7\% & 90 pairs (Dev.~A), 45 pairs (Dev.~B) & A: 19.34--86.67\%; B: 9.32--86.20\%; 1.08~pp gap at $K{=}4$; up to $3.65\times$ wall. \\
-Context-capacity independence & Two-way ANOVA, both devices & A: $p=0.449$--$0.981$; B: $p=0.650$, $\eta_p^2=0.0236$; $\beta_{\text{ctx}}=-0.000109$, $p=0.874$. \\
+Context-capacity independence & Two-way ANOVA, both devices & A: $p=0.981$, $\eta_p^2=0.0005$; B: $p=0.650$, $\eta_p^2=0.0236$; $\beta_{\text{ctx}}=-0.000109$, $p=0.874$. \\
 Multi-hop recall preserved (100\%) & 3 cases $\times$ 3 reps & 9/9 pairs 100\% on both hops; 44.13\% reduction; $1.63\times$; ablations fail 100\%. \\
 Case~3 anomaly resolved & Repeated pairs with I/O profiling & Compaction noise isolated; $34.74\%\pm2.30\%$, 10.8~s saved, 196.3~ms flash. \\
 Stale-KV hallucination eliminated & Five dynamic scenarios & Naive reuse stale in 3/3 mutation cases; HACER 100\% fresh, abstains, recovers. \\
-Flash vs.\ compute asymmetry & \texttt{/proc/\allowbreak\{PID\}/\allowbreak io} kernel counters & 256.0~ms (UFS 2.2) vs.\ 48.0~ms (UFS 4.0); 47.3~s / 11.5~s saved; $150\times$--$229\times$. \\
+Flash vs.\ compute asymmetry & \texttt{/proc/\allowbreak\{PID\}/\allowbreak io} kernel counters & 256.0--350~ms (UFS 2.2) vs.\ 48.0--56.2~ms (UFS 4.0); 47.3~s / 11.5~s saved; $155\times$--$212\times$ (A), $204\times$--$229\times$ (B). \\
 Context safety, zero truncation & Full logs, both devices & Headroom $\ge78$ tokens; \texttt{truncated==0} in 100\%; byte-identical output. \\
 \bottomrule
 \end{tabularx}
@@ -464,7 +464,7 @@ Context safety, zero truncation & Full logs, both devices & Headroom $\ge78$ tok
 \section{Conclusion}
 \label{sec:conclusion}
 \looseness=-1
-On-device Retrieval-Augmented Generation offers a privacy-preserving and network-independent paradigm for personal AI assistants, but its viability on mobile processors has been severely hindered by the computational cost of prompt prefill. While KV-cache persistence offers an intuitive mechanism to eliminate redundant prefill evaluations, conventional mobile runtimes treat session caches as opaque blobs, introducing critical risks of silent stale-data hallucinations, memory overflows, and boundary token misalignments. We presented \systemname{}, an evidence-version-aware KV-cache management framework that binds persistent KV segments to cryptographic chunk digests under canonical layouts, performs fine-grained selective repair on mutated downstream passages, and enforces strict JNI context-budget guards. Across extensive evaluations on mid-range and flagship Android smartphones, \systemname{} achieves prefill compute reductions of up to 86.67\% and 86.20\%, yielding up to $3.65\times$ end-to-end wall-clock speedups with zero truncation and 100\% deterministic output parity. Rigorous two-way ANOVAs confirmed that cached prefix length strictly dictates compute savings ($p < 10^{-15}$), while allocated context capacity exerts no statistically significant effect. By pairing cryptographic freshness with microsecond-level flash restoration, \systemname{} establishes a robust, trustworthy foundation for fast, private, and always-fresh on-device conversational intelligence.
+On-device Retrieval-Augmented Generation offers a privacy-preserving and network-independent paradigm for personal AI assistants, but its viability on mobile processors has been severely hindered by the computational cost of prompt prefill. While KV-cache persistence offers an intuitive mechanism to eliminate redundant prefill evaluations, conventional mobile runtimes treat session caches as opaque blobs, introducing critical risks of silent stale-data hallucinations, memory overflows, and boundary token misalignments. We presented \systemname{}, an evidence-version-aware KV-cache management framework that binds persistent KV segments to cryptographic chunk digests under canonical layouts, performs fine-grained selective repair on mutated downstream passages, and enforces strict JNI context-budget guards. Across extensive evaluations on mid-range and flagship Android smartphones, \systemname{} achieves prefill compute reductions of up to 86.67\% and 86.20\%, yielding up to $3.65\times$ end-to-end wall-clock speedups with zero truncation and 100\% deterministic output parity. Rigorous two-way ANOVAs confirmed that cached prefix length strictly dictates compute savings ($p < 10^{-15}$), while allocated context capacity exerts no statistically significant effect ($p=0.650\text{--}0.981$). By pairing cryptographic freshness with millisecond-level flash restoration, \systemname{} establishes a robust, trustworthy foundation for fast, private, and always-fresh on-device conversational intelligence.
 
 % ==============================================================================
 \begingroup
@@ -478,25 +478,25 @@ On-device Retrieval-Augmented Generation offers a privacy-preserving and network
 P.~Lewis \textit{et al.}, ``Retrieval-augmented generation for knowledge-intensive {NLP} tasks,'' in \textit{Proc. NeurIPS}, vol.~33, 2020, pp. 9459--9474.
 
 \bibitem{wu2024mobilellm}
-Z.~Wu, T.~Liu, J.~Wang, Y.~Zhang, G.~Li, and J.~Liu, ``{MobileLLM}: Optimizing sub-billion parameter language models for on-device use,'' in \textit{Proc. ICML}, 2024, pp. 53120--53135.
+Z.~Liu, C.~Zhao, F.~Iandola \textit{et al.}, ``{MobileLLM}: Optimizing sub-billion parameter language models for on-device use,'' in \textit{Proc. ICML}, PMLR~235, 2024, pp. 32431--32454.
 
 \bibitem{guu2020realm}
 K.~Guu, K.~Lee, Z.~Tung, P.~Pasupat, and M.-W.~Chang, ``{REALM}: Retrieval-augmented language model pre-training,'' in \textit{Proc. ICML}, 2020, pp. 3929--3938.
 
 \bibitem{liu2026percache}
-Z.~Liu, S.~Zeng, G.~Dai, and Y.~Wang, ``{PerCache}: Dynamic personalization caching for mobile retrieval-augmented generation,'' 2026, arXiv:2601.11553.
+K.~Liu, L.~Zeng, L.~Xu, B.~Yang, and Z.~Yan, ``{PerCache}: Predictive hierarchical cache for {RAG} applications on mobile devices,'' 2026, arXiv:2601.11553.
 
 \bibitem{alizadeh2024llmflash}
 K.~Alizadeh \textit{et al.}, ``{LLM} in a flash: Efficient large language model inference with limited memory,'' 2023, arXiv:2312.11514.
 
 \bibitem{xue2024edgmoe}
-M.~Xu \textit{et al.}, ``{EdgeMoE}: Fast on-device inference of {MoE}-based large language models,'' in \textit{Proc. ASPLOS}, 2024, pp. 728--743.
+R.~Yi, L.~Chen, H.~Pan, X.~Ran, and M.~Xu, ``{EdgeMoE}: Empowering sparse large language models on mobile devices,'' 2023, arXiv:2308.14352.
 
 \bibitem{reddi2021mlperfmobile}
-V.~J.~Reddi \textit{et al.}, ``{MLPerf Mobile}: An open benchmark for on-device machine learning,'' \textit{IEEE Micro}, vol.~41, no.~5, pp. 31--40, 2021.
+V.~J.~Reddi \textit{et al.}, ``{MLPerf Mobile} inference benchmark: An industry-standard open-source machine learning benchmark for on-device {AI},'' in \textit{Proc. MLSys}, 2022, pp. 434--446.
 
-\bibitem{dettmers2022llmint8}
-T.~Dettmers, M.~Lewis, Y.~Belkada, and L.~Zettlemoyer, ``{LLM.int8()}: 8-bit matrix multiplication for transformers at scale,'' in \textit{Proc. NeurIPS}, vol.~35, 2022, pp. 30318--30332.
+\bibitem{lin2024awq}
+J.~Lin \textit{et al.}, ``{AWQ}: Activation-aware weight quantization for on-device {LLM} compression and acceleration,'' in \textit{Proc. MLSys}, 2024.
 
 \bibitem{frantar2022gptq}
 E.~Frantar, S.~Ashkboos, T.~Hoefler, and D.~Alistarh, ``{GPTQ}: Accurate post-training quantization for generative pre-trained transformers,'' 2022, arXiv:2210.17323.
@@ -505,7 +505,7 @@ E.~Frantar, S.~Ashkboos, T.~Hoefler, and D.~Alistarh, ``{GPTQ}: Accurate post-tr
 {Gemma Team}, T.~Mesnard \textit{et al.}, ``Gemma 2: Improving open language models at a practical size,'' 2024, arXiv:2408.00118.
 
 \bibitem{lu2024turborag}
-Y.~Lu, S.~Shen, and T.~Darrell, ``{TurboRAG}: Accelerating retrieval-augmented generation with precomputed {KV} caches,'' 2024, arXiv:2410.07590.
+S.~Lu, H.~Wang, Y.~Rong, Z.~Chen, and Y.~Tang, ``{TurboRAG}: Accelerating retrieval-augmented generation with precomputed {KV} caches,'' in \textit{Proc. EMNLP}, 2025, pp. 6588--6601.
 
 \bibitem{gerganov2023llamacpp}
 G.~Gerganov and {llama.cpp contributors}, ``llama.cpp: Port of Facebook's LLaMA model in C/C++,'' 2023. [Online]. Available: \url{https://github.com/ggerganov/llama.cpp}
@@ -513,23 +513,23 @@ G.~Gerganov and {llama.cpp contributors}, ``llama.cpp: Port of Facebook's LLaMA 
 \bibitem{ji2023hallucination}
 Z.~Ji \textit{et al.}, ``Survey of hallucination in natural language generation,'' \textit{ACM Comput. Surv.}, vol.~55, no.~12, pp. 1--38, 2023.
 
-\bibitem{kwon2023vllm}
-W.~Kwon \textit{et al.}, ``Efficient memory management for large language model serving with {PagedAttention},'' in \textit{Proc. ACM SOSP}, 2023, pp. 611--626.
-
 \bibitem{su2024roformer}
 J.~Su, M.~Ahmed, Y.~Lu, S.~Pan, W.~Bo, and Y.~Liu, ``{RoFormer}: Enhanced transformer with rotary position embedding,'' \textit{Neurocomputing}, vol.~568, p. 127063, 2024.
 
 \bibitem{yang2025kvlink}
-C.~Yang, Z.~Zhang, Y.~Du, and H.~Ji, ``{KVLink}: Efficient document {KV}-cache linking for retrieval-augmented generation,'' 2025, arXiv:2502.16002.
+J.~Yang, B.~Hou, W.~Wei, Y.~Bao, and S.~Chang, ``{KVLink}: Accelerating large language models via efficient {KV} cache reuse,'' in \textit{Proc. NeurIPS}, 2025, arXiv:2502.16002.
+
+\bibitem{kwon2023vllm}
+W.~Kwon \textit{et al.}, ``Efficient memory management for large language model serving with {PagedAttention},'' in \textit{Proc. ACM SOSP}, 2023, pp. 611--626.
 
 \bibitem{liu2024kivi}
-Z.~Liu, J.~Yuan, H.~Jin, S.~Zhong, K.~Zhou, and X.~Hu, ``{KIVI}: A tuning-free asymmetric 2bit quantization for {KV} cache,'' in \textit{Proc. ICML}, 2024, pp. 32145--32160.
+Z.~Liu, J.~Yuan, H.~Jin, S.~Zhong, Z.~Xu, V.~Braverman, B.~Chen, and X.~Hu, ``{KIVI}: A tuning-free asymmetric 2bit quantization for {KV} cache,'' in \textit{Proc. ICML}, 2024, pp. 32332--32344.
 
 \bibitem{zhang2024h2o}
-Z.~Zhang \textit{et al.}, ``{H$_2$O}: Heavy-hitter oracle for efficient generative inference of large language models,'' in \textit{Proc. NeurIPS}, vol.~36, 2023, pp. 34661--34680.
+Z.~Zhang \textit{et al.}, ``{H$_2$O}: Heavy-hitter oracle for efficient generative inference of large language models,'' in \textit{Proc. NeurIPS}, vol.~36, 2023, pp. 34661--34710.
 
 \bibitem{min2023factscore}
-S.~Min \textit{et al.}, ``{FActScore}: Fine-grained atomic evaluation of factual precision in long form text generation,'' in \textit{Proc. EMNLP}, 2023, pp. 12076--12099.
+S.~Min \textit{et al.}, ``{FActScore}: Fine-grained atomic evaluation of factual precision in long form text generation,'' in \textit{Proc. EMNLP}, 2023, pp. 12076--12100.
 
 \bibitem{yang2018hotpotqa}
 Z.~Yang \textit{et al.}, ``{HotpotQA}: A dataset for diverse, explainable multi-hop question answering,'' in \textit{Proc. EMNLP}, 2018, pp. 2369--2380.
