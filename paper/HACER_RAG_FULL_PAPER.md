@@ -1,6 +1,8 @@
 # HACER-RAG: Evidence-Version-Aware KV-Cache Reuse and Selective Repair for On-Device Retrieval-Augmented Generation
 
-**Authors:** Mobile Systems and Language Model Research Group, PortingLLM Research Project  
+**Authors:** Mohammed Akif Ali Parvez, Rayyan Mujtaba Musab, Mohammed Khaja Mukarram, Mohammad Afroz, Zeeshan Ahmed  
+**Affiliation:** Department of CSE/IT, Keshav Memorial Institute of Technology, Hyderabad, India  
+**Emails:** akifaliparvez@gmail.com, ahmedrayyan728@gmail.com, mukarramuddin09@gmail.com, mohammadafroz046@gmail.com, zeeshanar56@gmail.com  
 **Target Venues:** MLSys / MobiSys / ASPLOS / EMNLP  
 **Status:** Complete Publication-Quality Research Paper (Freeze v1.0)  
 **Primary Evaluated Hardware:** Xiaomi Redmi 12 5G (Qualcomm Snapdragon 4 Gen 2, 4 GB LPDDR4X, UFS 2.2 Flash, Android 14 / HyperOS)  
