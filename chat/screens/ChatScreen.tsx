@@ -25,11 +25,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // RAG retrieval now handled inside qa.ts — no longer needed here
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AudioWaveform from './audiowaveformCode';
-import { routeTask } from '../utils/taskRouter';
+import { handleQA, latestInferenceBenchmark, InferenceBenchmarkReport } from '../utils/qa';
 import { runHacerPhase1Probe } from '../utils/hacerPhase1';
 import { useProfile } from '../utils/ProfileContext';
 import { Profile, getProfiles, profileKey } from '../utils/profileManager';
-import { latestInferenceBenchmark, InferenceBenchmarkReport } from '../tasks/qa';
 import {
   BASELINE_INFERENCE_CONFIG,
   DEFAULT_CHAT_INFERENCE_MODE,
@@ -48,24 +47,12 @@ const getCurrentTime = () => {
   return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 };
 
-const getCurrentDateTime = () => {
-  const now = new Date();
-  return now.toLocaleString();
-};
-
 type Message = {
   text: string;
   type: 'user' | 'bot' | 'loading';
   time: string;
   responseTime?: string;
   benchmark?: InferenceBenchmarkReport | null;
-};
-
-type Task = {
-  id: string;
-  input: string;
-  taskType: string;
-  dateTime: string;
 };
 
 const CustomSwitch = ({
@@ -134,8 +121,6 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const [currentModel, setCurrentModel] = useState('');
   const [errorCount, setErrorCount] = useState(0);
   const [modelError, setModelError] = useState<string | null>(null);
-  const [taskHistory, setTaskHistory] = useState<Task[]>([]);
-  const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false);
   const modelId = route.params?.selectedModelId;
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const contextRef = useRef<LlamaContext | null>(null);
@@ -189,7 +174,6 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
 
   // Bug #16 fix: guard against null profileId in key generation
   const SELECTED_MODEL_KEY = profileId ? profileKey(profileId, '_selected_model') : '';
-  const TASK_HISTORY_KEY = profileId ? profileKey(profileId, '_task_history') : '';
   const CHAT_MESSAGES_KEY = profileId ? profileKey(profileId, '_chat_messages') : '';
   const CHAT_MODE_KEY = profileId ? profileKey(profileId, '_chat_mode') : '';
   const INFERENCE_MODE_KEY = profileId ? profileKey(profileId, '_inference_mode') : '@genix_inference_mode';
@@ -257,17 +241,6 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
       }
     };
 
-    const loadTaskHistory = async () => {
-      try {
-        const history = await AsyncStorage.getItem(TASK_HISTORY_KEY);
-        if (history) {
-          setTaskHistory(JSON.parse(history));
-        }
-      } catch (error) {
-        console.error('Error loading task history:', error);
-      }
-    };
-
     const loadChatMode = async () => {
       try {
         if (CHAT_MODE_KEY) {
@@ -309,7 +282,6 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
     };
 
     initializeModel();
-    loadTaskHistory();
     loadChatMode();
     loadInferenceSettings();
 
@@ -453,7 +425,7 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
             return;
           }
 
-          const ans = await routeTask(q, contextRef.current, profId, undefined, mode, inferenceOptions);
+          const ans = await handleQA(contextRef.current, q, profId, mode, inferenceOptions);
           const out = {
             status: 'completed',
             request_id: requestId,
@@ -644,32 +616,6 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
     return <Text style={styles.loadingText}>Generating{dots}</Text>;
   };
 
-  const saveTaskToHistory = async (input: string, taskType: string) => {
-    try {
-      const newTask: Task = {
-        id: Math.random().toString(36).substr(2, 9),
-        input,
-        taskType,
-        dateTime: getCurrentDateTime(),
-      };
-      const updatedHistory = [newTask, ...taskHistory];
-      setTaskHistory(updatedHistory);
-      await AsyncStorage.setItem(TASK_HISTORY_KEY, JSON.stringify(updatedHistory));
-    } catch (error) {
-      console.error('Error saving task to history:', error);
-    }
-  };
-
-  const clearTaskHistory = async () => {
-    try {
-      setTaskHistory([]);
-      await AsyncStorage.setItem(TASK_HISTORY_KEY, JSON.stringify([]));
-    } catch (error) {
-      console.error('Error clearing task history:', error);
-      Alert.alert('Error', 'Failed to clear task history');
-    }
-  };
-
   const clearChat = async () => {
     Keyboard.dismiss();
     try {
@@ -784,11 +730,10 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
 
     try {
       const startTime = Date.now();
-      const response = await routeTask(
-        userMessage.text,
+      const response = await handleQA(
         context,
+        userMessage.text,
         profileId,
-        saveTaskToHistory,
         chatMode,
         {
           mode: inferenceMode,
@@ -798,7 +743,7 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
       );
 
       if (!response || typeof response !== 'string') {
-        throw new Error('Invalid response from routeTask');
+        throw new Error('Invalid response from handleQA');
       }
 
       displayWordByWord(response, startTime);
@@ -1043,14 +988,6 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
     </View>
   );
 
-  const renderTask = ({ item }: { item: Task }) => (
-    <View style={styles.taskItem}>
-      <Text style={styles.taskType}>{item.taskType}</Text>
-      <Text style={styles.taskText}>{item.input}</Text>
-      <Text style={styles.taskDateTime}>{item.dateTime}</Text>
-    </View>
-  );
-
   return (
     <View style={{ flex: 1, position: 'relative', backgroundColor: '#0B0F19', paddingTop: insets.top }}>
       <View style={{ flex: 1, backgroundColor: '#0B0F19' }}>
@@ -1151,39 +1088,6 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
               </View>
             </Modal>
           )}
-
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={isHistoryModalVisible}
-            onRequestClose={() => setIsHistoryModalVisible(false)}
-          >
-            <View style={styles.modalOverlay}>
-              <View style={styles.modalContainer}>
-                <View style={styles.modalHeader}>
-                  <Text style={styles.modalTitle}>Task History</Text>
-                  <RNTouchableOpacity
-                    style={styles.clearButton}
-                    onPress={clearTaskHistory}
-                  >
-                    <Text style={styles.clearButtonText}>Clear</Text>
-                  </RNTouchableOpacity>
-                  <RNTouchableOpacity onPress={() => setIsHistoryModalVisible(false)}>
-                    <Icon name="close" size={24} color="#fff" />
-                  </RNTouchableOpacity>
-                </View>
-                <FlatList
-                  data={taskHistory}
-                  renderItem={renderTask}
-                  keyExtractor={(item) => item.id}
-                  contentContainerStyle={styles.taskList}
-                  ListEmptyComponent={
-                    <Text style={styles.emptyText}>No tasks yet</Text>
-                  }
-                />
-              </View>
-            </View>
-          </Modal>
 
           {/* Inference Mode Selection Modal */}
           <Modal
@@ -1710,17 +1614,6 @@ const ChatScreen = ({ navigation, route }: { navigation: any; route: any }) => {
           </View>
 
           <View style={styles.drawerNav}>
-            <RNTouchableOpacity
-              style={styles.drawerNavItem}
-              onPress={() => {
-                closeDrawer();
-                setIsHistoryModalVisible(true);
-              }}
-            >
-              <Icon name="assignment" size={22} color="#9CA3AF" style={styles.drawerNavIcon} />
-              <Text style={styles.drawerNavText}>Task History</Text>
-            </RNTouchableOpacity>
-
             <RNTouchableOpacity style={styles.drawerNavItem} onPress={() => navigateTo('Models')}>
               <Icon name="folder" size={22} color="#9CA3AF" style={styles.drawerNavIcon} />
               <Text style={styles.drawerNavText}>Models</Text>
@@ -2178,52 +2071,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#E5E7EB',
     fontFamily: 'sans-serif',
-  },
-  taskList: {
-    paddingBottom: 16,
-  },
-  taskItem: {
-    backgroundColor: '#2D3748',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  taskType: {
-    fontSize: 14,
-    color: '#8B5CF6',
-    fontWeight: 'bold',
-    fontFamily: 'sans-serif',
-    marginBottom: 4,
-  },
-  taskText: {
-    fontSize: 16,
-    color: '#E5E7EB',
-    fontFamily: 'sans-serif',
-  },
-  taskDateTime: {
-    fontSize: 13,
-    color: '#9CA3AF',
-    marginTop: 4,
-    fontFamily: 'sans-serif',
-  },
-  emptyText: {
-    fontSize: 16,
-    color: '#9CA3AF',
-    textAlign: 'center',
-    marginTop: 20,
-    fontFamily: 'sans-serif',
-  },
-  clearButton: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 12,
-    marginRight: 10,
-  },
-  clearButtonText: {
-    fontSize: 17,
-    color: '#ff6363',
-    fontFamily: 'sans-serif',
-    fontWeight: '600',
   },
   // Custom side drawer styles
   drawerBackdrop: {

@@ -51,10 +51,10 @@ const Intro = () => {
         {/* Screen 2 */}
         <View style={styles.container}>
           <Image
-            source={require('./tasks.png')}
+            source={require('./logo.png')}
             style={styles.image}
             resizeMode="contain"
-            onError={(e) => console.log('Image error tasks.png:', e.nativeEvent.error)}
+            onError={(e) => console.log('Image error logo.png:', e.nativeEvent.error)}
           />
           <Text style={styles.title}>Welcome to Our App!</Text>
           <Text style={styles.description}>We're glad to have you on board.</Text>

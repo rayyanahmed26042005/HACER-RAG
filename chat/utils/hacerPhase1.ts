@@ -20,7 +20,7 @@ type CompletionResult = {
   truncated?: boolean;
   stopped_eos?: boolean;
   stopped_word?: boolean;
-  stopped_limit?: boolean;
+  stopped_limit?: boolean | number;
   stopping_word?: string;
   timings?: Record<string, number>;
 };

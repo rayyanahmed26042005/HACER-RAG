@@ -1,10 +1,6 @@
 package com.chat
 
 import android.app.Application
-import com.chat.DirectCallPackage
-import com.chat.ContactPackage
-import com.chat.AppLauncherPackage
-import com.rtnmyalarm.MyAlarmPackage;
 
 
 import com.facebook.react.PackageList
@@ -23,11 +19,7 @@ class MainApplication : Application(), ReactApplication {
   override val reactNativeHost: ReactNativeHost = object : DefaultReactNativeHost(this) {
     override fun getPackages(): List<ReactPackage> {
       val packages = PackageList(this).packages.toMutableList()
-      packages.add(DirectCallPackage())
-      packages.add(ContactPackage())
-      packages.add(AppLauncherPackage())
       packages.add(DeviceTelemetryPackage())
-      packages.add(MyAlarmPackage())
       return packages
     }
 

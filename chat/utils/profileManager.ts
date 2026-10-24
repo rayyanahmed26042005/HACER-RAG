@@ -26,7 +26,6 @@ const ACTIVE_PROFILE_KEY = 'active_profile_id';
 const PROFILE_DATA_SUFFIXES = [
   '_docs_meta',
   '_selected_model',
-  '_task_history',
   '_chat_messages',
   '_embedding_model',
 ];

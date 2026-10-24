@@ -51,7 +51,7 @@ matched conditions before it is positioned as a paper contribution.
 | Main model | Downloaded at runtime from the catalog in `chat/screens/Models.tsx`; the recommended ID is `gemma-2-2b-it-Q4_K_M` |
 | Embeddings | `all-minilm-l6-v2-q4_k_m`, `embedding: true`, 384-dimensional vectors |
 | Retrieval | Word chunks of 100 words with 20-word overlap; in-memory per-profile cosine search; default top 3 |
-| Prompt construction | `chat/tasks/qa.ts`; document mode injects retrieved context into a single user message |
+| Prompt construction | `chat/utils/qa.ts`; document mode injects retrieved context into a single user message |
 | LLM context | Cached in `ChatScreen`; `n_ctx=512`, CPU-only, four threads |
 | Native GPU/NPU | No verified Android offload in this repository; `n_gpu_layers=0` |
 | Android build | arm64 and x86 variants are listed in `gradle.properties`; no checked-in model binary |

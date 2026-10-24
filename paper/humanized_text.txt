@@ -1,0 +1,107 @@
+# Title
+HACER-RAG: Evidence-Version-Aware KV-Cache Reuse and Selective Repair for On-Device Retrieval-Augmented Generation
+
+# Authors
+Mobile Systems and Language Model Research Group
+PortingLLM Research Project
+{systems-research, mobile-llm}@portingllm.org
+
+# Keywords
+On-device machine learning, retrieval-augmented generation, KV-cache reuse, mobile systems, cache invalidation.
+
+---
+Abstract
+On-device Retrieval-Augmented Generation (RAG) supports private, offline question answering, but small language models (SLMs) on mobile CPUs incur substantial prompt-prefill latency when re-encoding retrieved evidence. Key-Value (KV) cache restoration avoids redundant computation, yet mobile runtimes treat session files as opaque snapshots. When evidence changes, blind reuse can cause stale-cache hallucinations, context overflows, and continuation-boundary errors.
+We present HACER-RAG (Hierarchical Adaptive Cache, Evidence-version-aware Repair for on-device RAG), a framework that binds KV segments to hierarchical SHA-256 chunk and prefix digests in a canonical layout. HACER-RAG re-prefills only modified downstream chunks through prefix-preserving selective repair, falls back to scratch prefill when a cache is corrupted, and enforces a Java Native Interface (JNI) context-budget guard. We evaluate 4-bit Gemma 2 2B using llama.rn/llama.cpp on two Android tiers: a mid-range Snapdragon 4 Gen 2 device with UFS 2.2 and a flagship Snapdragon 8 Elite device with UFS 4.0.
+Across 90 matched pairs and nine configurations, with K in {1,2,4} chunks and n_ctx in {512,1024,2048}, the mid-range device reduced prefill computation by 19.34% to 21.21%, 38.53% to 40.37%, and 86.06% to 86.67%. It saved up to 47.33 s and achieved a 3.65x wall-clock speedup, with zero truncation and 100% deterministic output parity. The flagship showed reductions of 16.35%, 36.73%, and 85.23%, a 1.08 percentage-point gap at K=4, and a 4.04x raw compute speedup. Balanced two-way ANOVAs showed that cached tokens govern the reduction (p < 10^-15), whereas context capacity had no statistically significant effect (p = 0.650 to 0.981). UFS 4.0 restored a four-chunk session in 48.0 to 56.2 ms, saving 10.8 to 11.5 s (204x to 229x). Multi-hop recall remained 100%, and HACER-RAG eliminated stale hallucinations and crashes across five dynamic-corpus failure scenarios.
+
+Section I: Introduction
+On-device RAG provides privacy, offline operation, and predictable availability [1, 2]. A local retriever, such as SQLite BM25 or a mobile vector index, selects evidence chunks, builds an augmented prompt, and supplies it to an on-device SLM [3, 4]. Mobile hardware is constrained by compute, memory, and thermal limits [5, 6, 7]. Our mid-range testbed uses a Snapdragon 4 Gen 2 (2xA78 + 6xA55) with 4 GB LPDDR4X, while the flagship device uses a Snapdragon 8 Elite with 12 GB LPDDR5X. With 4-bit models [8, 9], including Gemma 2 2B Q4_K_M [10], decode runs at 28 to 30 tok/s on the mid-range device and 70 to 80 tok/s on the flagship. Prefilling a 395-token prompt takes 49 to 56 s and 12 to 14 s, respectively.
+Repeated queries over a local corpus often retrieve identical or overlapping chunks [11, 4]. Conventional runtimes re-encode this evidence for each query, increasing battery use and inducing thermal throttling. KV tensor caching avoids repeated prefill. On Device A, prefilling 395 tokens takes 54.2 s (7.3 tok/s), while restoring a 37 to 40 MB four-chunk KV cache from UFS 2.2 takes less than 350 ms. Cold reads of a two-chunk cache average 256.0 ms. On Device B, which uses UFS 4.0, prefill takes 13.1 s and cache loading takes 48.0 ms. Prefill is therefore 155x to 212x slower than flash restoration on Device A and 204x to 229x slower on Device B.
+Runtimes such as llama.rn and llama.cpp [12] expose saveSession/loadSession as opaque snapshots for conversational resumption, without semantic validity checks. Applying this persistence model directly to on-device RAG creates three failures.
+1. Stale-KV hallucination. When personal or enterprise documents are edited, redacted, or revoked, reusing prior KV tensors causes causal attention to condition on outdated prefixes. The model can produce superseded facts with high confidence [13], while the stale tokens remain hidden in the cache.
+2. Context headroom violations. Mobile inference engines allocate a fixed contiguous KV arena, 2LHDn_ctx elements, at initialization. Exceeding this capacity can silently drop leading prompt tokens, affecting positional embeddings and attention spans, or trigger out-of-memory termination by Android's Low Memory Killer Daemon (LMKD).
+3. Continuation boundary misalignment. Appending a user query to a restored prefix without accounting for byte-pair encoding (BPE) boundary merges can alter token indexing at the prefix-query seam. Because 4 GB phones may need to persist caches to flash between interactions, cache validity must be checked automatically.
+Research questions
+- RQ1 (scaling and context independence): How does prefill reduction scale with cached prefix tokens across device tiers, and does allocated context capacity (n_ctx) affect savings?
+- RQ2 (freshness): Can cryptographic versioning eliminate stale-KV hallucinations after updates, revocations, and reorderings without full scratch prefill?
+- RQ3 (multi-hop integrity): Does partial prefix reuse preserve accuracy when an answer requires joint reasoning across passages?
+- RQ4 (I/O trade-off): What is the latency trade-off between mobile flash restoration on UFS 2.2 or UFS 4.0 and native CPU prefill?
+Contributions
+1. HACER-RAG, an architecture with hierarchical chunk- and prefix-level SHA-256 hashing, canonical layout, JNI context-budget safety, and prefix-preserving selective repair.
+2. A 90-pair scaling benchmark across nine Device A configurations, showing 19.34% to 86.67% prefill reduction, savings of up to 47.33 s, and a 3.65x wall-clock speedup.
+3. Cross-tier results on a flagship phone, showing a 4.04x raw compute speedup and relative scaling within 1.08 percentage points of Device A at K=4.
+4. Two-way ANOVAs on both tiers showing that cached prefix tokens, rather than context capacity, govern savings (p < 10^-15 versus p = 0.650 to 0.981).
+5. Multi-chunk validation on three two-hop cases, with 44.13% mean prefill reduction, 1.63x wall-clock speedup, 100% recall, and single-chunk ablations that failed in every case.
+6. A five-scenario staleness suite in which HACER-RAG avoided stale hallucinations and crashes, while blind reuse failed in every mutation test.
+Scope and nonclaims
+KV serialization is not itself the claimed novelty. The contribution is cryptographic evidence binding, prefix-preserving selective repair, JNI budget safety, and empirical mobile characterization. The findings are limited to the two evaluated phones, llama.rn/llama.cpp, and Gemma 2 2B.
+
+Section II: Background and related work
+KV-cache fundamentals. In a decoder-only transformer, token t attends only to positions τ ≤ t through a causal mask. The Key/Value tensors for a prefix of length P are therefore unaffected by subsequent tokens and can be reused when the model weights and Rotary Position Embeddings (RoPE) [14] are unchanged. llama.cpp [12] serializes the KV arena with the evaluated token IDs, allowing continuation prefill to start at index P.
+KV reuse and repair in RAG. TurboRAG [11] precomputes offline chunk caches using positional re-indexing and fine-tuning. KVLink [15] inserts trainable linking tokens to combine independent caches, requiring fine-tuning and preventing drop-in deployment with frozen quantized GGUF binaries. PerCache [4] predictively caches query-answer pairs and KV segments on mobile devices, but does not enforce cryptographic chunk versioning, revocation, or canonical reordering. Server engines such as vLLM [16] and SGLang [17] share prefixes in GPU DRAM without addressing mobile flash I/O or Android memory limits.
+CacheBlend [18] and recent selective-repair methods, including RelaxKV, CacheRepair, and CacheClip [19], support non-prefix reuse by selectively recomputing cross-attention layers on high-memory GPUs. HACER-RAG uses deterministic canonical prefix caching with chunk-level invalidation. It preserves the longest valid prefix on flash and re-prefills only from the first mutated chunk onward, without modifying the model. KIVI [20] and H2O [21] reduce in-memory footprints, but neither skips prefill for unencoded text nor detects document staleness.
+Differentiation. HACER-RAG provides hierarchical binding of KV files to individual chunk hashes and composite prefix digests, prefix-preserving selective repair after partial updates, JNI context-budget checks with BPE boundary alignment, and flash-to-compute characterization for UFS 2.2 and UFS 4.0.
+
+Section III: HACER-RAG architecture
+HACER-RAG contains five subsystems (Fig. 1). Its hierarchical validation metadata has two levels. Level 1 stores the content digest of each chunk, H(C_i), in SQLite. Level 2 indexes cumulative prefix session keys, K_{1:j} = SHA-256(FormatPrefix(C_c[1:j])), for j in {1,...,k}. These keys enable fallback to a valid prefix when downstream chunks change.
+Evidence ingestion and versioning. Documents are segmented into chunks C = {C_1,...,C_M}. SQLite stores each chunk as H(C_i) = SHA-256(Canonicalize(C_i)), where Canonicalize(.) applies Unicode NFC normalization, converts CRLF to LF, and strips trailing whitespace. It also stores the timestamp, document ID, and token count. Any mutation changes H(C_i).
+Canonical evidence layout. Retriever score fluctuations can reorder the top-k chunks, for example [C_2,C_1] instead of [C_1,C_2]. Under causal attention, a reordered sequence changes every token position and invalidates saved prefixes, resulting in 0% reuse. HACER-RAG enforces a deterministic layout, π_canon = Sort({C_1,...,C_k}), using persistent document and chunk IDs. This layout keeps prefixes stable despite ranking noise.
+Adaptive cache decision engine. Given canonical chunks C_c, the engine formats the prefix P = FormatPrefix(C_c), computes K_session = SHA-256(P), and queries the two-level registry shown in Algorithm 1.
+- Case 1, exact hit: K_session exists and all H(C_i) values match, so the engine prefills only query Q.
+- Case 2, selective repair through prefix invalidation: When chunk C_{j*+1} changes, the engine finds the longest valid prefix j* in [1,k-1] whose composite digest K_{1:j} and constituent hashes H(C_1)..H(C_{j}) match. It loads session j* and prefills only the invalidated tail C_{j*+1}..C_k and Q.
+- Case 3, safe invalidation: Missing, revoked, or header-corrupted files trigger cache eviction, arena reset, and scratch prefill.
+Algorithm 1: HACER hierarchical cache validation and repair
+Require: chunks C = [C_1..C_k], query Q, registry R
+1: C_c <- CanonicalSort(C); P <- FormatPrefix(C_c); K <- SHA-256(P)
+2: if K in R and VerifyHashes(C_c[1:k], R[K]) and LoadSession(R[K]) then
+3:    // Case 1: PrefillOnline(Q); return
+4: end if
+5: j* <- max { j in [1,k-1] | K_{1:j} in R and VerifyHashes(C_c[1:j], R[K_{1:j}]) }
+6: if j* > 0 and LoadSession(R[K_{1:j*}]) then
+7:    // Case 2: PrefillOnline(Tokenize(C_c[j*+1:k] || Q)); SaveSession(K); return
+8: end if
+9: // Case 3: PurgeInvalidSessions; ResetContextArena; PrefillOnline(Tokenize(P || Q)); SaveSession(K)
+Native execution and telemetry. The execution layer wraps llama.rn v0.5.8. It logs kernel I/O counters from /proc/{PID}/io, distinguishing physical flash reads from page-cache hits, along with Proportional Set Size (PSS) from dumpsys meminfo, battery temperature, and CPU clocks from sysfs.
+Blind reuse and HACER-RAG. Standard llama_load_session_file loads session.bin without checking document hashes. Reordered chunks yield 0% reuse; edits and revocations can produce stale answers; truncated binaries can cause crashes. HACER-RAG guarantees freshness, order invariance, and integrity checks before JNI execution.
+
+Section IV: Context-budget safety and boundary alignment
+Headroom guard. Large KV arenas increase memory pressure on 4 GB devices. HACER-RAG therefore limits active allocations to n_ctx ≤ 2048 and applies a JNI guard before native execution:
+(n_ctx - Δ_res) - (N_prompt + N_predict) ≥ 0    (Eq. 1)
+Δ_res = 4 tokens are reserved by llama.cpp for sequence-control markers. Requests that violate Eq. (1) are rejected before native execution. With N_prompt = 395 and N_predict = 35, the analytical headroom is 78, 590, and 1614 tokens for n_ctx values of 512, 1024, and 2048, respectively. All 182 scaling runs recorded truncated == 0.
+Boundary-token invariant. Restoring N_loaded prefix tokens can cause BPE tokenization to merge leading query whitespace or delimiters with the final prefix token. To preserve exact cross-boundary attention, llama.rn/llama.cpp re-evaluates the final loaded token at index N_loaded - 1. For N_loaded > 0, the evaluated token count is:
+N_eval = N_prompt - N_loaded + 1    (Eq. 2)
+For cold prefill, N_loaded = 0 and N_eval = 395. For K in {1,2,4}, with N_loaded in {84,158,341}, Eq. (2) yields N_eval values of {312,238,55}. These values match native telemetry across all runs.
+
+Section V: Experimental methodology
+Testbeds (Table I). Device A is a mid-range smartphone with a Snapdragon 4 Gen 2, comprising 2xA78 cores at 2.20 GHz and 6xA55 cores at 2.00 GHz. Device B is a flagship smartphone with a Snapdragon 8 Elite, comprising 6xOryon Performance cores at 3.53 GHz and 2xOryon Prime cores at 4.47 GHz. Both devices execute identical model binaries and token sequences using four CPU threads. Thermal conditions are monitored, and standardized rest intervals are applied between matched pairs.
+Table I: Physical Android testbeds
+- Device A (mid-range): SoC Snapdragon 4 Gen 2 (SM4450); CPU 2xA78 + 6xA55; RAM 4 GB LPDDR4X; storage 128 GB UFS 2.2 (approximately 280 MB/s); OS Android 14.
+- Device B (flagship): SoC Snapdragon 8 Elite (SM8750); CPU 6xOryon Performance + 2xOryon Prime; RAM 12 GB LPDDR5X (3.0x); storage 256 GB UFS 4.0 (1,700 MB/s); OS Android 16.
+Software and model. The React Native host, com.chat, invokes llama.rn v0.5.8, which uses llama.cpp compiled with ARM NEON and OpenMP. It runs Gemma 2 2B Instruct Q4_K_M, approximately 1.708 GB with SHA-256 e0aee85060f168f0.... Greedy decoding uses temperature 0 and N_predict = 35, producing deterministic outputs.
+Workload. The synthetic enterprise corpus, Zephyr Dynamics, contains four chunks for a four-hop question:
+- Chunk 1, Overview: founded in 2011 with 847 employees.
+- Chunk 2, Leadership: CEO Priya Nandakumar, CLO Jorge Fonseca, CTO Marcus Löbell, and CFO Saoirse Hennessey.
+- Chunk 3, AeroSense X7: 12,000 m ceiling and 72 h battery life.
+- Chunk 4, SwarmKit Pro: 2,048 drones, with $1,200 standard and $3,800 full-capacity tiers.
+The query requests the founding year, CLO, battery life, and full-capacity price. It contains N_prompt = 395 tokens and has SHA-256 a5f1db09b904e813...27c6d.
+Protocol and metrics. Before each baseline run, an orthogonal prompt flushes the KV arena so that N_loaded = 0. Within every matched pair, baseline-first and reuse-first execution order is randomized to limit bias from thermal or background drift. We record native prefill time T_prefill (prompt_ms), decode time (predicted_ms), bridge wall time T_wall, session-load time T_load (ms), /proc/{PID}/io read bytes, and PSS.
+Per-pair prefill reduction and wall speedup are computed as:
+Δ_prefill = (T_base_prefill - T_reuse_prefill) / T_base_prefill * 100%
+S_wall = T_base_wall / T_reuse_wall                                    (Eq. 3)
+We report 95% bootstrap confidence intervals from 1,000 resamples over matched pairs. The physical-read ratio, read_bytes / rchar, classifies a run as a cold flash read when more than 85% of data is fetched from physical UFS storage after cache eviction, or as a warm page-cache hit when physical I/O is below 15%. Factual recall (%) [22] is scored through deterministic exact entity-substring matching for each required hop. Stale-fact hallucination rate (%) is the fraction of mutation trials that output superseded or revoked values.
+
+Section X: Discussion and limitations
+Storage and compute asymmetry. Dense CPU prefill runs at 7.3 tok/s on the Snapdragon 4 Gen 2, taking 54.2 s for 395 tokens, and at 28 to 33 tok/s on the Snapdragon 8 Elite, taking 11.9 to 14.2 s. Restoring KV states takes 256.0 ms for the two-chunk cold-read mean and less than 350 ms for a 37.45 MB four-chunk state on UFS 2.2. UFS 4.0 restoration takes 48.0 to 56.2 ms. The resulting advantage is 155:1 to 212:1 on Device A and 204:1 to 229:1 on Device B. Datacenter GPUs use high-bandwidth HBM, while mobile CPUs are memory-bandwidth bound. On mobile devices, sequential flash reads can substitute for much more expensive CPU prefill.
+Memory footprint and thermal behavior. Loading the 1.708 GB model and KV arena produced an application PSS of 2.28 GB (2,280,940 KB) on Device A and 1,986 to 2,176 MB on Device B. Limiting n_ctx to 2048 through the JNI guard prevented out-of-memory terminations in all runs. During back-to-back baseline prefills on Device A, battery temperature rose from 29.5 °C to 38.2 °C, and DVFS throttled the CPU to 1.6 GHz. Eliminating up to 86.67% of prefill computation, equivalent to 47.3 s, reduces sustained CPU residency and thermal buildup.
+Practical implications.
+1. Local knowledge stores with changing documents require cryptographic evidence binding. SHA-256 chunk verification eliminates stale hallucinations caused by unvalidated session reuse.
+2. A deterministic chunk order prevents retriever ranking fluctuations from invalidating reusable prefix KV tensors.
+3. Re-prefilling only modified downstream chunks retains prefix-compute savings while preserving factual freshness.
+4. Flagship devices still benefit from prefill optimization. On Oryon cores, reducing prefill latency from approximately 13 s to 1.8 s changes the interaction from disruptive to responsive.
+Threats to validity. Background Android services can cause I/O contention, as isolated in Case 3. We mitigated this risk through randomized pair ordering, arena flushes, /proc/{PID}/io tracking, and 95% bootstrap confidence intervals. The scaling matrix evaluates one multi-hop prompt structure across three prefix lengths, K in {1,2,4}, on Gemma 2 2B Q4_K_M and two Snapdragon SoCs. NPU execution or non-transformer state-space models may exhibit different trade-offs.
+
+Section XII: Conclusion
+On-device Retrieval-Augmented Generation can support private, network-independent personal AI assistants, but prompt prefill is expensive on mobile processors. KV-cache persistence avoids repeated prefill, yet conventional mobile runtimes store session caches as opaque blobs. This can produce stale-data hallucinations, memory overflows, and boundary-token misalignment.
+We presented HACER-RAG, an evidence-version-aware KV-cache management framework that binds persistent KV segments to cryptographic chunk digests in canonical layouts. It performs prefix-preserving selective repair after downstream passages change and enforces JNI context-budget guards. Across mid-range and flagship Android smartphones, HACER-RAG achieved prefill-compute reductions of up to 86.67% and 86.20%, with wall-clock speedups of up to 3.65x, zero truncation, and 100% deterministic output parity.
+Two-way ANOVAs showed that cached prefix length determines compute savings (p < 10^-15), while allocated context capacity has no statistically significant effect (p = 0.650 to 0.981). The results show that cryptographic evidence validation and millisecond-scale flash restoration can reduce mobile RAG latency while maintaining fresh, validated context.

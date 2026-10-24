@@ -1,11 +1,11 @@
-// chat/tasks/qa.ts
+// chat/utils/qa.ts
 
-import { LlamaContext } from '../utils/types';
-import { retrieveContextDetailed, RetrievalMetrics } from '../utils/rag/ragPipeline';
-import { buildDocumentPrompt, createPromptBudget, NO_DOCUMENT_EVIDENCE } from '../utils/rag/promptBudget';
-import { evaluateRag } from '../utils/rag/metrics';
-import { auditAnswerContract, AnswerContractAudit, buildDirectEvidenceAnswer } from '../utils/rag/evidenceCertificate';
-import { ResearchMetrics, evaluateResearchRun } from '../utils/rag/researchEvaluator';
+import { LlamaContext } from './types';
+import { retrieveContextDetailed, RetrievalMetrics } from './rag/ragPipeline';
+import { buildDocumentPrompt, createPromptBudget, NO_DOCUMENT_EVIDENCE } from './rag/promptBudget';
+import { evaluateRag } from './rag/metrics';
+import { auditAnswerContract, AnswerContractAudit, buildDirectEvidenceAnswer } from './rag/evidenceCertificate';
+import { ResearchMetrics, evaluateResearchRun } from './rag/researchEvaluator';
 import RNFS from 'react-native-fs';
 import {
   InferenceRequestOptions,
@@ -14,8 +14,8 @@ import {
   selectInferencePlan,
   BASELINE_INFERENCE_CONFIG,
   getGeneralOutputLimit,
-} from '../utils/inferenceController';
-import { DeviceState, getDeviceState } from '../utils/deviceTelemetry';
+} from './inferenceController';
+import { DeviceState, getDeviceState } from './deviceTelemetry';
 
 export interface InferenceBenchmarkReport {
   rag?: RetrievalMetrics;
