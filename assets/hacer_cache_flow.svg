@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="980" viewBox="0 0 1800 980">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2f3b4b" />
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#16a34a" />
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#dc2626" />
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b" />
+    </marker>
+    <style>
+      .title { font: 700 28px 'Segoe UI', Arial, sans-serif; fill: #1f2937; }
+      .box-label { font: 700 22px 'Segoe UI', Arial, sans-serif; fill: #1f2937; dominant-baseline: middle; text-anchor: middle; }
+      .small { font: 700 17px 'Segoe UI', Arial, sans-serif; fill: #1f2937; dominant-baseline: middle; text-anchor: middle; }
+      .tiny { font: 700 14px 'Segoe UI', Arial, sans-serif; fill: #1f2937; dominant-baseline: middle; text-anchor: middle; }
+      .decision { font: 700 24px 'Segoe UI', Arial, sans-serif; fill: #e5e7eb; dominant-baseline: middle; text-anchor: middle; }
+      .decision-small { font: 600 18px 'Segoe UI', Arial, sans-serif; fill: #e5e7eb; dominant-baseline: middle; text-anchor: middle; }
+      .outcome { font: 700 21px 'Segoe UI', Arial, sans-serif; fill: #1f2937; dominant-baseline: middle; text-anchor: middle; }
+      .tagline { font: 700 18px 'Segoe UI', Arial, sans-serif; fill: #0f172a; dominant-baseline: middle; text-anchor: middle; }
+      .green { fill: #22c55e; }
+      .red { fill: #ef4444; }
+      .blue { fill: #93c5fd; }
+      .teal { fill: #a7f3d0; }
+      .amber { fill: #fbbf24; }
+      .lav { fill: #d8b4fe; }
+      .beige { fill: #f3e8d1; }
+      .pink { fill: #fbcfe8; }
+      .pale { fill: #e0f2fe; }
+      .grey { fill: #dbeafe; }
+      .dark-panel { fill: #2f3b4b; }
+      .split-line { stroke: #2f3b4b; stroke-width: 3; fill: none; }
+      .green-line { stroke: #16a34a; stroke-width: 3; fill: none; marker-end: url(#arrow-green); }
+      .red-line { stroke: #dc2626; stroke-width: 3; fill: none; marker-end: url(#arrow-red); }
+      .amber-line { stroke: #f59e0b; stroke-width: 3; fill: none; marker-end: url(#arrow-amber); }
+      .plain-line { stroke: #2f3b4b; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dotted { stroke-dasharray: 8 8; }
+      .shadow { filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.16)); }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="980" fill="#f8fafc"/>
+
+  <g>
+    <rect x="35" y="45" width="160" height="96" rx="12" class="grey shadow"/>
+    <text x="115" y="72" class="title" style="font-size:26px;">Canonical Evidence</text>
+    <text x="115" y="98" class="title" style="font-size:26px;">Chunks</text>
+    <text x="115" y="122" class="small" style="font-size:18px;">(Top-k Retrieved)</text>
+
+    <rect x="220" y="45" width="220" height="72" rx="12" class="blue shadow"/>
+    <text x="330" y="81" class="box-label">Chunk C1</text>
+
+    <rect x="470" y="45" width="220" height="72" rx="12" class="teal shadow"/>
+    <text x="580" y="81" class="box-label">Chunk C2</text>
+
+    <rect x="720" y="45" width="220" height="72" rx="12" class="amber shadow"/>
+    <text x="830" y="81" class="box-label">Chunk C3</text>
+
+    <rect x="970" y="45" width="220" height="72" rx="12" class="lav shadow"/>
+    <text x="1080" y="81" class="box-label">Chunk C4</text>
+
+    <rect x="35" y="200" width="160" height="90" rx="12" class="lightgrey" style="fill:#d1fae5;"/>
+    <text x="115" y="226" class="title" style="font-size:26px;">Level-1</text>
+    <text x="115" y="252" class="title" style="font-size:26px;">Content Hashes</text>
+
+    <rect x="220" y="205" width="220" height="70" rx="12" class="blue shadow"/>
+    <text x="330" y="240" class="small">H(C1) = SHA-256(C1)</text>
+
+    <rect x="470" y="205" width="220" height="70" rx="12" class="teal shadow"/>
+    <text x="580" y="240" class="small">H(C2) = SHA-256(C2)</text>
+
+    <rect x="720" y="205" width="220" height="70" rx="12" class="amber shadow"/>
+    <text x="830" y="240" class="small">H(C3) = SHA-256(C3)</text>
+
+    <rect x="970" y="205" width="220" height="70" rx="12" class="lav shadow"/>
+    <text x="1080" y="240" class="small">H(C4) = SHA-256(C4)</text>
+
+    <rect x="35" y="340" width="160" height="110" rx="12" class="beige"/>
+    <text x="115" y="368" class="title" style="font-size:23px;">Level-2 Cumulative</text>
+    <text x="115" y="393" class="title" style="font-size:23px;">Prefixes Keys</text>
+    <text x="115" y="418" class="tiny">(Hash Chain)</text>
+
+    <rect x="220" y="340" width="220" height="70" rx="12" class="blue shadow"/>
+    <text x="330" y="375" class="small">K1:1 = H(C1)</text>
+
+    <rect x="470" y="340" width="220" height="70" rx="12" class="teal shadow"/>
+    <text x="580" y="375" class="small">K1:2 = SHA-256(K1:1 || H(C2))</text>
+
+    <rect x="720" y="340" width="220" height="70" rx="12" class="amber shadow"/>
+    <text x="830" y="375" class="small">K1:3 = SHA-256(K1:2 || H(C3))</text>
+
+    <rect x="970" y="340" width="220" height="70" rx="12" class="lav shadow"/>
+    <text x="1080" y="375" class="small">K1:4 = SHA-256(K1:3 || H(C4))</text>
+
+    <rect x="35" y="470" width="160" height="110" rx="12" class="pink"/>
+    <text x="115" y="500" class="title" style="font-size:26px;">Flash KV-Cache</text>
+    <text x="115" y="530" class="title" style="font-size:26px;">Segment</text>
+
+    <rect x="220" y="470" width="220" height="72" rx="12" class="blue shadow"/>
+    <text x="330" y="506" class="box-label">KV1</text>
+
+    <rect x="470" y="470" width="220" height="72" rx="12" class="teal shadow"/>
+    <text x="580" y="506" class="box-label">KV2</text>
+
+    <rect x="720" y="470" width="220" height="72" rx="12" class="amber shadow"/>
+    <text x="830" y="506" class="box-label">KV3</text>
+
+    <rect x="970" y="470" width="220" height="72" rx="12" class="lav shadow"/>
+    <text x="1080" y="506" class="box-label">KV4</text>
+
+    <path d="M 195 81 L 220 81" class="plain-line"/>
+    <path d="M 440 81 L 470 81" class="plain-line"/>
+    <path d="M 690 81 L 720 81" class="plain-line"/>
+    <path d="M 940 81 L 970 81" class="plain-line"/>
+
+    <path d="M 330 117 L 330 205" class="plain-line"/>
+    <path d="M 580 117 L 580 205" class="plain-line"/>
+    <path d="M 830 117 L 830 205" class="plain-line"/>
+    <path d="M 1080 117 L 1080 205" class="plain-line"/>
+
+    <path d="M 330 275 L 330 340" class="plain-line"/>
+    <path d="M 580 275 L 580 340" class="plain-line"/>
+    <path d="M 830 275 L 830 340" class="plain-line"/>
+    <path d="M 1080 275 L 1080 340" class="plain-line"/>
+
+    <path d="M 330 410 L 330 470" class="plain-line"/>
+    <path d="M 580 410 L 580 470" class="plain-line"/>
+    <path d="M 830 410 L 830 470" class="plain-line"/>
+    <path d="M 1080 410 L 1080 470" class="plain-line"/>
+
+    <path d="M 440 506 L 470 506" class="plain-line"/>
+    <path d="M 690 506 L 720 506" class="plain-line"/>
+    <path d="M 940 506 L 970 506" class="plain-line"/>
+
+    <path d="M 1180 500 L 1290 500" class="plain-line"/>
+    <path d="M 1290 500 L 1290 625" class="plain-line"/>
+
+    <rect x="1290" y="408" width="450" height="208" rx="18" class="dark-panel shadow"/>
+    <text x="1515" y="448" class="decision">HACER Decision Engine:</text>
+    <text x="1515" y="480" class="decision-small">Evaluate corpus freshness</text>
+
+    <path d="M 1400 610 L 1400 670" class="plain-line"/>
+    <path d="M 1590 610 L 1590 670" class="plain-line"/>
+
+    <g>
+      <path d="M 430 710 L 680 710" class="green-line"/>
+      <rect x="350" y="730" width="480" height="110" rx="14" class="beige shadow"/>
+      <text x="590" y="766" class="outcome">All H(Ci) Match →</text>
+      <text x="590" y="794" class="outcome">Instant Flash Restore</text>
+      <text x="590" y="818" class="tiny">(Reuse KV1...KV4)</text>
+    </g>
+
+    <g>
+      <path d="M 960 710 L 1230 710" class="amber-line"/>
+      <rect x="830" y="730" width="700" height="110" rx="14" class="beige shadow"/>
+      <text x="1180" y="766" class="outcome">H(C3) Mismatch → Reuse Valid Prefix (KV1...KV2)</text>
+      <text x="1180" y="794" class="outcome">from Flash + Re-prefill Mutated C3, C4 &amp; Query</text>
+    </g>
+
+    <g>
+      <path d="M 1460 550 L 1640 550 L 1640 720" class="red-line"/>
+      <rect x="1328" y="730" width="530" height="110" rx="14" class="pink shadow"/>
+      <text x="1593" y="766" class="outcome">Corrupted / Revoked →</text>
+      <text x="1593" y="794" class="outcome">Purge Cache &amp; Full Prefill</text>
+    </g>
+
+    <path d="M 590 840 L 590 900" class="green-line"/>
+    <path d="M 1180 840 L 1180 900" class="amber-line"/>
+    <path d="M 1593 840 L 1593 900" class="red-line"/>
+
+    <rect x="760" y="900" width="340" height="70" rx="14" class="dark-panel shadow"/>
+    <text x="930" y="925" class="decision" style="font-size:22px;">JNI Context-Budget Guard:</text>
+    <text x="930" y="952" class="decision-small">(n_ctx - 4) - (N_prompt + N_predict) ≥ 0</text>
+
+    <rect x="1115" y="900" width="510" height="70" rx="14" class="pale shadow"/>
+    <g transform="translate(1138,918)">
+      <path d="M18,26 L18,4 A26,26 0 1 1 18,52 A26,26 0 1 1 18,26 Z" fill="#93c5fd" stroke="#1d4ed8" stroke-width="2"/>
+      <circle cx="18" cy="18" r="6" fill="#ffffff"/>
+      <circle cx="18" cy="32" r="6" fill="#ffffff"/>
+      <path d="M10,18 L26,18 M10,32 L26,32" stroke="#1d4ed8" stroke-width="2"/>
+    </g>
+    <text x="1302" y="935" class="tagline">On-Device LLM Prefill &amp; Generation</text>
+    <text x="1302" y="960" class="tiny">(Snapdragon CPU / llama.cpp)</text>
+
+    <path d="M 365 710 L 580 710" class="green-line"/>
+    <path d="M 980 710 L 1180 710" class="amber-line"/>
+    <path d="M 1500 700 L 1630 700" class="red-line"/>
+
+    <path d="M 1300 500 L 1300 560" class="plain-line"/>
+    <path d="M 1300 560 L 1400 560" class="plain-line"/>
+
+    <path d="M 440 506 L 440 655" class="plain-line"/>
+    <path d="M 690 506 L 690 655" class="plain-line"/>
+    <path d="M 940 506 L 940 655" class="plain-line"/>
+    <path d="M 1190 506 L 1190 655" class="plain-line"/>
+
+    <text x="1050" y="630" class="tiny" style="font-size:18px; fill:#1f2937; font-weight:700;">Case 2: Selective Repair (e.g. C3 Modified)</text>
+    <text x="1590" y="630" class="tiny" style="font-size:18px; fill:#dc2626; font-weight:700;">Case 3: Scratch Fallback</text>
+    <text x="590" y="630" class="tiny" style="font-size:18px; fill:#16a34a; font-weight:700;">Case 1: Exact Hit</text>
+  </g>
+</svg>

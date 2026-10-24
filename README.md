@@ -12,7 +12,7 @@
 
 **HACER-RAG** is an efficient, safety-verified system for running Retrieval-Augmented Generation (RAG) completely **on-device** on resource-constrained commodity smartphones.
 
-Running LLMs locally on mobile devices ensures complete privacy and zero cloud dependence, but suffers from severe prefill bottlenecks: processing hundreds of retrieved document tokens on a budget mobile CPU takes tens of seconds. While key-value (KV) cache reuse can bypass this latency, naive caching creates a critical failure mode: **Silent Stale-KV Hallucinations**, where the LLM produces outdated or incorrect answers when cached documents change.
+Running LLMs locally on mobile devices ensures complete privacy and zero cloud dependence, but suffers from severe prefill bottlenecks: processing hundreds of retrieved document tokens on a budget mobile CPU is expensive. HACER exploits the observation that retrieved evidence is often stable across turns, and that only a small portion of the context changes over time. Instead of re-prefilling the full retrieved context on every user request, HACER reuses valid resident KV-cache prefixes and repairs only the modified evidence segments.
 
 HACER solves this with:
 1. **Cryptographic Chunk Fingerprinting:** Deterministic SHA-256 evidence hashing across all retrieved context chunks.
@@ -64,6 +64,12 @@ Evaluated across **180 physical trials** on a **Xiaomi Redmi 12 5G** (Qualcomm S
                                      ▼
                      [ Verified, Low-Latency Output ]
 ```
+
+## 🧠 HACER Evidence-Version Flow
+
+<p align="center">
+  <img src="assets/hacer_cache_flow.svg" alt="HACER evidence-version cache reuse flow" width="100%" />
+</p>
 
 ---
 
@@ -167,3 +173,4 @@ If you use HACER-RAG in your research, please cite:
 ## 📄 License
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
